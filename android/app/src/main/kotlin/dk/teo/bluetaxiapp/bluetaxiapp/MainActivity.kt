@@ -1,4 +1,4 @@
-package com.example.blue_taxi_app
+package dk.teo.bluetaxiapp.bluetaxiapp
 
 import io.flutter.embedding.android.FlutterActivity
 

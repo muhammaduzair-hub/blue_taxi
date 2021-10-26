@@ -134,13 +134,13 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "blue_taxi_app",
+      "name": "bluetaxiapp",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-10-26T05:43:08.905625Z",
+  "generated": "2021-10-26T06:08:43.403930Z",
   "generator": "pub",
   "generatorVersion": "2.13.0-211.6.beta"
 }

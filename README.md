@@ -1,4 +1,4 @@
-# blue_taxi_app
+# bluetaxiapp
 
 A new Flutter project.
 
