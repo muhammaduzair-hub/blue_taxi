@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dk.teo.bluetaxiapp.bluetaxiapp">
+    package="dk.teo.bluetaxiapp">
    <application
         android:label="bluetaxiapp"
         android:icon="@mipmap/ic_launcher">
