@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "333002739226",
+    "project_id": "bluetaxiapp-c403f",
+    "storage_bucket": "bluetaxiapp-c403f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333002739226:android:a50840eb78991259f34ba3",
+        "android_client_info": {
+          "package_name": "dk.teo.bluetaxiapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333002739226-mblv33fvj5bgg9ahsni9cspj1jv2eh44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWlBuxUE0GhEwTUThaKZZs1sK2jg2bqZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333002739226-mblv33fvj5bgg9ahsni9cspj1jv2eh44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
