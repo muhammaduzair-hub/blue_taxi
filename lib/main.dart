@@ -1,3 +1,4 @@
+import 'package:bluetaxiapp/ui/views/signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
@@ -17,8 +18,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: RoutePaths.Login,
-        onGenerateRoute: AppRouter.generateRoute,
+        home: SignUpView(),
       ),
     );
   }
