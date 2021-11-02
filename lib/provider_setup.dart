@@ -1,9 +1,9 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:bluetaxiapp/data/repository/auth_repository_sample.dart';
+import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 
 import 'data/model/user_sample.dart';
-import 'data/remote/api_sample.dart';
+import 'data/remote/api.dart';
 
 List<SingleChildWidget> providers = [
   ...independentServices,
@@ -11,19 +11,19 @@ List<SingleChildWidget> providers = [
   ...uiConsumableProviders
 ];
 
-List<SingleChildWidget> independentServices = [Provider.value(value: ApiSample())];
+List<SingleChildWidget> independentServices = [Provider.value(value: Api())];
 
 List<SingleChildWidget> dependentServices = [
-  ProxyProvider<ApiSample, AuthRepositorySample>(
+  ProxyProvider<Api, AuthRepository>(
     update: (context, api, repository) =>
-        AuthRepositorySample(api: api),
+        AuthRepository(api: api),
   )
 ];
 
 List<SingleChildWidget> uiConsumableProviders = [
   StreamProvider<UserSample>(
     create: (context) =>
-        Provider.of<AuthRepositorySample>(context, listen: false).user,
+        Provider.of<AuthRepository>(context, listen: false).user,
     initialData: UserSample.initial(),
   )
 ];
