@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MyTextField extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final bool showPassword ;
 
 
-  MyTextField({this.controller, this.showPassword = false,});
+  CustomTextField({this.controller, this.showPassword = false,});
 
   @override
   Widget build(BuildContext context) {

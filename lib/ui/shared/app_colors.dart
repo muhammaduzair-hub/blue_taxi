@@ -4,6 +4,8 @@ const Color backgroundColor = Color.fromARGB(255, 255, 255, 255);
 const Color commentColor = Color.fromARGB(255, 255, 246, 196); 
 
 
-const Color linkTextColor = Color(0xff1152FD);
-const Color greyTextColor = Color(0xff97ADB6);
+const Color secondaryColor = Color(0xff1152FD); //blue
+const Color onSecondaryColor = Color(0xffFFFFFF);//white
+const Color onPrimaryColor = Color(0xff3E4958);//black
+const Color onPrimaryColor2 = Color(0xff97ADB6);//grey
 

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 
-class SignUpViewModel extends BaseModel{
+class SignInSignUpViewModel extends BaseModel{
   final AuthRepository _repo ;
 
-  SignUpViewModel({
+  SignInSignUpViewModel({
     @required AuthRepository repo
   }): _repo = repo;
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MyElevatedButton extends StatelessWidget {
+class PrimaryButton extends StatelessWidget {
   final Text text;
   final VoidCallback ontap;
 
-   MyElevatedButton({Key key, this.text,  this.ontap}) : super(key: key);
+   PrimaryButton({Key key, this.text,  this.ontap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
