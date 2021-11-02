@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Contains useful consts to reduce boilerplate and duplicate code
 class UIHelper {
+  //Padding of full pages
+  static const EdgeInsets signInSignUpPagePadding =  EdgeInsets.only(right:36, left: 36, bottom: 20 );
+
   // Vertical spacing constants. Adjust to your liking.
   static const double _VerticalSpaceSmall = 10.0;
   static const double _VerticalSpaceMedium = 20.0;

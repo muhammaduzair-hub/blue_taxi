@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final bool showPassword ;
 
-  MyTextField({this.controller, this.showPassword = false});
+
+  MyTextField({this.controller, this.showPassword = false,});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 44,
       child: TextField(
-        obscureText: showPassword?true:false,
+        obscureText: false,//showPassword?true:false,
           decoration: InputDecoration(
+            focusedBorder:  OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(color: Color(0xffD5DDE0)),
+            ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide(color: Color(0xffD5DDE0)),
