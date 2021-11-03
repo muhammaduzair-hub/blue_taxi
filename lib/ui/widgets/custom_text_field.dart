@@ -13,7 +13,7 @@ class CustomTextField extends StatelessWidget {
     return Container(
       height: 44,
       child: TextField(
-        obscureText: false,//showPassword?true:false,
+        obscureText: showPassword?true:false,
           decoration: InputDecoration(
             focusedBorder:  OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),

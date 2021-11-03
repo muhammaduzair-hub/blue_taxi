@@ -15,10 +15,9 @@ class MyApp extends StatelessWidget {
       providers: providers,
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: SignInSignUpView(),
+        initialRoute: RoutePaths.DemoPage,
+        theme: ThemeData(primaryColor: Colors.white),
+        onGenerateRoute: AppRouter.generateRoute,
       ),
     );
   }

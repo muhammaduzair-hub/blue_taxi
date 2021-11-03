@@ -1,4 +1,6 @@
 
+import 'package:bluetaxiapp/ui/views/demoView.dart';
+import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,13 +15,20 @@ class AppRouter {
     switch (settings.name) {
       case RoutePaths.Home:
         return MaterialPageRoute(builder: (_) => HomeViewSample());
-      case RoutePaths.Login:
-        return MaterialPageRoute(builder: (_) => LoginViewSample());
-      case RoutePaths.Signin:
+        break;
+      case RoutePaths.LoginSignup:
         return MaterialPageRoute(builder: (_) => SignInSignUpView());
+        break;
       case RoutePaths.Post:
         var post = settings.arguments as PostSample;
         return MaterialPageRoute(builder: (_) => PostViewSample(post: post));
+        break;
+      case RoutePaths.DemoPage:
+        return MaterialPageRoute(builder: (_) => DemoView());
+        break;
+      case RoutePaths.MyProfile:
+        return MaterialPageRoute(builder: (_) => MyProfileView());
+        break;
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

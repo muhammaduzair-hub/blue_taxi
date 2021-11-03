@@ -8,3 +8,6 @@ const LabelPassword = "PASSWORD";
 const LabelAlreadyHaveAccount = "Already have an account?";
 const LabelDontHaveAccount = "Don't have an account?";
 const LabelOrSignInWith = "OR SIGN IN WITH";
+const LabelNotiication = "Notificatoin";
+const LabelDeleteAccount = "Delete Account";
+const LabelForRecievingDriverMessage = "For receiving driver message";
