@@ -1,0 +1,236 @@
+import 'dart:async';
+
+import 'package:bluetaxiapp/constants/strings.dart';
+import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/text_styles.dart';
+import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class VerifyCodeView extends StatefulWidget {
+  VerifyCodeView({Key key}) : super(key: key);
+
+  @override
+  State<VerifyCodeView> createState() => _VerifyCodeViewState();
+}
+
+class _VerifyCodeViewState extends State<VerifyCodeView> {
+  int _start = 30;
+  Timer _timer;
+
+
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+  changeData() {
+    setState(() {
+      resend_code =  "$resend_code"":""$_start";
+      startTimer();
+    });
+    }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: onSecondaryColor,
+        elevation: 0.0,
+        centerTitle: true,
+        title: Text(
+          VerifyCode,
+          style: boldHeading1.copyWith(color: onPrimaryColor),
+        ),
+        leading: CircleAvatar(
+          radius: 20.0,
+          backgroundColor: Colors.transparent,
+          child: RawMaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            elevation: 4.0,
+            fillColor: Colors.white,
+            child: Icon(
+              Icons.arrow_back_ios_outlined,
+              color: onPrimaryColor,
+              size: 17.0,
+            ),
+            padding: EdgeInsets.all(15.0),
+            shape: CircleBorder(),
+          ),
+        ),
+      ),
+      backgroundColor: onSecondaryColor,
+      body: Column(children: <Widget>[
+        UIHelper.verticalSpaceXLarge,
+        Text(
+          verifycodeString1,
+          style: heading2.copyWith(
+              fontWeight: FontWeight.w400, color: onPrimaryColor2),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              //Change no.
+              "+33 234 556 7888",
+              style: heading2.copyWith(
+                  fontWeight: FontWeight.w400, color: onPrimaryColor2),
+            ),
+            Text(
+              verifycodeString2,
+              style: heading2.copyWith(
+                  fontWeight: FontWeight.w400, color: onPrimaryColor2),
+            ),
+          ],
+        ),
+        UIHelper.verticalSpaceLarge,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 40.0,
+              width: 30.0,
+              color: onSecondaryColor,
+              child: TextFormField(
+                textInputAction: TextInputAction.next,
+                onChanged: (_) => FocusScope.of(context).nextFocus(),
+                style: numberTextStyle.copyWith(color: secondaryColor),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                ],
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            UIHelper.horizontalSpaceSmall,
+            Container(
+              height: 40.0,
+              width: 30.0,
+              color: onSecondaryColor,
+              child: TextFormField(
+                textInputAction: TextInputAction.next,
+                onChanged: (_) => FocusScope.of(context).nextFocus(),
+                style: numberTextStyle.copyWith(color: secondaryColor),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                ],
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            UIHelper.horizontalSpaceSmall,
+            Container(
+              height: 40.0,
+              width: 30.0,
+              color: onSecondaryColor,
+              child: TextFormField(
+                textInputAction: TextInputAction.next,
+                onChanged: (_) => FocusScope.of(context).nextFocus(),
+                style: numberTextStyle.copyWith(color: secondaryColor),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                ],
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            UIHelper.horizontalSpaceSmall,
+            Container(
+              height: 40.0,
+              width: 30.0,
+              color: onSecondaryColor,
+              child: TextFormField(
+                textInputAction: TextInputAction.done,
+                onChanged: (_) => FocusScope.of(context).unfocus(),
+                style: numberTextStyle.copyWith(color: secondaryColor),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(1),
+                ],
+                decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryColor, width: 1.0),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+          ],
+        ),
+        UIHelper.verticalSpaceMedium,
+        InkWell(
+          child: Text(
+            resend_code,
+            style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontWeight: FontWeight.w400,
+                fontSize: 12.0,
+                color: onPrimaryColor2),
+          ),
+          onTap: () {
+            changeData();
+          },
+        ),
+        UIHelper.verticalSpaceXLarge,
+        Container(
+          padding: EdgeInsets.all(20.0),
+          height: 60.0,
+          width: double.infinity,
+          color: secondaryColor,
+          child: Text(
+            verify_press_call,
+            textAlign: TextAlign.center,
+            style: buttonTextStyle.copyWith(fontWeight: FontWeight.w800, color: onSecondaryColor),
+          ),
+        )
+      ]),
+    );
+  }
+}
