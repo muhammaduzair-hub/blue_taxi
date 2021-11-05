@@ -1,8 +1,10 @@
+import 'package:bluetaxiapp/constants/app_contstants.dart';
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
+import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/viewmodels/views/signin_signup_view_model.dart';
@@ -155,9 +157,17 @@ class SignInSignUpView extends StatelessWidget {
                        child: PrimaryButton(
                          text: Text(LabelSignIn,style: buttonTextStyle,),
                          ontap:(){
-                           bool passAns=model.validatePassword(passwordController.text);
-                           bool mobilAns=model.validateMobileNumber(numberController.text) ;
-                           print("mobile:$mobilAns\npassword:$passAns");
+
+                           //Commented Validators For Testing Purpose
+                           // bool passAns=model.validatePassword(passwordController.text);
+                           // bool mobilAns=model.validateMobileNumber(numberController.text) ;
+                           // print("mobile:$mobilAns\npassword:$passAns");
+
+                           //Sending to MenuPage for Testing Purposes
+                           Navigator.push(context, new MaterialPageRoute(
+                               builder: (context) => new UserMenuView())
+                           );
+
                          } ,
                        ),
                      ),

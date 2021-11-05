@@ -8,5 +8,6 @@ class RoutePaths {
   static const String Post = 'post';
   static const String Verify = 'verify';
   static const String Signin = 'signin';
+  static const String UserMenu = 'usermenu';
 
 }
