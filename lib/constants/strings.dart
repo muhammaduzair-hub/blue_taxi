@@ -32,3 +32,7 @@ const String terms_code4="THESE TERMS AND CONDITIONS (“Conditions”) DEFINE T
 const LabelNotiication = "Notificatoin";
 const LabelDeleteAccount = "Delete Account";
 const LabelForRecievingDriverMessage = "For receiving driver message";
+const LabelDriverDetail = 'Driver Detail';
+const LabelMemberSince = 'Member Since';
+const LabelCarType = 'Car Type';
+const LabelPlateNumber = 'PlateNumber';
