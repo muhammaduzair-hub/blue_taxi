@@ -1,4 +1,3 @@
-import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -53,7 +53,7 @@ class SignInSignUpView extends StatelessWidget {
                height: size.height-120,
                width: double.infinity,
                child: Padding(
-                 padding: UIHelper.signInSignUpPagePadding,
+                 padding: UIHelper.pagePaddingMedium,
                  child: Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
@@ -135,7 +135,7 @@ class SignInSignUpView extends StatelessWidget {
                height: size.height-120,
                width: double.infinity,
                child: Padding(
-                 padding: UIHelper.signInSignUpPagePadding,
+                 padding: UIHelper.pagePaddingMedium,
                  child: Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
@@ -148,7 +148,7 @@ class SignInSignUpView extends StatelessWidget {
                      UIHelper.verticalSpaceMedium,
                      Text(LabelPassword,style: boldHeading3),
                      UIHelper.verticalSpaceSmall,
-                     CustomTextField(controller: passwordController),
+                     CustomTextField(controller: passwordController,showPassword: true,),
                      //
                      UIHelper.verticalSpaceLarge,
                      Container(

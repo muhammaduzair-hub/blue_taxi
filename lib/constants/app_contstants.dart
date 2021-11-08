@@ -10,4 +10,7 @@ class RoutePaths {
   static const String Signin = 'signin';
   static const String UserMenu = 'usermenu';
 
+  static const String DemoPage = 'demo';
+  static const String LoginSignup = 'loginSignup';
+  static const String MyProfile = 'myProfile';
 }
