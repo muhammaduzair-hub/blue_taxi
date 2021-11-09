@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:bluetaxiapp/data/model/post_sample.dart';
 
 class PostListItemSample extends StatelessWidget {
-  final PostSample post;
-  final Function onTap;
-  const PostListItemSample({this.post, this.onTap});
+  final PostSample? post;
+  final VoidCallback onTap;
+  const PostListItemSample({this.post, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class PostListItemSample extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(post.title, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.0),),
-            Text(post.body, maxLines: 2, overflow: TextOverflow.ellipsis)
+            Text(post!.title, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.0),),
+            Text(post!.body, maxLines: 2, overflow: TextOverflow.ellipsis)
           ],
         ),
       ),

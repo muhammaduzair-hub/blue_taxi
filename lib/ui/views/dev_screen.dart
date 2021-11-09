@@ -9,7 +9,7 @@ import 'package:bluetaxiapp/ui/views/verify_code.dart';
 import 'package:flutter/material.dart';
 
 class DevScreenView extends StatelessWidget {
-  DevScreenView({Key key}) : super(key: key);
+  DevScreenView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class DevScreenView extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new CancellationReasonView())
+                  builder: (context) => new CancellationReasonView(key: null,))
               );
             },
             child: const Text('CancellationReason'),

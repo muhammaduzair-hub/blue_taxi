@@ -4,9 +4,9 @@ import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 
 class LoginHeaderSample extends StatelessWidget {
   final TextEditingController controller;
-  final String validationMessage;
+  final String? validationMessage;
 
-  LoginHeaderSample({@required this.controller, this.validationMessage});
+  LoginHeaderSample({required this.controller, this.validationMessage});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class LoginHeaderSample extends StatelessWidget {
       Text('Enter a number between 1 - 10', style: subHeaderStyle),
       LoginTextField(controller),
       this.validationMessage != null
-          ? Text(validationMessage, style: TextStyle(color: Colors.red))
+          ? Text(validationMessage!, style: TextStyle(color: Colors.red))
           : Container()
     ]);
   }

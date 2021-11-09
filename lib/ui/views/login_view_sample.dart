@@ -25,7 +25,6 @@ class _LoginViewSampleState extends State<LoginViewSample> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              child,
               model.busy
                   ? CircularProgressIndicator()
                   : FlatButton(
@@ -40,7 +39,7 @@ class _LoginViewSampleState extends State<LoginViewSample> {
                           Navigator.pushNamed(context, RoutePaths.Home);
                         }
                       },
-                    )
+                    ),
             ],
           )),
     );

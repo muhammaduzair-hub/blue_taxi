@@ -7,10 +7,10 @@ class CommentsModelSample extends BaseModel {
   ApiSample _api;
 
   CommentsModelSample({
-    @required ApiSample api,
+    required api,
   }) : _api = api;
 
-  List<CommentSample> comments;
+  late List<CommentSample> comments;
 
   Future fetchComments(int postId) async {
     setBusy(true);

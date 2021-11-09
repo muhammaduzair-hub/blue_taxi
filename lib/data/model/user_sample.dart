@@ -1,8 +1,8 @@
 class UserSample {
-  int id;
-  String name;
-  String username;
-  UserSample({this.id, this.name, this.username});
+  late int id;
+  String? name;
+  String? username;
+  UserSample({required this.id, this.name, this.username});
 
   UserSample.initial()
       : id = 0,

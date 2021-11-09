@@ -13,7 +13,7 @@ class ApiSample {
 
   Future<UserSample> getUserProfile(int userId) async {
     // Get user profile for id
-    var response = await client.get('$endpoint/users/$userId');
+    var response = await client.get(Uri.parse(Uri.encodeFull("$endpoint/users/$userId")));
 
     // Convert and return
     return UserSample.fromJson(json.decode(response.body));
@@ -22,7 +22,7 @@ class ApiSample {
   Future<List<PostSample>> getPostsForUser(int userId) async {
     var posts = <PostSample>[];
     // Get user posts for id
-    var response = await client.get('$endpoint/posts?userId=$userId');
+    var response = await client.get(Uri.parse(Uri.encodeFull("$endpoint/posts?userId=$userId")));
 
     // parse into List
     var parsed = json.decode(response.body) as List<dynamic>;
@@ -39,7 +39,7 @@ class ApiSample {
     var comments = <CommentSample>[];
 
     // Get comments for post
-    var response = await client.get('$endpoint/comments?postId=$postId');
+    var response = await client.get(Uri.parse(Uri.encodeFull("$endpoint/comments?postId=$postId")));
 
     // Parse into List
     var parsed = json.decode(response.body) as List<dynamic>;
