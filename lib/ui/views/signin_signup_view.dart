@@ -56,7 +56,7 @@ class SignInSignUpView extends StatelessWidget {
                  height: size.height-120,
                  width: double.infinity,
                  child: Padding(
-                   padding: UIHelper.signInSignUpPagePadding,
+                   padding: UIHelper.pagePaddingSmall,
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
@@ -154,7 +154,7 @@ class SignInSignUpView extends StatelessWidget {
                  height: size.height-120,
                  width: double.infinity,
                  child: Padding(
-                   padding: UIHelper.signInSignUpPagePadding,
+                   padding: UIHelper.pagePaddingSmall,
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [

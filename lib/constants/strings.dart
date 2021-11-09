@@ -40,3 +40,6 @@ const LabelSelectAdress = "Select address";
 const LabelRideOption= "Ride options";
 const LabelPaymentOption = "Payment option";
 const LabelEstimateTripTime = 'Estimate trip time';
+const LabelBookRide = "Book ride";
+const LabelSelectPayment = "Select Payment";
+const LabelCash = "Cash";

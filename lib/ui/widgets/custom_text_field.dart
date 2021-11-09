@@ -45,7 +45,7 @@ class CustomTextFieldWithLading extends StatelessWidget {
   final bool showPassword ;
   final IconData preficIcon;
 
-  CustomTextFieldWithLading({this.controller, this.showPassword = false, this.preficIcon,});
+  CustomTextFieldWithLading({required this.controller, this.showPassword = false, required this.preficIcon,});
 
   @override
   Widget build(BuildContext context) {

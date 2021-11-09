@@ -5,7 +5,7 @@ class VehicleModel {
   final String vRate;
   final String vArrivingTime;
 
-  VehicleModel({this.vName, this.vid, this.vPic, this.vRate, this.vArrivingTime});
+  VehicleModel({required this.vName, required this.vid, required this.vPic, required this.vRate, required this.vArrivingTime});
 
   // VehicleModel.fromJson(Map<String, dynamic> json) {
   //   postId = json['postId'];

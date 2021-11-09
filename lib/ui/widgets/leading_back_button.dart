@@ -2,7 +2,7 @@ import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LeadindBackButton extends StatelessWidget {
-   LeadindBackButton({Key key,@required this.icon,@required this.ontap}) : super(key: key);
+   LeadindBackButton({Key? key,required this.icon,required this.ontap}) : super(key: key);
    final AssetImage icon;
    final VoidCallback ontap;
 

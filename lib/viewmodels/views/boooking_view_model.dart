@@ -8,17 +8,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
 
 class BookingViewModel extends BaseModel {
-  AuthRepositorySample _authRepository;
-  BuildContext _context;
+  late AuthRepositorySample _authRepository;
+  late BuildContext _context;
 
   //variables who are going to inttreact with ui
-  List<Marker> markers = [];
-  GoogleMapController googleMapController;
-  Uint8List icPick;
-  Uint8List carMarkerrr;
-  Uint8List currentLocationMarker;
+  late List<Marker> markers = [];
+  late GoogleMapController googleMapController;
+  late Uint8List icPick;
+  late Uint8List carMarkerrr;
+  late Uint8List currentLocationMarker;
 
-  BookingViewModel({@required AuthRepositorySample authRepository,@required BuildContext context}){
+  BookingViewModel({required AuthRepositorySample authRepository,required BuildContext context}){
     _authRepository = authRepository;
     _context = context;
     //loading Custom marker of car
@@ -45,10 +45,10 @@ class BookingViewModel extends BaseModel {
     ByteData data = await rootBundle.load(path);
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
   }
 
-  void addMarker({LatLng latLng, Uint8List marker}){
+  void addMarker({required LatLng latLng, required Uint8List marker}){
     setBusy(true);
     markers.add(
       Marker(

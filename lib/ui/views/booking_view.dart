@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 
 class BookingView extends StatelessWidget {
-  const BookingView({Key key}) : super(key: key);
+  const BookingView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +32,13 @@ class BookingView extends StatelessWidget {
                   print("${latlng.latitude}     ${latlng.longitude}");
                 },
               ),
-              LeadindBackButton(icon: AssetImage('asset/icons/drawer btn.png'), ontap: null),
+              LeadindBackButton(icon: AssetImage('asset/icons/drawer btn.png'), ontap: (){}),
               Align(
                 alignment: Alignment.topRight,
                   child: Column(
                     children: [
                       SizedBox(height:  380,),
-                      LeadindBackButton(icon: AssetImage('asset/icons/btn_loc.png'), ontap: null)
+                      LeadindBackButton(icon: AssetImage('asset/icons/btn_loc.png'), ontap: (){})
                     ],
                   )
               ),

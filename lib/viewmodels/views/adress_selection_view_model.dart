@@ -5,28 +5,29 @@ import 'package:bluetaxiapp/data/repository/auth_repository_sample.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 
 class AdressSelectionViewModel extends BaseModel {
-  AuthRepositorySample _authRepository;
+   final AuthRepositorySample authRepository;
 
   //varibles who are going to communicate with UI
 
 
   TextEditingController toController = TextEditingController();
   TextEditingController fromController = TextEditingController();
-  String state;
-  String titleText;
+  late String state;
+  late String titleText;
 
   //for disable button of ride option state bottom sheet
   int index=0;
 
-  AdressSelectionViewModel({@required AuthRepositorySample authRepository,})
+  AdressSelectionViewModel({required this.authRepository})
   {
-    _authRepository = authRepository;
+
     state = LabelSelectAdress;
   }
 
   switchState(String newstate){
     setBusy(true);
     state =newstate;
+    print(state);
     setBusy(false);
   }
 

@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class MyProfileView extends StatelessWidget {
-  const MyProfileView({Key key}) : super(key: key);
+  const MyProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class MyProfileView extends StatelessWidget {
 
   }
 
-  Widget listTile({IconData icon, String title}){
+  Widget listTile({required IconData icon, required String title}){
     return ListTile(
       leading: CircleAvatar(
         child: Icon(icon,color: onSecondaryColor,size: 30,),

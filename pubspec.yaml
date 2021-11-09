@@ -14,7 +14,7 @@ description: Blue Taxi user & driver app project.
 version: 1.0.0+1
 
 environment:
-  sdk: 2.14.3
+  sdk: 2.14.4
 
 dependencies:
   cloud_firestore: ^3.0.0
@@ -29,7 +29,7 @@ dependencies:
   provider: ^6.0.1
   email_validator: ^2.0.1
   regexpattern: ^2.0.1
-  font_awesome_flutter: 8.12.0
+  font_awesome_flutter: ^9.2.0
   google_maps_flutter: ^2.1.0
 
 dev_dependencies:

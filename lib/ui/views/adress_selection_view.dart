@@ -5,6 +5,7 @@ import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
+import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/adress_selection_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AdressSelectionView extends StatelessWidget {
-  const AdressSelectionView({Key key}) : super(key: key);
+  const AdressSelectionView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class AdressSelectionView extends StatelessWidget {
                   },
                 ),
 
-
+                //Navigator Button
                 if(model.state==LabelSelectAdress)
                   LeadindBackButton(
                     ontap: (){Navigator.pop(context);},
@@ -43,7 +44,12 @@ class AdressSelectionView extends StatelessWidget {
                     LeadindBackButton(
                         icon: AssetImage('asset/icons/nav btn.png'),
                         ontap: (){model.switchState(LabelSelectAdress);}
-                        ),
+                        )
+                else if(model.state == LabelPaymentOption)
+                  LeadindBackButton(
+                      icon: AssetImage('asset/icons/nav btn.png'),
+                      ontap: (){model.switchState(LabelRideOption);}
+                  ),
 
 
                 Padding(
@@ -53,8 +59,11 @@ class AdressSelectionView extends StatelessWidget {
                     child: Text(model.state,style: boldHeading1.copyWith(color: onPrimaryColor),),
                   ),
                 ),
+
+                //bottom sheets
                 if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)
-                else if(model.state==LabelRideOption) rideOptionBottomSheet(model),
+                else if(model.state==LabelRideOption) rideOptionBottomSheet(model)
+                else if(model.state == LabelPaymentOption)  paymentOptionBottomSheet(model),
               ],
             )
           ),
@@ -100,7 +109,7 @@ class AdressSelectionView extends StatelessWidget {
                             child: TextField(
                               textInputAction: TextInputAction.next,
                               autofocus: true,
-                              decoration: InputDecoration.collapsed(),
+                              decoration: InputDecoration.collapsed(hintText: ''),
                               controller: model.toController,
                             ),
                           ),
@@ -110,7 +119,7 @@ class AdressSelectionView extends StatelessWidget {
                             height: 30,width: 250,
                             child: TextField(
                               textInputAction: TextInputAction.done,
-                              decoration: InputDecoration.collapsed(),
+                              decoration: InputDecoration.collapsed(hintText: ''),
                               controller: model.fromController,
                               onSubmitted: (v){
                                 model.switchState(LabelRideOption);
@@ -147,19 +156,19 @@ class AdressSelectionView extends StatelessWidget {
 
   Widget rideOptionBottomSheet(AdressSelectionViewModel model) {
     return DraggableScrollableSheet (
-
-      initialChildSize: 0.5,
-      minChildSize: 0.5,
-      maxChildSize: 0.5,
+      initialChildSize: 0.7,
+      // minChildSize: 0.7,
+      // maxChildSize: 0.7,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
+          padding: UIHelper.pagePaddingSmall.copyWith(top: 0,bottom: 0),
           color: onSecondaryColor,
           child: ListView(
             children: [
               //list view
               Container(
-                height: 200,
+                height: 170,
                 padding: UIHelper.pagePaddingSmall.copyWith(bottom: 10),
                 child: ListView.separated(
                     shrinkWrap: true,
@@ -210,18 +219,92 @@ class AdressSelectionView extends StatelessWidget {
               ),
               //Payment List tile
               ListTile(
+                onTap:(){ model.switchState(LabelPaymentOption);},
                 title: Text(LabelEstimateTripTime,style:heading3.copyWith(color: onPrimaryColor2) ,),
                 subtitle: Text("24 min",style: heading3.copyWith(color: secondaryColor),),
-                // trailing: Wrap(
-                //   spacing: 3,
-                //   children: [
-                //     Image.asset("asset/icons/ic_mastercard.png")
-                //   ],
-                // ),
+                trailing: Wrap(
+                  spacing: 3,
+                  children: [
+                    Image.asset("asset/icons/ic_mastercard.png"),
+                    Text("**** 8295",style: heading3,),
+                  ],
+                ),
+              ),
+              Container(
+                margin: UIHelper.pagePaddingSmall.copyWith(bottom: 0,top: 0),
+                width: double.infinity,
+                child: PrimaryButton(
+                  ontap: (){},
+                  text: Text(LabelBookRide, ),
+                ),
               )
             ],
           )
         ),
+      ),
+    );
+  }
+
+  Widget paymentOptionBottomSheet(AdressSelectionViewModel model) {
+    return DraggableScrollableSheet (
+      initialChildSize: 0.4,
+      minChildSize: 0.4,
+      maxChildSize: 0.4,
+      builder: (context, scrollController) => ClipRRect(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+        child: Container(
+            color: onSecondaryColor,
+            padding: UIHelper.pagePaddingSmall.copyWith(top: 0),
+            child: ListView(
+              controller: scrollController,
+              children: [
+                UIHelper.verticalSpaceMedium,
+                Text(LabelSelectPayment, style: boldHeading2,),
+                UIHelper.verticalSpaceMedium,
+                paymentOptionListTile(
+                    leadingImage: AssetImage("asset/icons/ic_mastercard.png"),
+                    text: "**** 8965",
+                    trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
+                ),
+                UIHelper.verticalSpaceSmall,
+                paymentOptionListTile(
+                    leadingImage: AssetImage("asset/icons/ic_visa.png"),
+                    text: "**** 8965",
+                    trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
+                ),
+                UIHelper.verticalSpaceSmall,
+                paymentOptionListTile(
+                    leadingImage: AssetImage("asset/icons/ic_cash.png"),
+                    text: LabelCash,
+                    trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
+                ),
+
+              ],
+            ),
+        ),
+      ),
+    );
+  }
+
+  Widget paymentOptionListTile({required AssetImage leadingImage, required String text, required AssetImage trailingImage })
+  {
+    return  Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: onPrimaryColor.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(3,2)
+            )
+          ]
+      ),
+      child: ListTile(
+        leading: Image(image: leadingImage),
+        title: Text(text),
+        trailing: Image(image: trailingImage,),
       ),
     );
   }
@@ -236,4 +319,6 @@ class AdressSelectionView extends StatelessWidget {
       subtitle: Text("New york",style: heading3,),
     );
   }
+
+
 }
