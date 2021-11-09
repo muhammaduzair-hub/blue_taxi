@@ -36,3 +36,7 @@ const LabelDriverDetail = 'Driver Detail';
 const LabelMemberSince = 'Member Since';
 const LabelCarType = 'Car Type';
 const LabelPlateNumber = 'PlateNumber';
+const LabelSelectAdress = "Select address";
+const LabelRideOption= "Ride options";
+const LabelPaymentOption = "Payment option";
+const LabelEstimateTripTime = 'Estimate trip time';

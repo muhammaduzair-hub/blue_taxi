@@ -9,7 +9,7 @@ const Color secondaryColor2 = Color(0xffD5DDE0);// light grey
 const Color onSecondaryColor = Color(0xffFFFFFF);//white
 const Color onPrimaryColor = Color(0xff3E4958);//black
 const Color onPrimaryColor2 = Color(0xff97ADB6);//grey
-const Color userNameText = Color(0xff4B545A);
+const Color userNameText = Color(0xff4B545A);//black with opacity
  Color shadow=Color(0xff000000).withOpacity(0.2);
 
 
