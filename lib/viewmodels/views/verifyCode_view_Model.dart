@@ -1,11 +1,6 @@
 import 'dart:async';
-
-import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
-import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fAuth;
 
 
 

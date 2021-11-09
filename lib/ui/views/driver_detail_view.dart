@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 
 class DriverDetailView extends StatelessWidget {
-  const DriverDetailView({Key key}) : super(key: key);
+  const DriverDetailView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

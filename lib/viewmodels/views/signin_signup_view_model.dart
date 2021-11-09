@@ -1,18 +1,19 @@
-import 'package:bluetaxiapp/data/remote/firebase_directory/firebase.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 
 class SignInSignUpViewModel extends BaseModel{
-  final AuthRepository _repo ;
-  final AuthService _auth = AuthService();
+  late final AuthRepository _repo ;
+  var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
+
 
   SignInSignUpViewModel({
     required AuthRepository repo
-  }): _repo = repo;
+  }){ _repo = repo;}
 
 
   Future<bool> login({required String name, String? email, required String pass}) async {
@@ -81,25 +82,41 @@ class SignInSignUpViewModel extends BaseModel{
   }
 
 
-  Future<void> signup(TextEditingController nameController, TextEditingController emailController,TextEditingController phoneNoController, TextEditingController passwordController) async {
+// Signup Without Frebase Auth
+  Future<void> signUp(TextEditingController nameController, TextEditingController emailController,TextEditingController phoneNoController, TextEditingController passwordController) async {
     setBusy(true);
-    dynamic result = await _auth.registerWithEmailAndPassword(nameController.text, emailController.text,phoneNoController.text, passwordController.text);
-       if(result == null) {
-         setBusy(false);
-         print("Not SignedUp");
-       }
-       return result;
-  }
-
-  Future<void> signin( TextEditingController phoneNoController, TextEditingController passwordController) async {
-    setBusy(true);
-    dynamic result = await _auth.signInWithEmailAndPassword(phoneNoController.text, passwordController.text);
+    dynamic result = await _repo.signUpWithEmailAndPassword(nameController.text, emailController.text,phoneNoController.text, passwordController.text);
     if(result == null) {
+      setBusy(false);
+      print("Not SignedUp");
+    }
+    return result;
+    }
+
+  // //Signup Using Firebase Auth
+  // Future<void> signup(TextEditingController nameController, TextEditingController emailController,TextEditingController phoneNoController, TextEditingController passwordController) async {
+  //   setBusy(true);
+  //   dynamic result = await _auth.registerWithEmailAndPassword(nameController.text, emailController.text,phoneNoController.text, passwordController.text);
+  //      if(result == null) {
+  //        setBusy(false);
+  //        print("Not SignedUp");
+  //      }
+  //      return result;
+  // }
+
+
+
+//Signin Without Firebase Auth
+  Future signin( TextEditingController phoneNoController, TextEditingController passwordController) async {
+    setBusy(true);
+    bool result = await _repo.signInWithEmailAndPassword(phoneNoController.text, passwordController.text);
+    if(result.toString() == false) {
       setBusy(false);
       print("Not SignedIn");
     }
+    print("Result BY Model Class"+result.toString());
     return result;
-  }
+  }//End Signin Function
 
 
 }

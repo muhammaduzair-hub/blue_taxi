@@ -6,7 +6,7 @@ class DriverDetailViewModel extends BaseModel {
   AuthRepositorySample _authRepository;
 
   DriverDetailViewModel({
-    @required AuthRepositorySample authRepository,
+    required AuthRepositorySample authRepository,
   }) : _authRepository = authRepository;
 
 

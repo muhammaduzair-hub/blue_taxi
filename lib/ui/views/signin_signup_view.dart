@@ -10,6 +10,7 @@ import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/viewmodels/views/signin_signup_view_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +57,8 @@ class SignInSignUpView extends StatelessWidget {
                  height: size.height-120,
                  width: double.infinity,
                  child: Padding(
-                   padding: UIHelper.signInSignUpPagePadding,
+                   //padding: UIHelper.signInSignUpPagePadding,
+                   padding: EdgeInsets.only(top: 20.0),
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
@@ -94,13 +96,8 @@ class SignInSignUpView extends StatelessWidget {
                               bool nameAns = model.validateName(nameController.text);
                                if(passAns==true && emailAns==true && mobilAns==true && nameAns==true){
                                  //Send Data to a method inside Model Class to access Database
-                                 print("Data Is true");
-                                 dynamic result= model.signup(nameController, emailController,numberController, passwordController);
-                                 print(result);
-                                 if(result==null){
-                                   print("cannot proceed");
-                                 }
-                                 else
+                                 await model.signUp(nameController, emailController,numberController, passwordController);
+                                 //Route to VerifyCode View
                                    Navigator.push(context, new MaterialPageRoute(
                                        builder: (context) => new VerifyCodeView())
                                    );
@@ -148,13 +145,16 @@ class SignInSignUpView extends StatelessWidget {
          title: Text(LabelSignIn,style: boldHeading1.copyWith(color: onPrimaryColor)),
          centerTitle: true,
        ),
-         body: Form(
-           child: SingleChildScrollView(
+         body: StreamBuilder(
+           stream:  model.firestoreDb,
+           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+           return SingleChildScrollView(
                child: SizedBox(
                  height: size.height-120,
                  width: double.infinity,
                  child: Padding(
-                   padding: UIHelper.signInSignUpPagePadding,
+                   //padding: UIHelper.verticalSpaceLarge,
+                   padding: EdgeInsets.only(top: 20.0),
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
@@ -167,7 +167,9 @@ class SignInSignUpView extends StatelessWidget {
                        UIHelper.verticalSpaceMedium,
                        Text(LabelPassword,style: boldHeading3),
                        UIHelper.verticalSpaceSmall,
-                       CustomTextField(controller: passwordController),
+                       CustomTextField(controller: passwordController,
+                         showPassword: true,
+                       ),
                        //
                        UIHelper.verticalSpaceLarge,
                        Container(
@@ -175,22 +177,25 @@ class SignInSignUpView extends StatelessWidget {
                          height: 50,
                          child: PrimaryButton(
                            text: Text(LabelSignIn,style: buttonTextStyle,),
-                           ontap:(){
-
+                           ontap:() async {
                              bool passAns=model.validatePassword(passwordController.text);
                              bool mobilAns=model.validateMobileNumber(numberController.text);
                              if(passAns==true && mobilAns==true){
                                //Send Data to a method inside Model Class to access Database
-                               print("Data Is true");
-                               dynamic result= model.signin( numberController, passwordController);
-                               print(result);
-                               if(result==null){
+                               dynamic result= await model.signin( numberController, passwordController);
+                               if(result==false){
                                  print("cannot Signin with those credentials");
                                }
-                               else
+                               else if(result==true){
+                                 print("RESULT OF SIGNIN SIGNUP VIEW **** "+result.toString());
                                  Navigator.push(context, new MaterialPageRoute(
                                      builder: (context) => new VerifyCodeView())
                                  );
+                               }
+                               else{
+                                 print(result.toString());
+                               }
+                               print("Result at View Class"+result.toString());
                              }
                            } ,
                          ),
@@ -289,8 +294,8 @@ class SignInSignUpView extends StatelessWidget {
                    ),
                  ),
                )
-           ),
-         ),
+           );
+         }),
        ),
      );
    }

@@ -13,7 +13,7 @@ class MyProfileViewModel extends BaseModel{
   bool switchState=false;
 
   MyProfileViewModel({
-    @required AuthRepository repo
+    required AuthRepository repo
   }): _repo = repo;
 
   void changeSwitchState(){
