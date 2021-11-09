@@ -6,7 +6,7 @@ import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
 
 class UserMenuView extends StatelessWidget {
-  UserMenuView({Key key}) : super(key: key);
+  UserMenuView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class UserMenuView extends StatelessWidget {
                   Icons.keyboard_arrow_down_rounded,
                   color: Color(0xffD5DDE0),
                   size: 28.8,
-                ),
+                ), onPressed: () {  },
               ),
               UIHelper.verticalSpaceSmall,
               Container(

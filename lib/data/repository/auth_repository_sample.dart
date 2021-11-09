@@ -6,7 +6,7 @@ import 'package:bluetaxiapp/data/remote/api_sample.dart';
 class AuthRepositorySample {
   final ApiSample _api;
 
-  AuthRepositorySample({ApiSample api}) : _api = api;
+  AuthRepositorySample({required ApiSample api}) : _api = api;
 
   StreamController<UserSample> _userController = StreamController<UserSample>();
 

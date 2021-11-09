@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CancellationReasonView extends StatefulWidget {
-  CancellationReasonView({Key key}) : super(key: key);
+  CancellationReasonView({Key? key}) : super(key: key);
 
   @override
   State<CancellationReasonView> createState() => _CancellationReasonViewState();
 }
 
 class _CancellationReasonViewState extends State<CancellationReasonView> {
-  int _groupValue=-1;
+  int? _groupValue=-1;
 
   @override
   Widget build(BuildContext context) {
@@ -61,36 +61,15 @@ class _CancellationReasonViewState extends State<CancellationReasonView> {
           ),
         ),
             UIHelper.verticalSpaceLarge,
-            Column(
-              //Via List Model
-            children: <Widget>[
-              _myRadioButton(
-                title: cancel_r1,
-                value: 0,
-                onChanged: (newValue) => setState(() => _groupValue = newValue),
-              ),
-              _myRadioButton(
-                title: cancel_r2,
-                value: 1,
-                onChanged: (newValue) => setState(() => _groupValue = newValue),
-              ),
-              _myRadioButton(
-                title: cancel_r3,
-                value: 2,
-                onChanged: (newValue) => setState(() => _groupValue = newValue),
-              ),
-              _myRadioButton(
-                title: cancel_r4,
-                value: 3,
-                onChanged: (newValue) => setState(() => _groupValue = newValue),
-              ),
-              _myRadioButton(
-                title: cancel_r5,
-                value: 4,
-                onChanged: (newValue) => setState(() => _groupValue = newValue),
-              ),
-            ],
-          ),
+
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: 1,
+                itemBuilder: (BuildContext context, int index) {
+                  return _buildCheckListItems(index);
+                }),
+
             UIHelper.verticalSpaceLarge,
             Container(
               padding: EdgeInsets.symmetric(horizontal: 21.0,),
@@ -110,7 +89,7 @@ class _CancellationReasonViewState extends State<CancellationReasonView> {
     );
   }
 
-  Widget _myRadioButton({String title, int value, Function onChanged}) {
+  Widget _myRadioButton({required String title, required int value,Function(int?)? onChanged}) {
     return RadioListTile(
       value: value,
       groupValue: _groupValue,
@@ -118,4 +97,37 @@ class _CancellationReasonViewState extends State<CancellationReasonView> {
       title: Text(title),
     );
 }
+
+  Widget _buildCheckListItems(int index) {
+    return Column(
+      //Via List Model
+      children: <Widget>[
+        _myRadioButton(
+          title: cancel_r1,
+          value: 0,
+          onChanged: (newValue) => setState(() => _groupValue = newValue),
+        ),
+        _myRadioButton(
+          title: cancel_r2,
+          value: 1,
+          onChanged: (newValue) => setState(() => _groupValue = newValue),
+        ),
+        _myRadioButton(
+          title: cancel_r3,
+          value: 2,
+          onChanged: (newValue) => setState(() => _groupValue = newValue),
+        ),
+        _myRadioButton(
+          title: cancel_r4,
+          value: 3,
+          onChanged: (newValue) => setState(() => _groupValue = newValue),
+        ),
+        _myRadioButton(
+          title: cancel_r5,
+          value: 4,
+          onChanged: (newValue) => setState(() => _groupValue = newValue),
+        ),
+      ],
+    );
+  }
 }

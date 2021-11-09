@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 
 class SigninHeader extends StatelessWidget {
-  final TextEditingController controller;
-  final String validationMessage;
+  final TextEditingController? controller;
+  final String? validationMessage;
 
   SigninHeader({@required this.controller, this.validationMessage});
 

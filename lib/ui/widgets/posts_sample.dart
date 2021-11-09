@@ -7,7 +7,7 @@ import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/widgets/postlist_item_sample.dart';
 
 class PostsSample extends StatelessWidget {
-  const PostsSample({Key key}) : super(key: key);
+  const PostsSample({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

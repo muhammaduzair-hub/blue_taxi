@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TermsConditionView extends StatefulWidget {
-  TermsConditionView({Key key}) : super(key: key);
+  TermsConditionView({Key? key}) : super(key: key);
 
   @override
   State<TermsConditionView> createState() => _TermsConditionViewState();
@@ -67,23 +67,27 @@ class _TermsConditionViewState extends State<TermsConditionView> {
                 ),
               ),
               UIHelper.verticalSpaceLarge,
-              Text(
-                terms_code3 + ":",
-                textAlign: TextAlign.center,
-                style: heading2.copyWith(color: onPrimaryColor),
+              Padding(
+                padding: const EdgeInsets.only(left: 14.0),
+                child: Text(
+                  terms_code3 + ":",
+                  textAlign: TextAlign.center,
+                  style: heading2.copyWith(color: onPrimaryColor),
+                ),
               ),
               UIHelper.verticalSpaceMedium,
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  scrollDirection: Axis.vertical,
-                  child: Container(
-                    height: 440,
+              Flexible(
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  height: 400,
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
                     child: Text(
                       terms_code4,
                       textAlign: TextAlign.left,
                       style: heading2.copyWith(
-                          color: onPrimaryColor,
+                        color: onPrimaryColor,
                       ),
                     ),
                   ),

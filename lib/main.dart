@@ -4,7 +4,7 @@ import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
-import 'package:bluetaxiapp/ui/app_router.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'constants/app_contstants.dart';
 
@@ -20,11 +20,27 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: DevScreenView(),
-        //home: SignInSignUpView(),
-        // onGenerateRoute: AppRouter.generateRoute,
-        // initialRoute: RoutePaths.DemoPage,
+        home: FutureBuilder(
+          // Initialize FlutterFire
+          future: Firebase.initializeApp(),
+          builder: (context, snapshot) {
+            // Check for errors
+            if (snapshot.hasError) {
+              return Text("SomethingWentWrong");
+            }
 
+            // Once complete, show your application
+            if (snapshot.connectionState == ConnectionState.done) {
+              return DevScreenView();
+            }
+
+            // Otherwise, show something whilst waiting for initialization to complete
+            return CircularProgressIndicator();
+          },
+        ),
+
+        //DevScreenView(),
+        //home: SignInSignUpView(),
       ),
     );
   }

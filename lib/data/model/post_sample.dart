@@ -1,10 +1,10 @@
 class PostSample {
-  int userId;
-  int id;
-  String title;
-  String body;
+  int? userId;
+  late int id;
+  late String title;
+  late String body;
 
-  PostSample({this.userId, this.id, this.title, this.body});
+  PostSample({this.userId, required this.id, required this.title, required this.body});
 
   PostSample.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];

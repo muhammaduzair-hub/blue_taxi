@@ -8,10 +8,10 @@ class PostsModelSample extends BaseModel {
   ApiSample _api;
 
   PostsModelSample({
-    @required ApiSample api,
+    required ApiSample api,
   }) : _api = api;
 
-  List<PostSample> posts;
+  late List<PostSample> posts;
 
   Future getPosts(int userId) async {
     setBusy(true);

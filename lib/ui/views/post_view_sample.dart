@@ -9,7 +9,7 @@ import 'package:bluetaxiapp/ui/widgets/comments_sample.dart';
 
 class PostViewSample extends StatelessWidget {
   final PostSample post;
-  const PostViewSample({Key key, this.post}) : super(key: key);
+  const PostViewSample({Key? key, required this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class PostViewSample extends StatelessWidget {
             ),
             UIHelper.verticalSpaceMedium,
             Text(post.body),
-            CommentsSample(post.id)
+            CommentsSample(post.id),
           ],
         ),
       ),

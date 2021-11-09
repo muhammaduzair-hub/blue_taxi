@@ -1,3 +1,4 @@
+import 'package:bluetaxiapp/data/remote/firebase_directory/firebase.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,13 +8,14 @@ import 'package:email_validator/email_validator.dart';
 
 class SignInSignUpViewModel extends BaseModel{
   final AuthRepository _repo ;
+  final AuthService _auth = AuthService();
 
   SignInSignUpViewModel({
-    @required AuthRepository repo
+    required AuthRepository repo
   }): _repo = repo;
 
 
-  Future<bool> login({String name, String email, String pass}) async {
+  Future<bool> login({required String name, String? email, required String pass}) async {
     setBusy(true);
     await Future.delayed(Duration(seconds: 1));
     bool success = true;
@@ -77,5 +79,27 @@ class SignInSignUpViewModel extends BaseModel{
     setBusy(false);
     return ans;
   }
+
+
+  Future<void> signup(TextEditingController nameController, TextEditingController emailController,TextEditingController phoneNoController, TextEditingController passwordController) async {
+    setBusy(true);
+    dynamic result = await _auth.registerWithEmailAndPassword(nameController.text, emailController.text,phoneNoController.text, passwordController.text);
+       if(result == null) {
+         setBusy(false);
+         print("Not SignedUp");
+       }
+       return result;
+  }
+
+  Future<void> signin( TextEditingController phoneNoController, TextEditingController passwordController) async {
+    setBusy(true);
+    dynamic result = await _auth.signInWithEmailAndPassword(phoneNoController.text, passwordController.text);
+    if(result == null) {
+      setBusy(false);
+      print("Not SignedIn");
+    }
+    return result;
+  }
+
 
 }
