@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:bluetaxiapp/constants/strings.dart';
-import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/model/user_model.dart';
-import 'package:bluetaxiapp/data/remote/firebase_directory/firebase.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
@@ -15,7 +11,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class VerifyCodeView extends StatelessWidget {
-  final AuthService _auth = AuthService();
+
+  TextEditingController oneController = TextEditingController();
+  TextEditingController twoController = TextEditingController();
+  TextEditingController threeController = TextEditingController();
+  TextEditingController fourController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class VerifyCodeView extends StatelessWidget {
               ),
               backgroundColor: onSecondaryColor,
               body: Column(children: <Widget>[
-                UIHelper.verticalSpaceXLarge,
+                UIHelper.verticalSpaceLarge,
                 Text(
                   verifycodeString1,
                   style: heading2.copyWith(
@@ -91,6 +91,7 @@ class VerifyCodeView extends StatelessWidget {
                       width: 30.0,
                       color: onSecondaryColor,
                       child: TextFormField(
+                        controller: oneController,
                         textInputAction: TextInputAction.next,
                         onChanged: (_) => FocusScope.of(context).nextFocus(),
                         style: numberTextStyle.copyWith(color: secondaryColor),
@@ -116,6 +117,7 @@ class VerifyCodeView extends StatelessWidget {
                       width: 30.0,
                       color: onSecondaryColor,
                       child: TextFormField(
+                        controller: twoController,
                         textInputAction: TextInputAction.next,
                         onChanged: (_) => FocusScope.of(context).nextFocus(),
                         style: numberTextStyle.copyWith(color: secondaryColor),
@@ -141,6 +143,7 @@ class VerifyCodeView extends StatelessWidget {
                       width: 30.0,
                       color: onSecondaryColor,
                       child: TextFormField(
+                        controller: threeController,
                         textInputAction: TextInputAction.next,
                         onChanged: (_) => FocusScope.of(context).nextFocus(),
                         style: numberTextStyle.copyWith(color: secondaryColor),
@@ -166,8 +169,16 @@ class VerifyCodeView extends StatelessWidget {
                       width: 30.0,
                       color: onSecondaryColor,
                       child: TextFormField(
+                        controller: fourController,
                         textInputAction: TextInputAction.done,
-                        onChanged: (_) => FocusScope.of(context).unfocus(),
+                        onChanged: (_) {
+                          if(oneController.text=="9"
+                              &&twoController.text=="9"
+                              &&threeController.text=="9"
+                              && oneController.text=="9"){
+                          FocusScope.of(context).unfocus();
+                          print("9999 Done");}
+                        },
                         style: numberTextStyle.copyWith(color: secondaryColor),
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(1),
