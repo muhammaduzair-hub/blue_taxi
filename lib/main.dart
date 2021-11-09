@@ -1,4 +1,5 @@
 import 'package:bluetaxiapp/ui/views/dev_screen.dart';
+import 'package:bluetaxiapp/ui/views/home_view_sample.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         home: DevScreenView(),
         //home: SignInSignUpView(),
+        // onGenerateRoute: AppRouter.generateRoute,
+        // initialRoute: RoutePaths.DemoPage,
+
       ),
     );
   }
