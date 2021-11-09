@@ -24,8 +24,6 @@ class SignInSignUpView extends StatelessWidget {
    TextEditingController numberController = TextEditingController();
    PageController _pageController = PageController(initialPage: 0);
 
-
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
