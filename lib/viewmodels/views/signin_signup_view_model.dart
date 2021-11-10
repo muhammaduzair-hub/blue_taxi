@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 
-class SignInSignUpViewModel extends BaseModel{
+class SignInSignUpViewModel extends ChangeNotifier {
+  bool _busy = false;
+  bool get busy => _busy;
   late final AuthRepository _repo ;
   var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
 
@@ -14,6 +16,18 @@ class SignInSignUpViewModel extends BaseModel{
   SignInSignUpViewModel({
     required AuthRepository repo
   }){ _repo = repo;}
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    //super.dispose();
+  }
+
+  void setBusy(bool value) {
+    _busy = value;
+    notifyListeners();
+  }
 
 
   Future<bool> login({required String name, String? email, required String pass}) async {

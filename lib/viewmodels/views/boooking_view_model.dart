@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository_sample.dart';
@@ -8,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
 
 class BookingViewModel extends BaseModel {
-  late AuthRepositorySample _authRepository;
+  late AuthRepository _authRepository;
   late BuildContext _context;
 
   //variables who are going to inttreact with ui
@@ -18,7 +19,7 @@ class BookingViewModel extends BaseModel {
   late Uint8List carMarkerrr;
   late Uint8List currentLocationMarker;
 
-  BookingViewModel({required AuthRepositorySample authRepository,required BuildContext context}){
+  BookingViewModel({required AuthRepository authRepository,required BuildContext context}):super(false){
     _authRepository = authRepository;
     _context = context;
     //loading Custom marker of car

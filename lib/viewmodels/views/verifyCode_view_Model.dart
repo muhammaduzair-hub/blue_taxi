@@ -14,7 +14,7 @@ class VerifyCodeViewModel extends BaseModel{
 
   VerifyCodeViewModel({
   required AuthRepository repo
-}): _repo = repo;
+}): _repo = repo,super(false);
 
 
 

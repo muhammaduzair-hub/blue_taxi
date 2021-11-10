@@ -3,7 +3,6 @@ import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
-import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/adress_selection_view_model.dart';
@@ -20,63 +19,78 @@ class AdressSelectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWidget<AdressSelectionViewModel>(
       model: AdressSelectionViewModel(authRepository: Provider.of(context)),
-      builder: (context, model, child) => SafeArea(
-          child: model.busy?Center(child: CircularProgressIndicator(),):
-          Scaffold(
-            body: Stack(
-              children: [
-                GoogleMap(
-                  zoomControlsEnabled: false,
-                  initialCameraPosition: CameraPosition(target: LatLng(	33.738045,73.084488,),zoom: 15),
-                  mapType: MapType.terrain,
-                  onTap: (latlng){
-                    print("${latlng.latitude}     ${latlng.longitude}");
-                  },
-                ),
+      builder: (context, model, child) => WillPopScope(
+        onWillPop: () async{
+          if(model.state==LabelSelectAdress){
+            return true;
+          }
+          else if(model.state==LabelRideOption){
+            model.switchState(LabelSelectAdress);
+            return false;
+          }
+          else{
+            model.switchState(LabelRideOption);
+            return false;
+          }
+        },
+        child: SafeArea(
+            child: Scaffold(
+              body: Stack(
+                children: [
+                  GoogleMap(
+                    zoomControlsEnabled: false,
+                    initialCameraPosition: CameraPosition(target: LatLng(	33.738045,73.084488,),zoom: 15),
+                    mapType: MapType.terrain,
+                    onTap: (latlng){
+                      print("${latlng.latitude}     ${latlng.longitude}");
+                    },
+                  ),
 
-                //Navigator Button
-                if(model.state==LabelSelectAdress)
-                  LeadindBackButton(
-                    ontap: (){Navigator.pop(context);},
-                    icon: AssetImage('asset/icons/nav btn.png'),
-                  )
-                else if(model.state == LabelRideOption)
+                  //Navigator Button
+                  if(model.busy)CircularProgressIndicator()
+                  else if(model.state==LabelSelectAdress)
+                    LeadindBackButton(
+                      ontap: (){Navigator.pop(context);},
+                      icon: AssetImage('asset/icons/nav btn.png'),
+                    )
+                  else if(model.state == LabelRideOption)
+                      LeadindBackButton(
+                          icon: AssetImage('asset/icons/nav btn.png'),
+                          ontap: (){model.switchState(LabelSelectAdress);}
+                          )
+                  else if(model.state == LabelPaymentOption)
                     LeadindBackButton(
                         icon: AssetImage('asset/icons/nav btn.png'),
-                        ontap: (){model.switchState(LabelSelectAdress);}
-                        )
-                else if(model.state == LabelPaymentOption)
-                  LeadindBackButton(
-                      icon: AssetImage('asset/icons/nav btn.png'),
-                      ontap: (){model.switchState(LabelRideOption);}
+                        ontap: (){model.switchState(LabelRideOption);}
+                    ),
+
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(model.state,style: boldHeading1.copyWith(color: onPrimaryColor),),
+                    ),
                   ),
 
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(model.state,style: boldHeading1.copyWith(color: onPrimaryColor),),
-                  ),
-                ),
-
-                //bottom sheets
-                if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)
-                else if(model.state==LabelRideOption) rideOptionBottomSheet(model)
-                else if(model.state == LabelPaymentOption)  paymentOptionBottomSheet(model),
-              ],
-            )
-          ),
+                  //bottom sheets
+                  if(model.busy) Align(alignment: Alignment.center,child: CircularProgressIndicator(),)
+                  else if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)
+                  else if(model.state==LabelRideOption) rideOptionBottomSheet(model)
+                  else if(model.state == LabelPaymentOption)  paymentOptionBottomSheet(model),
+                ],
+              )
+            ),
+        ),
       ),
     );
   }
 
   Widget selectAdressBottomSheet(AdressSelectionViewModel model){
     return DraggableScrollableSheet (
-
       initialChildSize: 0.4,
       minChildSize: 0.4,
-      maxChildSize: 0.8,
+      maxChildSize: 0.5,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
@@ -95,7 +109,8 @@ class AdressSelectionView extends StatelessWidget {
                 //TextField(),
                 Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(15))
+                    color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                   child:Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -107,10 +122,12 @@ class AdressSelectionView extends StatelessWidget {
                           SizedBox(
                             height: 30,width: 250,
                             child: TextField(
+                              //textInputAction: model.fromController.text.length<3? TextInputAction.none:TextInputAction.next,
                               textInputAction: TextInputAction.next,
                               autofocus: true,
                               decoration: InputDecoration.collapsed(hintText: ''),
-                              controller: model.toController,
+                              controller: model.fromController,
+                              onChanged: (c){},
                             ),
                           ),
                           Image(image:AssetImage('asset/icons/line.png')),
@@ -118,9 +135,11 @@ class AdressSelectionView extends StatelessWidget {
                           SizedBox(
                             height: 30,width: 250,
                             child: TextField(
+                              //textInputAction: model.toController.text.length<3? TextInputAction.none:TextInputAction.done,
                               textInputAction: TextInputAction.done,
+                              enabled: model.fromController.text.length<3?false:true,
                               decoration: InputDecoration.collapsed(hintText: ''),
-                              controller: model.fromController,
+                              controller: model.toController,
                               onSubmitted: (v){
                                 model.switchState(LabelRideOption);
                               },
@@ -144,8 +163,15 @@ class AdressSelectionView extends StatelessWidget {
                 UIHelper.verticalSpaceSmall,
                 Text("Recent",style: boldHeading3.copyWith(color: onPrimaryColor2),),
                 UIHelper.verticalSpaceSmall,
-                leadingListTile(),
-                Image(image:AssetImage('asset/icons/line.png')),
+                Container(
+                  height: 500,
+                  child: ListView.separated(
+                    controller: scrollController,
+                    itemCount: model.adressList.length,
+                    separatorBuilder:  (context, index) => Image(image:AssetImage('asset/icons/line.png')),
+                    itemBuilder: (context, index) =>leadingListTile(title: model.adressList[index].adressTitle),
+                  ),
+                ),
               ],
             )
         ),
@@ -153,12 +179,11 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-
   Widget rideOptionBottomSheet(AdressSelectionViewModel model) {
     return DraggableScrollableSheet (
-      initialChildSize: 0.7,
-      // minChildSize: 0.7,
-      // maxChildSize: 0.7,
+      initialChildSize: 0.5,
+      minChildSize: 0.5,
+      maxChildSize: 0.5,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
@@ -172,7 +197,7 @@ class AdressSelectionView extends StatelessWidget {
                 padding: UIHelper.pagePaddingSmall.copyWith(bottom: 10),
                 child: ListView.separated(
                     shrinkWrap: true,
-                    itemCount: 10,
+                    itemCount: model.vehiclesList.length,
                     scrollDirection: Axis.horizontal,
                     separatorBuilder: (context, index) => SizedBox(width: 10,),
                     itemBuilder: (context, index) => InkWell(
@@ -197,16 +222,16 @@ class AdressSelectionView extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              Image(image: AssetImage('asset/icons/access.png'),),
-                              Text("Standard"),
-                              Text("5"),
+                              Image(image: AssetImage(model.vehiclesList[index].vPic),),
+                              Text(model.vehiclesList[index].vName),
+                              Text(model.vehiclesList[index].vRate),
                               UIHelper.verticalSpaceSmall,
                               ClipRRect(
                                 borderRadius: BorderRadius.all(Radius.circular(20)),
                                 child: Container(
                                   padding: EdgeInsets.all(3),
                                   color: onPrimaryColor2,
-                                  child: Text("3 min",style:boldHeading3.copyWith(color: onSecondaryColor) ,),
+                                  child: Text(model.vehiclesList[index].vArrivingTime,style:boldHeading3.copyWith(color: onSecondaryColor) ,),
                                 ),
                               )
                             ],
@@ -234,7 +259,10 @@ class AdressSelectionView extends StatelessWidget {
                 margin: UIHelper.pagePaddingSmall.copyWith(bottom: 0,top: 0),
                 width: double.infinity,
                 child: PrimaryButton(
-                  ontap: (){},
+                  ontap: ()async {
+                    await model.addAdress(model.toController.text);
+                    await model.addAdress(model.fromController.text);
+                  },
                   text: Text(LabelBookRide, ),
                 ),
               )
@@ -286,8 +314,7 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget paymentOptionListTile({required AssetImage leadingImage, required String text, required AssetImage trailingImage })
-  {
+  Widget paymentOptionListTile({required AssetImage leadingImage, required String text, required AssetImage trailingImage }) {
     return  Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -309,16 +336,14 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget leadingListTile(){
+  Widget leadingListTile({required String title}){
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage('asset/icons/ic_place.png'),
       ),
-      title: Text('Kings',style: heading2,),
+      title: Text(title,style: heading2,),
       subtitle: Text("New york",style: heading3,),
     );
   }
-
-
 }
