@@ -1,8 +1,10 @@
 import 'package:bluetaxiapp/constants/strings.dart';
+import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
+import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/adress_selection_view_model.dart';
@@ -13,12 +15,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AdressSelectionView extends StatelessWidget {
-  const AdressSelectionView({Key? key}) : super(key: key);
+  final UserModel signInUser;
+
+  const AdressSelectionView({Key? key, required this.signInUser }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget<AdressSelectionViewModel>(
-      model: AdressSelectionViewModel(authRepository: Provider.of(context)),
+      model: AdressSelectionViewModel(authRepository: Provider.of(context),signInUser: signInUser),
       builder: (context, model, child) => WillPopScope(
         onWillPop: () async{
           if(model.state==LabelSelectAdress){
@@ -205,7 +209,7 @@ class AdressSelectionView extends StatelessWidget {
                         model.switchRideOptionButtonIndex(index);
                       },
                       child: AnimatedOpacity(
-                        opacity: model.index==index?1:0.5,
+                        opacity: model.vehicleSelectedIndex==index?1:0.5,
                         duration: const Duration(milliseconds: 500),
                         child: Container(
                           decoration: BoxDecoration(
@@ -231,7 +235,8 @@ class AdressSelectionView extends StatelessWidget {
                                 child: Container(
                                   padding: EdgeInsets.all(3),
                                   color: onPrimaryColor2,
-                                  child: Text(model.vehiclesList[index].vArrivingTime,style:boldHeading3.copyWith(color: onSecondaryColor) ,),
+                                  child: Text(model.vehiclesList[index].vArrivingTime
+                                    ,style:boldHeading3.copyWith(color: onSecondaryColor) ,),
                                 ),
                               )
                             ],
@@ -262,6 +267,9 @@ class AdressSelectionView extends StatelessWidget {
                   ontap: ()async {
                     await model.addAdress(model.toController.text);
                     await model.addAdress(model.fromController.text);
+                    await model.generateRequest();
+                    if(model.generatedRide!=null)
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DevScreenView(),));
                   },
                   text: Text(LabelBookRide, ),
                 ),

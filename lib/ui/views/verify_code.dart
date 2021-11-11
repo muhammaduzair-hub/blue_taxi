@@ -4,6 +4,7 @@ import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
+import 'package:bluetaxiapp/ui/views/booking_view.dart';
 import 'package:bluetaxiapp/viewmodels/views/verifyCode_view_Model.dart';
 
 import 'package:flutter/material.dart';
@@ -11,6 +12,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class VerifyCodeView extends StatelessWidget {
+  final UserModel signInUser;
+
+  VerifyCodeView({required this.signInUser});
 
   TextEditingController oneController = TextEditingController();
   TextEditingController twoController = TextEditingController();
@@ -176,8 +180,9 @@ class VerifyCodeView extends StatelessWidget {
                               &&twoController.text=="9"
                               &&threeController.text=="9"
                               && oneController.text=="9"){
-                          FocusScope.of(context).unfocus();
-                          print("9999 Done");}
+                            FocusScope.of(context).unfocus();
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(signInUser: signInUser),));
+                          }
                         },
                         style: numberTextStyle.copyWith(color: secondaryColor),
                         inputFormatters: [

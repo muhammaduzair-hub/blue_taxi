@@ -1,3 +1,4 @@
+import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +11,7 @@ class SignInSignUpViewModel extends ChangeNotifier {
   bool _busy = false;
   bool get busy => _busy;
   late final AuthRepository _repo ;
-  var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
+  late UserModel signedIdnUser ;
 
 
   SignInSignUpViewModel({
@@ -123,13 +124,9 @@ class SignInSignUpViewModel extends ChangeNotifier {
 //Signin Without Firebase Auth
   Future signin( TextEditingController phoneNoController, TextEditingController passwordController) async {
     setBusy(true);
-    bool result = await _repo.signInWithEmailAndPassword(phoneNoController.text, passwordController.text);
-    if(result.toString() == false) {
-      setBusy(false);
-      print("Not SignedIn");
-    }
-    print("Result BY Model Class"+result.toString());
-    return result;
+    signedIdnUser = await _repo.signInWithEmailAndPassword(phoneNoController.text, passwordController.text);
+    print(signedIdnUser.id);
+    setBusy(false);
   }//End Signin Function
 
 

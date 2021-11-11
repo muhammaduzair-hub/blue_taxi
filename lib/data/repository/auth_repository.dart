@@ -35,12 +35,7 @@ class AuthRepository{
 
   // Signup Without Firebase Auth
   Future signInWithEmailAndPassword(String phoneNo, String password) async {
-
     dynamic result = await _api.signInWithEmailPassword(phoneNo, password);
-    if(result.toString() == false) {
-      print("Not SignedIn By AuthRepo");
-    }
-    print("Result BY Repo Class"+result.toString());
     return result;
   }
 
@@ -55,6 +50,15 @@ class AuthRepository{
 
   Future getVehiclesLocally() async{
     return await _localApi.vehicalList;
+  }
+
+  Future generateRequest({
+    required String userToken,
+    required String carType,
+    required String expectedBill,}) async
+  {
+    dynamic res = await _api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill);
+    return res;
   }
 
 }

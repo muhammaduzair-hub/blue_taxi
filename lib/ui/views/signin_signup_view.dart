@@ -97,9 +97,7 @@ class SignInSignUpView extends StatelessWidget {
                                  //Send Data to a method inside Model Class to access Database
                                  await model.signUp(nameController, emailController,numberController, passwordController);
                                  //Route to VerifyCode View
-                                   Navigator.push(context, new MaterialPageRoute(
-                                       builder: (context) => new VerifyCodeView())
-                                   );
+                                 _pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
                              }
                                //else Check Which Validator is wrong and throw respective error
 
@@ -144,154 +142,148 @@ class SignInSignUpView extends StatelessWidget {
          title: Text(LabelSignIn,style: boldHeading1.copyWith(color: onPrimaryColor)),
          centerTitle: true,
        ),
-         body: StreamBuilder(
-           stream:  model.firestoreDb,
-           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-           return SingleChildScrollView(
-               child: SizedBox(
-                 height: size.height-120,
-                 width: double.infinity,
-                 child: Padding(
-                   padding: UIHelper.pagePaddingSmall,
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Spacer(flex: 2,),
-                       Text(LabelMobile,style: boldHeading3),
-                       UIHelper.verticalSpaceSmall,
-                       CustomTextField(
-                         controller: numberController,
-                       ),
-                       UIHelper.verticalSpaceMedium,
-                       Text(LabelPassword,style: boldHeading3),
-                       UIHelper.verticalSpaceSmall,
-                       CustomTextField(controller: passwordController),
-                       //
-                       UIHelper.verticalSpaceLarge,
-                       Container(
-                         width: double.infinity,
-                         height: 50,
-                         child: PrimaryButton(
-                           text: Text(LabelSignIn,style: buttonTextStyle,),
-                           ontap:() async {
-                             bool passAns=model.validatePassword(passwordController.text);
-                             bool mobilAns=model.validateMobileNumber(numberController.text);
-                             if(passAns==true && mobilAns==true){
-                               //Send Data to a method inside Model Class to access Database
-                               dynamic result= await model.signin( numberController, passwordController);
-                               if(result==false){
-                                 print("cannot Signin with those credentials");
-                               }
-                               else if(result==true){
-                                 print("RESULT OF SIGNIN SIGNUP VIEW **** "+result.toString());
-                                 Navigator.push(context, new MaterialPageRoute(
-                                     builder: (context) => new VerifyCodeView())
-                                 );
-                               }
-                               else{
-                                 print(result.toString());
-                               }
-                               print("Result at View Class"+result.toString());
+         body: SingleChildScrollView(
+             child: SizedBox(
+               height: size.height-120,
+               width: double.infinity,
+               child: Padding(
+                 padding: UIHelper.pagePaddingSmall,
+                 child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children: [
+                     Spacer(flex: 2,),
+                     Text(LabelMobile,style: boldHeading3),
+                     UIHelper.verticalSpaceSmall,
+                     CustomTextField(
+                       controller: numberController,
+                     ),
+                     UIHelper.verticalSpaceMedium,
+                     Text(LabelPassword,style: boldHeading3),
+                     UIHelper.verticalSpaceSmall,
+                     CustomTextField(controller: passwordController),
+                     //
+                     UIHelper.verticalSpaceLarge,
+                     Container(
+                       width: double.infinity,
+                       height: 50,
+                       child: PrimaryButton(
+                         text: Text(LabelSignIn,style: buttonTextStyle,),
+                         ontap:() async {
+                           bool passAns=model.validatePassword(passwordController.text);
+                           bool mobilAns=model.validateMobileNumber(numberController.text);
+                           if(passAns==true && mobilAns==true){
+                             //Send Data to a method inside Model Class to access Database
+                             await model.signin( numberController, passwordController);
+                             if(model.signedIdnUser.id==''){
+                               print("cannot Signin with those credentials");
                              }
-                           } ,
-                         ),
-                       ),
-                       UIHelper.verticalSpaceMedium,
-                       UIHelper.verticalSpaceMedium,
-                       Expanded(
+                             else {
+                               Navigator.push(context, new MaterialPageRoute(
+                                   builder: (context) => new VerifyCodeView(
+                                     signInUser: model.signedIdnUser,
+                                   ))
+                               );
+                             }
 
-                         child:  Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: <Widget>[
-                             Container(
-                               width: 85.0,
-                               height: 1,
-                               color: onPrimaryColor,
-                             ),
-                             Container(
-                               child: Text(
-                                LabelOrSignInWith,
-                                 style: heading3.copyWith(color: onPrimaryColor,fontWeight: FontWeight.w700)
-                               ),
-                             ),
-                             Container(
-                               width: 85.0,
-                               height: 1,
-                               color: onPrimaryColor,
-                             ),
-                           ],
-                         ),
+                           }
+                         } ,
                        ),
-                       Row(
-                         crossAxisAlignment: CrossAxisAlignment.center,
+                     ),
+                     UIHelper.verticalSpaceMedium,
+                     UIHelper.verticalSpaceMedium,
+                     Expanded(
+
+                       child:  Row(
                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                          children: <Widget>[
-                           CircleAvatar(
-                             radius: 25.0,
-                             backgroundColor: Color(0xffD5DDE0),
-                             child: IconButton(
-                               color: Colors.white,
-                               iconSize: 32.0,
-                               onPressed: (){
-                                 //Send to Facebook Page Login
-                               },
-                               icon:  FaIcon(FontAwesomeIcons.facebookF),
-                             ),
+                           Container(
+                             width: 85.0,
+                             height: 1,
+                             color: onPrimaryColor,
                            ),
-                           CircleAvatar(
-                             radius: 25.0,
-                             backgroundColor: Color(0xffD5DDE0),
-                             child: IconButton(
-                               color: Colors.white,
-                               iconSize: 30.0,
-                               onPressed: (){
-                                 //Send to Twitter Page Login
-                               },
-                               icon:  FaIcon(FontAwesomeIcons.twitter),
-                             ),
-                           ),
-                           CircleAvatar(
-                             radius: 25.0,
-                             backgroundColor: Color(0xffD5DDE0),
-                             child: IconButton(
-                               color: Colors.white,
-                               iconSize: 28.0,
-                               onPressed: (){
-                                 //Send to Gmail Page Login
-                               },
-                               icon:  FaIcon(FontAwesomeIcons.google),
-                             ),
-                           )
-                           // CircleAvatar(
-                           //   radius: 25,
-                           //   backgroundImage: AssetImage(
-                           //     'assets/facebook_icon.png',
-                           //   ),
-                           // )
-                         ],
-                       ),
-                       Spacer(flex: 2,),
-                       Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Text(LabelDontHaveAccount, style: heading2.copyWith(color: onPrimaryColor2 )),
-                           InkWell(
-                             onTap: (){
-
-                               _pageController.nextPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
-                             },
+                           Container(
                              child: Text(
-                               LabelSignup, style: heading2.copyWith(color: secondaryColor ),
+                                 LabelOrSignInWith,
+                                 style: heading3.copyWith(color: onPrimaryColor,fontWeight: FontWeight.w700)
                              ),
+                           ),
+                           Container(
+                             width: 85.0,
+                             height: 1,
+                             color: onPrimaryColor,
                            ),
                          ],
                        ),
-                     ],
-                   ),
+                     ),
+                     Row(
+                       crossAxisAlignment: CrossAxisAlignment.center,
+                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                       children: <Widget>[
+                         CircleAvatar(
+                           radius: 25.0,
+                           backgroundColor: Color(0xffD5DDE0),
+                           child: IconButton(
+                             color: Colors.white,
+                             iconSize: 32.0,
+                             onPressed: (){
+                               //Send to Facebook Page Login
+                             },
+                             icon:  FaIcon(FontAwesomeIcons.facebookF),
+                           ),
+                         ),
+                         CircleAvatar(
+                           radius: 25.0,
+                           backgroundColor: Color(0xffD5DDE0),
+                           child: IconButton(
+                             color: Colors.white,
+                             iconSize: 30.0,
+                             onPressed: (){
+                               //Send to Twitter Page Login
+                             },
+                             icon:  FaIcon(FontAwesomeIcons.twitter),
+                           ),
+                         ),
+                         CircleAvatar(
+                           radius: 25.0,
+                           backgroundColor: Color(0xffD5DDE0),
+                           child: IconButton(
+                             color: Colors.white,
+                             iconSize: 28.0,
+                             onPressed: (){
+                               //Send to Gmail Page Login
+                             },
+                             icon:  FaIcon(FontAwesomeIcons.google),
+                           ),
+                         )
+                         // CircleAvatar(
+                         //   radius: 25,
+                         //   backgroundImage: AssetImage(
+                         //     'assets/facebook_icon.png',
+                         //   ),
+                         // )
+                       ],
+                     ),
+                     Spacer(flex: 2,),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: [
+                         Text(LabelDontHaveAccount, style: heading2.copyWith(color: onPrimaryColor2 )),
+                         InkWell(
+                           onTap: (){
+
+                             _pageController.nextPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
+                           },
+                           child: Text(
+                             LabelSignup, style: heading2.copyWith(color: secondaryColor ),
+                           ),
+                         ),
+                       ],
+                     ),
+                   ],
                  ),
-               )
-           );
-         }),
+               ),
+             )
+         ),
        ),
      );
    }

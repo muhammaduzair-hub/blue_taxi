@@ -1,3 +1,4 @@
+import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/adress_selection_view.dart';
@@ -29,8 +30,7 @@ class DevScreenView extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new AdressSelectionView())
-              );
+                  builder: (context) => AdressSelectionView(signInUser: UserModel(id: ''),)));
             },
             child: const Text('Adress Selection View'),
           ),
@@ -40,7 +40,7 @@ class DevScreenView extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new BookingView())
+                  builder: (context) => new BookingView(signInUser: UserModel(id: ''),))
               );
             },
             child: const Text('Booking View'),
@@ -95,7 +95,7 @@ class DevScreenView extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new VerifyCodeView())
+                  builder: (context) => new VerifyCodeView(signInUser: UserModel(id: ''),))
               );
             },
             child: const Text('VerifyCode'),

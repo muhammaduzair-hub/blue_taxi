@@ -1,12 +1,13 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bluetaxiapp/data/repository/auth_repository_sample.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui' as ui;
+import 'package:geolocator/geolocator.dart';
 
 class BookingViewModel extends BaseModel {
   late AuthRepository _authRepository;
@@ -18,15 +19,15 @@ class BookingViewModel extends BaseModel {
   late Uint8List icPick;
   late Uint8List carMarkerrr;
   late Uint8List currentLocationMarker;
+  late Position currentLocation;
+  late Completer<GoogleMapController> mapController = Completer();
 
   BookingViewModel({required AuthRepository authRepository,required BuildContext context}):super(false){
     _authRepository = authRepository;
     _context = context;
     //loading Custom marker of car
-
+    getCurrentLocation();
     loadCustomMarker();
-    //addMarker(latLng: LatLng(	33.738045,73.084488),marker: carMarkerrr);
-    //addMarker(latLng: LatLng(	33.738045,73.084488),marker: currentLocationMarker);
   }
 
   void loadCustomMarker() async{
@@ -38,8 +39,15 @@ class BookingViewModel extends BaseModel {
     //carMaker=await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(48, 48)),"asset/images/car_top.png");
     setBusy(false);
     addMarker(latLng: LatLng(	33.738045,73.084488),marker: carMarkerrr);
-    addMarker(latLng: LatLng(	33.736788532753756,73.08974638581275),marker: currentLocationMarker);
-    addMarker(latLng: LatLng(	33.836788532753756,73.08974638581275),marker: icPick);
+    loadCurrentLocationMarler();
+  }
+
+  void loadCurrentLocationMarler(){
+    if(currentLocation!=null){
+      addMarker(latLng: LatLng(	currentLocation.latitude,currentLocation.longitude),marker: currentLocationMarker);
+      addMarker(latLng: LatLng(currentLocation.latitude,currentLocation.longitude),marker: icPick);
+    }
+
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -60,4 +68,30 @@ class BookingViewModel extends BaseModel {
     );
     setBusy(false);
   }
+
+
+  //Map Work
+  Future<void> goToPositone() async {
+    final GoogleMapController controller = await mapController.future;
+    controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(currentLocation.latitude,currentLocation.longitude),
+              zoom: 12,
+              tilt: 59.440
+            )
+        )
+    );
+  }
+
+  onMapCreated(GoogleMapController controller) {
+    mapController.complete(controller);
+  }
+
+  Future getCurrentLocation() async{
+    currentLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+
+
 }

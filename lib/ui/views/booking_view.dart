@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:bluetaxiapp/constants/app_contstants.dart';
+import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
@@ -13,7 +16,8 @@ import 'package:provider/provider.dart';
 
 
 class BookingView extends StatelessWidget {
-  const BookingView({Key? key}) : super(key: key);
+  final UserModel signInUser;
+  const BookingView({Key? key, required this.signInUser}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +28,7 @@ class BookingView extends StatelessWidget {
           body: Stack(
             children: [
               GoogleMap(
+                onMapCreated: model.onMapCreated,
                 markers: Set.of(model.markers),
                 zoomControlsEnabled: false,
                 initialCameraPosition: CameraPosition(target: LatLng(	33.738045,73.084488,),zoom: 15),
@@ -38,7 +43,14 @@ class BookingView extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height:  380,),
-                      LeadindBackButton(icon: AssetImage('asset/icons/btn_loc.png'), ontap: (){})
+                      LeadindBackButton(
+                          icon: AssetImage('asset/icons/btn_loc.png'),
+                          ontap: () async{
+                            await model.getCurrentLocation();
+                            model.loadCurrentLocationMarler();
+                            model.goToPositone();
+                          }
+                        ),
                     ],
                   )
               ),
@@ -64,7 +76,7 @@ class BookingView extends StatelessWidget {
                         InkWell(
                           onTap: (){
                             //MaterialPageRoute(builder: (context) => AdressSelectionView(),);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AdressSelectionView(),));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AdressSelectionView(signInUser: signInUser,),));
                           },
                           child: Container(
                             margin: UIHelper.pagePaddingSmall.copyWith(bottom: 0),
