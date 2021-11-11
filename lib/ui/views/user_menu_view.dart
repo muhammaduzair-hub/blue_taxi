@@ -246,10 +246,7 @@ class UserMenuView extends StatelessWidget {
           UIHelper.verticalSpaceMedium,
           FloatingActionButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) => new SignInSignUpView()));
+              Navigator.pop(context);
             },
             child: const Icon(
               Icons.clear,

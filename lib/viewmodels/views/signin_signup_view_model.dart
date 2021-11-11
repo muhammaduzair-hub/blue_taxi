@@ -1,7 +1,7 @@
+
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
-import 'package:bluetaxiapp/viewmodels/base_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
@@ -125,6 +125,7 @@ class SignInSignUpViewModel extends ChangeNotifier {
   Future signin( TextEditingController phoneNoController, TextEditingController passwordController) async {
     setBusy(true);
     signedIdnUser = await _repo.signInWithEmailAndPassword(phoneNoController.text, passwordController.text);
+    signedINUser = signedIdnUser; //this is global variable
     print(signedIdnUser.id);
     setBusy(false);
   }//End Signin Function

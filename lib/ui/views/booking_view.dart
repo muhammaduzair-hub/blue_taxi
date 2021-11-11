@@ -7,6 +7,7 @@ import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/adress_selection_view.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
+import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/boooking_view_model.dart';
@@ -37,7 +38,9 @@ class BookingView extends StatelessWidget {
                   print("${latlng.latitude}     ${latlng.longitude}");
                 },
               ),
-              LeadindBackButton(icon: AssetImage('asset/icons/drawer btn.png'), ontap: (){}),
+              LeadindBackButton(icon: AssetImage('asset/icons/drawer btn.png'), ontap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>UserMenuView() ,));
+              }),
               Align(
                 alignment: Alignment.topRight,
                   child: Column(

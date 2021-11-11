@@ -16,7 +16,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 
-
 class SignInSignUpView extends StatelessWidget {
    SignInSignUpView({Key? key}) : super(key: key);
    TextEditingController nameController = TextEditingController();
@@ -101,7 +100,7 @@ class SignInSignUpView extends StatelessWidget {
                              }
                                //else Check Which Validator is wrong and throw respective error
 
-                               },
+                           },
                          ),
                        ),
                        //SizedBox(height: 200,),
@@ -113,7 +112,6 @@ class SignInSignUpView extends StatelessWidget {
                            InkWell(
                              onTap: (){
                                _pageController.previousPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
-
                              },
                              child: Text(
                                LabelSignIn, style: heading2.copyWith(color: secondaryColor ),
@@ -160,7 +158,7 @@ class SignInSignUpView extends StatelessWidget {
                      UIHelper.verticalSpaceMedium,
                      Text(LabelPassword,style: boldHeading3),
                      UIHelper.verticalSpaceSmall,
-                     CustomTextField(controller: passwordController),
+                     CustomTextField(controller: passwordController, showPassword: true,),
                      //
                      UIHelper.verticalSpaceLarge,
                      Container(
