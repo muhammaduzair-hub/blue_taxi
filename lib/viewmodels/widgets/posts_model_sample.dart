@@ -9,7 +9,7 @@ class PostsModelSample extends BaseModel {
 
   PostsModelSample({
     required ApiSample api,
-  }) : _api = api;
+  }) : _api = api,super(false);
 
   late List<PostSample> posts;
 

@@ -1,5 +1,8 @@
+import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+import 'package:bluetaxiapp/ui/views/adress_selection_view.dart';
+import 'package:bluetaxiapp/ui/views/booking_view.dart';
 import 'package:bluetaxiapp/ui/views/cancellation_reason_view.dart';
 import 'package:bluetaxiapp/ui/views/driver_detail_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
@@ -21,6 +24,27 @@ class DevScreenView extends StatelessWidget {
       body:Column(
         children:<Widget>[
           UIHelper.verticalSpaceXLarge,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => AdressSelectionView(signInUser: UserModel(id: ''),)));
+            },
+            child: const Text('Adress Selection View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new BookingView(signInUser: UserModel(id: ''),))
+              );
+            },
+            child: const Text('Booking View'),
+          ),
           TextButton(
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
@@ -71,7 +95,7 @@ class DevScreenView extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new VerifyCodeView())
+                  builder: (context) => new VerifyCodeView(signInUser: UserModel(id: ''),))
               );
             },
             child: const Text('VerifyCode'),

@@ -47,3 +47,4 @@ class UserModel {
     return data;
   }
 }
+

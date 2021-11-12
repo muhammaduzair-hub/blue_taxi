@@ -14,7 +14,7 @@ class MyProfileViewModel extends BaseModel{
 
   MyProfileViewModel({
     required AuthRepository repo
-  }): _repo = repo;
+  }): _repo = repo,super(false);
 
   void changeSwitchState(){
     setBusy(true);

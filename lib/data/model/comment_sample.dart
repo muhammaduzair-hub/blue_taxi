@@ -1,19 +1,20 @@
 class CommentSample {
-  int? postId;
-  late int id;
-  late String name;
-  late String email;
-  late String body;
+  final int postId;
+  final int id;
+  final String name;
+  final String email;
+  final String body;
 
-  CommentSample({this.postId, required this.id, required this.name, required this.email, required this.body});
+  CommentSample({ required this.postId, required this.id, required this.name, required this.email, required this.body});
 
-  CommentSample.fromJson(Map<String, dynamic> json) {
-    postId = json['postId'];
-    id = json['id'];
-    name = json['name'];
-    email = json['email'];
-    body = json['body'];
-  }
+  // CommentSample.fromJson(Map<String, dynamic> json,{
+  //   postId = json['postId'];
+  //   id = json['id'];
+  //   name = json['name'];
+  //   email = json['email'];
+  //   body = json['body'];
+  // }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

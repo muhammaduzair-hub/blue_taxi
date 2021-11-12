@@ -1,5 +1,9 @@
 
+import 'package:bluetaxiapp/data/model/user_model.dart';
+import 'package:bluetaxiapp/ui/views/adress_selection_view.dart';
+import 'package:bluetaxiapp/ui/views/booking_view.dart';
 import 'package:bluetaxiapp/ui/views/demoView.dart';
+import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
@@ -27,11 +31,16 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => PostViewSample(post: post));
         break;
       case RoutePaths.DemoPage:
-        return MaterialPageRoute(builder: (_) => DemoView());
+        return MaterialPageRoute(builder: (_) => DevScreenView());
         break;
       case RoutePaths.MyProfile:
         return MaterialPageRoute(builder: (_) => MyProfileView());
         break;
+      case RoutePaths.BookingView:
+        return MaterialPageRoute(builder: (_) => BookingView(signInUser: UserModel(id: ''),));
+      case RoutePaths.AdressSelect:
+        return MaterialPageRoute(builder: (_) => AdressSelectionView(signInUser: UserModel(id: ''),));
+
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
