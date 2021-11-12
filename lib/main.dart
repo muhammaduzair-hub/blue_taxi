@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {

@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
-import 'package:bluetaxiapp/data/remote/firebase_directory/firebase.dart';
 
 class AuthRepository{
   final Api _api;
@@ -36,5 +35,6 @@ class AuthRepository{
     print("Result BY Repo Class"+result.toString());
     return result;
   }
+
 
 }

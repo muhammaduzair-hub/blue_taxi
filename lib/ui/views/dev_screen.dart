@@ -11,14 +11,18 @@ import 'package:bluetaxiapp/ui/views/terms_conitions_view.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/views/verify_code.dart';
 import 'package:bluetaxiapp/ui/views/dialPad_View.dart';
+import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DevScreenView extends StatelessWidget {
   DevScreenView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ArrivingSelectionViewModel model=ArrivingSelectionViewModel(repo:Provider.of(context));
+
 
     return Scaffold(
       backgroundColor: onSecondaryColor,
@@ -107,6 +111,7 @@ class DevScreenView extends StatelessWidget {
               textStyle: const TextStyle(fontSize: 20),
             ),
             onPressed: (){
+              model.getRequestId("7jVA4vGnzenK4R2JBlY6");
               Navigator.push(context, new MaterialPageRoute(
                   builder: (context) => new ArrivingScreen())
               );

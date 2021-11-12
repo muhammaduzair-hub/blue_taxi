@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Api {
   bool exists=false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  var firestoreDb = FirebaseFirestore.instance.collection("User").snapshots();
+  var firestoreRequests = FirebaseFirestore.instance.collection("request").snapshots();
 
 
   // create user obj based on firebase user
@@ -98,5 +98,7 @@ class Api {
       return null;
     }
   }
+
+
 
 }

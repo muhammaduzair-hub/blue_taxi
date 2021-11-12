@@ -678,6 +678,7 @@ class ArrivingScreen extends StatelessWidget {
 
   Widget selectRateSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
+    String rated="Excellent";
     return DraggableScrollableSheet(
       initialChildSize: 0.5,
       minChildSize: 0.5,
@@ -720,6 +721,7 @@ class ArrivingScreen extends StatelessWidget {
                               image: AssetImage('asset/icons/ic_gesture.png'),
                             )),
                           ),
+                          UIHelper.verticalSpaceSmall,
                           Text(
                             'Patrick',
                             style: buttonTextStyle.copyWith(
@@ -743,9 +745,10 @@ class ArrivingScreen extends StatelessWidget {
                                     color: secondaryColor,
                                   ),
                                   onRatingUpdate: (rating) {
-                                    print(rating);
+                                    rated=model.switchRateLabel(rating);
                                   },
                                 ),
+                                Text(rated, style: heading2.copyWith(fontWeight: FontWeight.w400),),
                                 CustomTextField(
                                   maxLines: 3,
                                   minLines: 3,
