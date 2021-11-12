@@ -13,4 +13,6 @@ class RoutePaths {
   static const String DemoPage = 'demo';
   static const String LoginSignup = 'loginSignup';
   static const String MyProfile = 'myProfile';
+  static const String BookingView = 'bookingView';
+  static const String AdressSelect = "AdressSelect";
 }

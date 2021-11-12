@@ -13,3 +13,6 @@ const Color onPrimaryColor3 = Color(0xffF7F8F9);//lighest grey for chat bubbles
 const Color userNameText = Color(0xff4B545A);
 Color shadow=Color(0xff000000).withOpacity(0.2);
 Color phoneDial=Color(0xffD5DDE0).withOpacity(0.8);
+
+
+

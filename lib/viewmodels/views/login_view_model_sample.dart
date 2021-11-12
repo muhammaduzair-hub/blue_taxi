@@ -7,7 +7,7 @@ class LoginViewModelSample extends BaseModel {
 
   LoginViewModelSample({
     required AuthRepositorySample authRepository,
-  }) : _authRepository = authRepository;
+  }) : _authRepository = authRepository,super(false);
 
   Future<bool> login(String userIdText) async {
     setBusy(true);

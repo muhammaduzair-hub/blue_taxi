@@ -6,6 +6,6 @@ class ReceiptViewModel extends BaseModel {
   final AuthRepository repo;
   late String state;
 
-  ReceiptViewModel({required this.repo});
+  ReceiptViewModel({required this.repo}) : super(false);
 
 }

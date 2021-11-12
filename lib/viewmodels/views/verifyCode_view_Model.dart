@@ -1,4 +1,6 @@
+
 import 'dart:async';
+
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 
@@ -14,7 +16,7 @@ class VerifyCodeViewModel extends BaseModel{
 
   VerifyCodeViewModel({
   required AuthRepository repo
-}): _repo = repo;
+}): _repo = repo,super(false);
 
 
 

@@ -19,72 +19,71 @@ class DriverDetailView extends StatelessWidget {
     return BaseWidget<DriverDetailViewModel>(
       model: DriverDetailViewModel(authRepository: Provider.of(context)),
       builder: (context, model, child) => SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            elevation: 0.0,
-            leading: CircleAvatar(
-              radius: 16,
-                backgroundColor: Colors.transparent,
-                child: LeadindBackButton()),
-            centerTitle: true,
-            title: Text(LabelDriverDetail, style: heading1.copyWith(color:onPrimaryColor),),
-          ),
-          body: Column(
-            children: [
-              UIHelper.verticalSpaceMedium,
-              ListTile(
-                leading: CircleAvatar(backgroundImage: AssetImage('asset/images/jurica-koletic-317414-unsplash.png'),),
-                title: Text("Patrick",style: boldHeading2 ,),//Its name and come from model
-                subtitle: Text("Mercedes Vito"),
-              ),
-              UIHelper.verticalSpaceMedium,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  profileContainer(AssetImage('asset/images/ic_rating.png',),"4.8"),
-                  profileContainer(AssetImage('asset/images/ic_rating.png',),"126"),
-                  profileContainer(AssetImage('asset/images/ic_calendar.png',),"2 years")
-                ],
-              ),
-              UIHelper.verticalSpaceMedium,
-              Padding(
-                padding: UIHelper.pagePaddingSmall,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                          color: secondaryColor2
-                      )
-                  ),
-                  child: Column(
-                    children: [
-                      listTile(LabelMemberSince, "16.06.2017"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(height: 2,color: secondaryColor2,),
-                      ),
-                      listTile(LabelCarType, "Van"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(height: 2,color: secondaryColor2,),
-                      ),
-                      listTile(LabelPlateNumber, "HS785K"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(height: 2,color: secondaryColor2,),
-                      ),
-                      listTile(LabelPlateNumber, "HS785K"),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(height: 2,color: secondaryColor2,),
-                      )
-                    ],
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              elevation: 0.0,
+              leading: LeadindBackButton(ontap:(){Navigator.pop(context);},icon: AssetImage('asset/icons/nav btn.png') ,),
+              centerTitle: true,
+              title: Text(LabelDriverDetail, style: heading1.copyWith(color:onPrimaryColor),),
+            ),
+            body: Column(
+              children: [
+                UIHelper.verticalSpaceMedium,
+                ListTile(
+                  leading: CircleAvatar(backgroundImage: AssetImage('asset/images/jurica-koletic-317414-unsplash.png'),),
+                  title: Text("Patrick",style: boldHeading2 ,),//Its name and come from model
+                  subtitle: Text("Mercedes Vito"),
+                ),
+                UIHelper.verticalSpaceMedium,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    profileContainer(AssetImage('asset/images/ic_rating.png',),"4.8"),
+                    profileContainer(AssetImage('asset/images/ic_rating.png',),"126"),
+                    profileContainer(AssetImage('asset/images/ic_calendar.png',),"2 years")
+                  ],
+                ),
+                UIHelper.verticalSpaceMedium,
+                Padding(
+                  padding: UIHelper.pagePaddingSmall,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                            color: secondaryColor2
+                        )
+                    ),
+                    child: Column(
+                      children: [
+                        listTile(LabelMemberSince, "16.06.2017"),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(height: 2,color: secondaryColor2,),
+                        ),
+                        listTile(LabelCarType, "Van"),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(height: 2,color: secondaryColor2,),
+                        ),
+                        listTile(LabelPlateNumber, "HS785K"),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(height: 2,color: secondaryColor2,),
+                        ),
+                        listTile(LabelPlateNumber, "HS785K"),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Divider(height: 2,color: secondaryColor2,),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -46,7 +46,7 @@ class ApiSample {
     
     // Loop and convert each item to a Comment
     for (var comment in parsed) {
-      comments.add(CommentSample.fromJson(comment));
+     // comments.add(CommentSample.fromJson(comment));
     }
 
     return comments;

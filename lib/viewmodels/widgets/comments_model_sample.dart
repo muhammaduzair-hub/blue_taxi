@@ -8,7 +8,7 @@ class CommentsModelSample extends BaseModel {
 
   CommentsModelSample({
     required api,
-  }) : _api = api;
+  }) : _api = api,super(false);
 
   late List<CommentSample> comments;
 

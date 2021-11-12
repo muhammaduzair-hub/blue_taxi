@@ -10,7 +10,7 @@ class ArrivingSelectionViewModel extends BaseModel {
   final firestoreDriver = FirebaseFirestore.instance.collection("driver");
 
 
-  ArrivingSelectionViewModel({required this.repo}) {
+  ArrivingSelectionViewModel({required this.repo}) : super(false) {
 
     state=LabelSearching;
     Future.delayed(Duration(seconds: 1), () {

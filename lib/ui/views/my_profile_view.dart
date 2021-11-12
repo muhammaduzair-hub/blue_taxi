@@ -27,8 +27,8 @@ class MyProfileView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LeadindBackButton(),
-              UIHelper.verticalSpaceLarge,
+              LeadindBackButton(icon: AssetImage("asset/icons/nav btn.png"),ontap: (){Navigator.pop(context);},),
+              UIHelper.verticalSpaceMedium,
               Center(
                 child: Column(
                   children: [

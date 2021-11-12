@@ -1,12 +1,15 @@
+import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Api {
-  bool exists=false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  var firestoreRequests = FirebaseFirestore.instance.collection("request").snapshots();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
+  late var  firestoreRequests = firestore.collection("request");
+
 
 
   // create user obj based on firebase user
@@ -35,11 +38,15 @@ class Api {
   }
 
 
-  Future getData() async {
+  Future getUsersStream() async {
     return await FirebaseFirestore.instance.collection("users").get();
   }
-  Future<bool> signInWithEmailPassword(String phoneNo, String password) async{
-    exists =await getData().
+
+
+  Future<userModel.UserModel> signInWithEmailPassword(String phoneNo, String password) async{
+    bool exist = false;
+    userModel.UserModel user = userModel.UserModel(id: '');
+    exist=await getUsersStream().
     then((val){
       if(val.docs.length > 0){
         int index=val.docs.length;
@@ -47,31 +54,34 @@ class Api {
         for(var i=0; i<index;i++){
           if(phoneNo == val.docs[i].data()['phoneNo']){
             if(password == val.docs[i].data()['password']){
-              i=index;
               print("Password Matched");
-              exists=true;
+              //Return Bool True(Credentials are Okay) To View class so it can proceed
+              user.phoneno = val.docs[i].data()['phoneNo'];
+              user.id = val.docs[i].id;
+              user.name=val.docs[i].data()['name'];
+              user.address = val.docs[i].data()['address'];
+              user.email = val.docs[i].data()['email'];
+              user.type = val.docs[i].data()['type'];
+              exist = true;
             }
             else{
               print("Password didnt Matched");
               print(password + val.docs[i].data()['password']);
-              //Return Bool False
-              exists=false;
+              exist = false;
             }
           }
         }
-        return exists;
+        return exist;
       }
       else{
         //No Document Exists
-        exists=false;
         print("Not Found");
-        return exists;
+        return false;
       }
-    }).catchError((error) {exists= false;});
-
-
-    print("EXist value After GetData()" +exists.toString());
-    return exists;
+    })
+        .catchError((error) {return false;});
+    print("EXist value After GetData()" );
+    return user;
   }
 
   // register with email and password
@@ -99,6 +109,57 @@ class Api {
     }
   }
 
+ // Book a ride
+  Future generateRequest(
+      {required String userToken,
+        String toAdress="ABC",
+        String fromAdress="XYZ",
+        String paymentMethod="Unknown",
+        required String carType,
+        required String expectedBill,
+      }) async {
+    late RideModel ride;
+    if( await checkRequestStatus(userToken)){
+      bool check=false;
+      check=await firestoreRequests.add({
+        "userId":userToken,
+        "riderId":'',
+        "toAdress":toAdress,
+        "fromAdress":fromAdress,
+        "PaymentMethod":paymentMethod,
+        "carType":carType,
+        "expectedBill":'',
+        "rideStatus":0,
+      }).then((value) {
+        print(value.id);
+        ride = RideModel(
+            id: value.id,
+            paymentMethod: paymentMethod,
+            carType: carType,
+            expectedBill: expectedBill,
+            fromAdress: fromAdress,
+            toAdress: toAdress,
+            rideStatus: 0,
+            riderId: '',
+            userId: userToken
+        );
+        return true;
+      }).catchError((e){
+        print(e);
+        return false;
+      });
+    }
+    return ride;
+  }
 
+  Future<bool> checkRequestStatus(String userToken) async{
+    var stream = await firestoreRequests
+        .where('userId',isEqualTo: userToken)
+        .get();
+    var finalstream = await stream.docs.where((element) => element["rideStatus"] != 2);
+    if(finalstream.length==0)
+      return  true;
+    return false;
+  }
 
 }
