@@ -49,7 +49,6 @@ class Api {
             if(password == val.docs[i].data()['password']){
               i=index;
               print("Password Matched");
-              //Return Bool True(Credentials are Okay) To View class so it can proceed
               exists=true;
             }
             else{
