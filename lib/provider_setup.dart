@@ -44,7 +44,7 @@ List<SingleChildWidget> uiConsumableProviders = [StreamProvider<UserModel>(
   )];
 
 
-List<SingleChildWidget> credientailProvider = [ChangeNotifierProvider(create: (context) => SignInSignUpViewModel(repo: Provider.of(context)),)];
+List<SingleChildWidget> credientailProvider = [ChangeNotifierProvider(create: (context) => SignInSignUpViewModel(repo: Provider.of(context)))];
 List<SingleChildWidget> independentRemoteService = [Provider.value(value: Api())];
 List<SingleChildWidget> independentLocalService = [Provider.value(value: LocalApi())];
 List<SingleChildWidget> dependentService = [
