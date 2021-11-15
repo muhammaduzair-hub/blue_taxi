@@ -10,13 +10,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AuthRepository{
   final Api _api;
-  final LocalApi _localApi;
+  final LocalApi localApi;
 
-  AuthRepository({required Api api,required LocalApi localApi,}):_api= api,_localApi=localApi;
+  AuthRepository({required Api api,required LocalApi localApi,}):_api= api,localApi=localApi;
   
   StreamController<UserModel> _userController = StreamController<UserModel>();
   Stream<UserModel> get user => _userController.stream;
 
+  Future<bool> test() async {
+    bool res =  await localApi.test();
+    return res;
+  }
 
 // Signup Without Firebase Auth
   Future signUpWithEmailAndPassword(String name,String email,String phoneNo, password) async {
@@ -31,21 +35,24 @@ class AuthRepository{
 
   // Signup Without Firebase Auth
   Future signInWithEmailAndPassword(String phoneNo, String password) async {
-    dynamic result = await _api.signInWithEmailPassword(phoneNo, password);
+    UserModel result = await _api.signInWithEmailPassword(phoneNo, password);
+    // if(result.id!=""){
+    //   await localApi.addLoginPerson(result);
+    // }
     return result;
   }
 
   Future addAdressLocally({required String adress}) async{
-    dynamic result = await _localApi.addAdress(title: adress);
+    dynamic result = await localApi.addAdress(title: adress);
     return result;
   }
 
   Future getAdressLocally() async{
-    return await _localApi.readAllAdresses();
+    return await localApi.readAllAdresses();
   }
 
   Future getVehiclesLocally() async{
-    return await _localApi.vehicalList;
+    return await localApi.vehicalList;
   }
 
   Future generateRequest({
@@ -55,6 +62,11 @@ class AuthRepository{
   {
     dynamic res = await _api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill);
     return res;
+  }
+
+  Future<UserModel> getAlreadySignIn() async{
+    UserModel person = await localApi.getAlreadySignIn();
+    return person;
   }
 
 }

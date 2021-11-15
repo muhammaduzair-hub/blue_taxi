@@ -12,6 +12,7 @@ import 'package:bluetaxiapp/ui/views/message_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/receipt_view.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
+import 'package:bluetaxiapp/ui/views/splash_screen_view.dart';
 import 'package:bluetaxiapp/ui/views/terms_conitions_view.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/views/verify_code.dart';
@@ -84,7 +85,7 @@ class DevScreenView extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new SignInSignUpView())
+                  builder: (context) => new SplashScreenView())
               );
             },
             child: const Text('Signin Signup'),

@@ -1,3 +1,5 @@
+String userTable = 'user';
+
 class User {
   final String uid;
 
@@ -46,5 +48,38 @@ class UserModel {
     data['type'] = this.type;
     return data;
   }
+
+  String get getId => id.toString();
+
+  static UserModel fromDictionary(Map<String, Object?> json) => UserModel(
+    id: json[UserField.id] as String,
+    name: json[UserField.name] as String,
+    type: json[UserField.type] as String,
+    address: json[UserField.address] as String,
+    email: json[UserField.email] as String,
+    phoneno: json[UserField.phoneno] as String
+  );
+
+  Map<String, Object?> toDictionary()=>{
+    UserField.id : id,
+    UserField.email : email,
+    UserField.address : address,
+    UserField.phoneno : phoneno,
+    UserField.type : type,
+    UserField.name : name
+  };
 }
 
+class UserField{
+
+  static final List<String> values=[
+    id, name, email, phoneno, address, type
+  ];
+
+  static final String id='id';
+  static final String name='name';
+  static final String email='email';
+  static final String phoneno='phone';
+  static final String address='address';
+  static final String type='type';
+}

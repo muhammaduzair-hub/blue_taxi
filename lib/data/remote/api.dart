@@ -118,31 +118,48 @@ class Api {
         required String carType,
         required String expectedBill,
       }) async {
-    late RideModel ride;
+    late String ride;
     if( await checkRequestStatus(userToken)){
       bool check=false;
       check=await firestoreRequests.add({
         "userId":userToken,
         "riderId":'',
-        "toAdress":toAdress,
-        "fromAdress":fromAdress,
-        "PaymentMethod":paymentMethod,
+        "Addresses": {
+          'from':{
+            "place_name": fromAdress,
+            "lat": 20.45543,
+            "lng": 21.4353
+          },
+          'to':{
+            "place_name": toAdress,
+            "lat": 20.45543,
+            "lng": 21.4353
+          },
+        },
+        "payment":{
+          "type":"card",
+          "card_no":"*****8149",
+          "id":"xyz"
+        },
         "carType":carType,
         "expectedBill":'',
         "rideStatus":0,
+        "createDate":DateTime.now(),
+
       }).then((value) {
         print(value.id);
-        ride = RideModel(
-            id: value.id,
-            paymentMethod: paymentMethod,
-            carType: carType,
-            expectedBill: expectedBill,
-            fromAdress: fromAdress,
-            toAdress: toAdress,
-            rideStatus: 0,
-            riderId: '',
-            userId: userToken
-        );
+        ride = value.id;
+        // ride = RideModel(
+        //     id: value.id,
+        //     paymentMethod: paymentMethod,
+        //     carType: carType,
+        //     expectedBill: expectedBill,
+        //     fromAdress: fromAdress,
+        //     toAdress: toAdress,
+        //     rideStatus: 0,
+        //     riderId: '',
+        //     userId: userToken
+        // );
         return true;
       }).catchError((e){
         print(e);
