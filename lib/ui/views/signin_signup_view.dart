@@ -4,6 +4,7 @@ import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
+import 'package:bluetaxiapp/ui/views/booking_view.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/views/verify_code.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
@@ -42,7 +43,10 @@ class SignInSignUpView extends StatelessWidget {
 
      return BaseWidget<SignInSignUpViewModel>(
        model: SignInSignUpViewModel(repo: Provider.of(context)),
-       builder: (context, model, child) => Scaffold(
+       builder: (context, model, child) =>
+       model.busy?
+       Center(child: CircularProgressIndicator(),) :
+       Scaffold(
          appBar: AppBar(
            elevation: 0.0,
            backgroundColor: Colors.transparent,
@@ -132,7 +136,9 @@ class SignInSignUpView extends StatelessWidget {
    Widget signIn(BuildContext context, Size size){
      return BaseWidget<SignInSignUpViewModel>(  //we use signup model for both
        model: SignInSignUpViewModel(repo: Provider.of(context)),
-       builder: (context, model, child) => Scaffold(
+       builder: (context, model, child) =>
+       model.busy?Center(child: CircularProgressIndicator(),):
+       Scaffold(
          appBar: AppBar(
          elevation: 0.0,
          backgroundColor: Colors.transparent,

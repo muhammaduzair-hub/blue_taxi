@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:bluetaxiapp/constants/app_contstants.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
@@ -8,13 +5,11 @@ import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/adress_selection_view.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
-import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/boooking_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
 
 class BookingView extends StatelessWidget {
   final UserModel signInUser;
@@ -78,7 +73,6 @@ class BookingView extends StatelessWidget {
                         // UIHelper.verticalSpaceMedium,
                         InkWell(
                           onTap: (){
-                            //MaterialPageRoute(builder: (context) => AdressSelectionView(),);
                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdressSelectionView(signInUser: signInUser,),));
                           },
                           child: Container(

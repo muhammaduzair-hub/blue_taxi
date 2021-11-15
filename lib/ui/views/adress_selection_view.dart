@@ -7,6 +7,7 @@ import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
+import 'package:bluetaxiapp/ui/widgets/textfield_search.dart';
 import 'package:bluetaxiapp/viewmodels/views/adress_selection_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -124,27 +125,61 @@ class AdressSelectionView extends StatelessWidget {
                       Column(
                         children: [
                           SizedBox(
-                            height: 30,width: 250,
-                            child: TextField(
-                              //textInputAction: model.fromController.text.length<3? TextInputAction.none:TextInputAction.next,
-                              textInputAction: TextInputAction.next,
-                              autofocus: true,
-                              decoration: InputDecoration.collapsed(hintText: ''),
+                            height: model.addressSelection_FromSearchTextFieldInitialSize.toDouble(),
+                            width: 250,
+                            child:
+                            AdvancedTextField(
+                              autoFocus: true,
                               controller: model.fromController,
-                              onChanged: (c){},
+                              textInputAction: TextInputAction.next,
+                              data: model.adressTitles,
+                              maxElementsToDisplay: 1,
+                              autoCorrect: false,
+                              onSearchClear: () {
+                                print("Cleared Search");
+                              },
+                              onSubmitted: (value, value2) {
+                                print("Submitted: " + value);
+                                model.switchSearchFieldSize("from",30);
+                              },
+                              onEditingProgress: (value, value2) {
+                                if(model.adressTitles.length==0||model.adressTitles.contains(model.fromController.text)) model.switchSearchFieldSize("from",30);
+                                else if(value.length>0)model.switchSearchFieldSize("from",70);
+                                else if(value.length==0)model.switchSearchFieldSize("from",30);
+                              },
+                              onItemTap: (int index, String value) {
+                                model.selectSearchItem(model.fromController, value);
+                              },
                             ),
                           ),
                           Image(image:AssetImage('asset/icons/line.png')),
                           UIHelper.verticalSpaceSmall,
                           SizedBox(
-                            height: 30,width: 250,
-                            child: TextField(
-                              //textInputAction: model.toController.text.length<3? TextInputAction.none:TextInputAction.done,
-                              textInputAction: TextInputAction.done,
-                              enabled: model.fromController.text.length<3?false:true,
-                              decoration: InputDecoration.collapsed(hintText: ''),
+                            height: model.addressSelection_ToSearchTextFieldInitialSize.toDouble(),
+                            width: 250,
+                            child:
+                            AdvancedTextField(
                               controller: model.toController,
-                              onSubmitted: (v){
+                              textInputAction: TextInputAction.done,
+                              data: model.adressTitles,
+                              maxElementsToDisplay: 1,
+                              autoCorrect: false,
+                              onSearchClear: () {
+                                print("Cleared Search");
+                              },
+                              onSubmitted: (value, value2) {
+                                print("Submitted: " + value);
+                                model.switchSearchFieldSize("to",30);
+                                model.switchState(LabelRideOption);
+                              },
+                              onEditingProgress: (value, value2) {
+                                if(model.adressTitles.length==0||model.adressTitles.contains(model.toController.text)) model.switchSearchFieldSize("to",30);
+                                else if(value.length>0)model.switchSearchFieldSize("to",70);
+                                else if(value.length==0)model.switchSearchFieldSize("to",30);
+                                print("On Editing Progress :${model.addressSelection_ToSearchTextFieldInitialSize}");
+                              },
+                              onItemTap: (int index, String value) {
+                                model.selectSearchItem(model.toController, value);
                                 model.switchState(LabelRideOption);
                               },
                             ),
@@ -173,7 +208,11 @@ class AdressSelectionView extends StatelessWidget {
                     controller: scrollController,
                     itemCount: model.adressList.length,
                     separatorBuilder:  (context, index) => Image(image:AssetImage('asset/icons/line.png')),
-                    itemBuilder: (context, index) =>leadingListTile(title: model.adressList[index].adressTitle),
+                    itemBuilder: (context, index) =>
+                        leadingListTile(
+                          title: model.adressList[index].adressTitle,
+                          model: model
+                        ),
                   ),
                 ),
               ],
@@ -344,7 +383,7 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget leadingListTile({required String title}){
+  Widget leadingListTile({required String title, required AdressSelectionViewModel model}){
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.transparent,
@@ -352,6 +391,13 @@ class AdressSelectionView extends StatelessWidget {
       ),
       title: Text(title,style: heading2,),
       subtitle: Text("New york",style: heading3,),
+      onTap: (){
+        if(model.fromController.text.isEmpty) model.selectSearchItem(model.fromController, title);
+        else{
+          model.selectSearchItem(model.toController, title);
+          model.switchState(LabelRideOption);
+        }
+      },
     );
   }
 }
