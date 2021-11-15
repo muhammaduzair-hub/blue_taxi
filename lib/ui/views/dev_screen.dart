@@ -1,4 +1,6 @@
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
+import 'package:bluetaxiapp/data/remote/api.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/arriving_screen_view.dart';
@@ -25,6 +27,7 @@ class DevScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ArrivingSelectionViewModel model=ArrivingSelectionViewModel(repo:Provider.of(context));
+    RequestModel request = RequestModel(id:'', riderId: '', paymentMethod: '', expectedBill: '', fromAddress: '', rideStatus: '', carType: '', userId: '', toAddress: '');
 
 
     return Scaffold(
@@ -134,8 +137,9 @@ class DevScreenView extends StatelessWidget {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
             ),
-            onPressed: (){
-              model.getRequestId("7jVA4vGnzenK4R2JBlY6");
+            onPressed: () async {
+
+              dynamic requesty =await  model.getRequest("7jVA4vGnzenK4R2JBlY6");
               Navigator.push(context, new MaterialPageRoute(
                   builder: (context) => new ArrivingScreen())
               );

@@ -1,8 +1,10 @@
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Api {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,8 +18,6 @@ class Api {
   userModel.UserModel? _userFromFirebaseUser(User user) {
     return user != null ? userModel.UserModel( id: user.uid) : null;
   }
-
-
 
   Future signUpWithEmailPassword(String nameController, String emailController,String phoneNoController, String passwordController) async {
     await FirebaseFirestore.instance.collection("users").add({
