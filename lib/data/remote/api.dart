@@ -1,6 +1,5 @@
 import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
-
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +15,6 @@ class Api {
   // create user obj based on firebase user
   userModel.UserModel? _userFromFirebaseUser(User user) {
     return user != null ? userModel.UserModel( id: user.uid) : null;
-
   }
 
 
@@ -29,6 +27,7 @@ class Api {
       "password" : passwordController,
       "address" : "Address NotFound",
       "type" : "Type NotFound",
+
       "timestamp" : new DateTime.now()
     }).then((response) {
       print(response.id);

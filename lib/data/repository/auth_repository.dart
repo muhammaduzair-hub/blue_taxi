@@ -17,10 +17,6 @@ class AuthRepository{
   StreamController<UserModel> _userController = StreamController<UserModel>();
   Stream<UserModel> get user => _userController.stream;
 
-  Future<bool> test() async {
-    bool res =  await _localApi.test();
-    return res;
-  }
 
 // Signup Without Firebase Auth
   Future signUpWithEmailAndPassword(String name,String email,String phoneNo, password) async {
