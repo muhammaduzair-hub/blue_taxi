@@ -16,4 +16,6 @@ const heading2 = TextStyle( fontSize: 15,fontFamily: "Inter", );
 const boldHeading1 =TextStyle(fontWeight: FontWeight.bold, fontSize: 20,fontFamily: "Inter",);
 const heading1 = TextStyle( fontSize: 20,fontFamily: "Inter", );
 
+const boldTextRegular =TextStyle(fontWeight: FontWeight.bold, fontSize: 11,fontFamily: "Inter", );
+const textRegular = TextStyle( fontSize: 11,fontFamily: "Inter", );
 

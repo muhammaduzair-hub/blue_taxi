@@ -2,6 +2,7 @@ import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,12 @@ class UserMenuView extends StatelessWidget {
                         child: IconButton(
                           icon: const Icon(Icons.edit_outlined),
                           color: onPrimaryColor,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (context) => new MyProfileView()));
+                          },
                         ),
                       ),
                     )
