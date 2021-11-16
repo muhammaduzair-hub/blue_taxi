@@ -2,6 +2,7 @@ import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+import 'package:bluetaxiapp/ui/views/my_card_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
@@ -147,7 +148,9 @@ class UserMenuView extends StatelessWidget {
                   width: 148.0,
                   height: 120.0,
                   child: GestureDetector(
-                    onTap: () {}, // handle your image tap here
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
+                    }, // handle your image tap here
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       child: Column(

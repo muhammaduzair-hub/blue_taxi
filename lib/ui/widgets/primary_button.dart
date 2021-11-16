@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
-  final Text? text;
-  final VoidCallback? ontap;
+  final Text text;
+  final VoidCallback ontap;
   final Color? color;
   final double? borderRadius;
 
-   PrimaryButton({Key? key, this.text,  this.ontap, this.color, this.borderRadius}) : super(key: key);
+   PrimaryButton({Key? key, required this.text,  required this.ontap, this.color, this.borderRadius}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

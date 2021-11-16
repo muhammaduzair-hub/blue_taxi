@@ -31,7 +31,9 @@ class AdressDatabase {
     await db.execute('''
 CREATE TABLE $tableAdress ( 
   ${AdressFields.id} $idType, 
-  ${AdressFields.adressTitle} $textType
+  ${AdressFields.adresslabel} $textType,
+  ${AdressFields.lat} $textType,
+  ${AdressFields.long} $textType
   )
 ''');
   }

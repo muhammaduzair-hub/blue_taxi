@@ -9,10 +9,10 @@ import 'package:bluetaxiapp/data/remote/firebase_directory/firebase.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AuthRepository{
-  final Api _api;
+  final Api api;
   final LocalApi localApi;
 
-  AuthRepository({required Api api,required LocalApi localApi,}):_api= api,localApi=localApi;
+  AuthRepository({required Api api,required LocalApi localApi,}):api= api,localApi=localApi;
   
   StreamController<UserModel> _userController = StreamController<UserModel>();
   Stream<UserModel> get user => _userController.stream;
@@ -25,7 +25,7 @@ class AuthRepository{
 // Signup Without Firebase Auth
   Future signUpWithEmailAndPassword(String name,String email,String phoneNo, password) async {
 
-    dynamic result = await _api.signUpWithEmailPassword(name, email,phoneNo, password);
+    dynamic result = await api.signUpWithEmailPassword(name, email,phoneNo, password);
     if(result == null) {
       print("Not SignedUp");
     }
@@ -35,7 +35,7 @@ class AuthRepository{
 
   // Signup Without Firebase Auth
   Future signInWithEmailAndPassword(String phoneNo, String password) async {
-    UserModel result = await _api.signInWithEmailPassword(phoneNo, password);
+    UserModel result = await api.signInWithEmailPassword(phoneNo, password);
     // if(result.id!=""){
     //   await localApi.addLoginPerson(result);
     // }
@@ -60,7 +60,7 @@ class AuthRepository{
     required String carType,
     required String expectedBill,}) async
   {
-    dynamic res = await _api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill);
+    dynamic res = await api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill);
     return res;
   }
 
@@ -68,5 +68,11 @@ class AuthRepository{
     UserModel person = await localApi.getAlreadySignIn();
     return person;
   }
+
+  Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear})async{
+    dynamic ans = await api.addCard(cardNumber: cardNumber, cardHolder: cardHolder, expMonth: expMonth, expYear: expYear);
+    return ans;
+  }
+
 
 }
