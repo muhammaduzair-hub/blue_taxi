@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bluetaxiapp/constants/strings.dart';
+import 'package:bluetaxiapp/data/local/local_db/adress_database.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
@@ -8,6 +11,8 @@ import 'package:bluetaxiapp/viewmodels/views/signin_signup_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AdressSelectionViewModel extends BaseModel {
@@ -19,22 +24,76 @@ class AdressSelectionViewModel extends BaseModel {
   TextEditingController fromController = TextEditingController();
   late String state;
   late String titleText;
+  late List<Marker> markers=[];
   late List<AdressModel> adressList=[];
+  late List<AdressModel> remoteAdressList=[];
   late List<VehicleModel> vehiclesList = [];
-  late List<String> adressTitles=[];
+  late List<String> localAdressTitles=[];
+  late List<String> remoteAdressTitle= [];
+  late AdressModel from ;
+  late AdressModel to;
   late String generatedRide;
   late int addressSelection_FromSearchTextFieldInitialSize;
    late int addressSelection_ToSearchTextFieldInitialSize;
+   final debouncer = Debouncer(milliseconds: 3000);
+   late Map<String, List> groupList ;
+   bool selectedfromTextField = true;
 
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
 
+  switchTextField(){
+    selectedfromTextField = false;
+    setBusy(false);
+  }
+
+  showonMap() async{
+    try{
+     from = adressList.firstWhere((element) => element.adressTitle == fromController.text);
+    }catch(e){
+      from = remoteAdressList.firstWhere((element) => element.adressTitle == fromController.text);
+    }
+    try{
+      to = adressList.firstWhere((element) => element.adressTitle == toController.text);
+    }catch(e){
+      to = remoteAdressList.firstWhere((element) => element.adressTitle == toController.text);
+    }
+    double distance = await Geolocator.distanceBetween(to.lat, to.long, from.lat, from.long);
+    distance=distance/1000;
+    addMarkers(LatLng(from.lat, from.long), "From", "$distance KM");
+    addMarkers(LatLng(to.lat, to.long), "To", "$distance KM");
+
+
+    setBusy(false);
+  }
+
+  addMarkers(LatLng latLng, String description, String distance){
+    markers.add(
+      Marker(
+        markerId: MarkerId(markers.length.toString()),
+        position: latLng,
+        infoWindow: InfoWindow(
+          title: description,
+          snippet: distance
+        )
+      )
+    );
+    setBusy(false);
+  }
+
   AdressSelectionViewModel( {required this.authRepository,required this.signInUser}):super(false) {
     state = LabelSelectAdress;
-    addressSelection_FromSearchTextFieldInitialSize = 30;
-    addressSelection_ToSearchTextFieldInitialSize = 30;
+    addressSelection_FromSearchTextFieldInitialSize = 25;
+    addressSelection_ToSearchTextFieldInitialSize = 25;
     getAllAdress();
     getAllVehiclesLocally();
+  }
+
+  initializegroupList(List<String> local){
+    groupList = {
+      if(remoteAdressTitle.isNotEmpty)'Search Result':remoteAdressTitle,
+      if(localAdressTitles.isNotEmpty)'Recent':localAdressTitles
+    };
   }
 
   switchState(String newstate){
@@ -74,9 +133,10 @@ class AdressSelectionViewModel extends BaseModel {
     setBusy(true);
     adressList = await authRepository.getAdressLocally();
     adressList.forEach((element) {
-      adressTitles.add(element.adressTitle);
+      localAdressTitles.add(element.adressTitle);
     });
-    print("There are ${adressTitles.length} addresses");
+    initializegroupList(localAdressTitles);
+    print("There are ${localAdressTitles.length} addresses");
     setBusy(false);
   }
 
@@ -92,4 +152,49 @@ class AdressSelectionViewModel extends BaseModel {
      if(ans!=null) generatedRide = ans;
      print(generatedRide);
    }
+
+   searchAdressOnTextField(String val) async {
+    setBusy(true);
+    try{
+      adressList.firstWhere((element) => element.adressTitle == val);
+
+      List<String> localTemp=[];
+      localAdressTitles.forEach((element) {
+        if(element.contains(val))localTemp.add(element);
+      });
+      initializegroupList(localTemp);
+    }catch(e){
+
+      List<AdressModel> res =await authRepository.getAdressRemote(adress: val);
+      remoteAdressList.addAll(res);
+      remoteAdressTitle =[];
+       res.forEach((element) {
+         remoteAdressTitle.add(element.adressTitle);});
+       List<String> localTemp=[];
+       localAdressTitles.forEach((element) {
+         if(element.contains(element))
+           localTemp.add(element);
+       });
+       initializegroupList(localTemp);
+    }
+    setBusy(false);
+   }
+
+
+
+}
+
+class Debouncer {
+  final int milliseconds;
+  late VoidCallback action;
+   Timer? _timer;
+
+  Debouncer({required this.milliseconds});
+
+  run(VoidCallback action) {
+    if (null != _timer) {
+      _timer!.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
 }

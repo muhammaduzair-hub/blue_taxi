@@ -27,11 +27,14 @@ class AdressDatabase {
   Future _createDB(Database db, int version) async {
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     final textType = 'TEXT NOT NULL';
+    final doubleType = 'DOUBLE NOT NULL';
 
     await db.execute('''
 CREATE TABLE $tableAdress ( 
   ${AdressFields.id} $idType, 
-  ${AdressFields.adressTitle} $textType
+  ${AdressFields.adressTitle} $textType,
+  ${AdressFields.latitude} $doubleType,
+  ${AdressFields.longitude} $doubleType
   )
 ''');
   }

@@ -7,13 +7,13 @@ import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
-import 'package:bluetaxiapp/ui/widgets/textfield_search.dart';
 import 'package:bluetaxiapp/viewmodels/views/adress_selection_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:group_list_view/group_list_view.dart';
 
 class AdressSelectionView extends StatelessWidget {
   final UserModel signInUser;
@@ -43,6 +43,7 @@ class AdressSelectionView extends StatelessWidget {
               body: Stack(
                 children: [
                   GoogleMap(
+                    markers: Set.of(model.markers),
                     zoomControlsEnabled: false,
                     initialCameraPosition: CameraPosition(target: LatLng(	33.738045,73.084488,),zoom: 15),
                     mapType: MapType.terrain,
@@ -93,9 +94,9 @@ class AdressSelectionView extends StatelessWidget {
 
   Widget selectAdressBottomSheet(AdressSelectionViewModel model){
     return DraggableScrollableSheet (
-      initialChildSize: 0.4,
+      initialChildSize: 0.8,
       minChildSize: 0.4,
-      maxChildSize: 0.5,
+      maxChildSize: 0.8,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
@@ -128,29 +129,18 @@ class AdressSelectionView extends StatelessWidget {
                             height: model.addressSelection_FromSearchTextFieldInitialSize.toDouble(),
                             width: 250,
                             child:
-                            AdvancedTextField(
-                              autoFocus: true,
+                            TextField(
                               controller: model.fromController,
+                              decoration: InputDecoration.collapsed(hintText: 'To'),
+                              onChanged: (val){
+                                model.debouncer.run(() {
+                                  print(model.fromController.text);
+                                  if(model.fromController.text.length>3)model.searchAdressOnTextField(model.fromController.text);
+                                });
+                              },
                               textInputAction: TextInputAction.next,
-                              data: model.adressTitles,
-                              maxElementsToDisplay: 1,
-                              autoCorrect: false,
-                              onSearchClear: () {
-                                print("Cleared Search");
-                              },
-                              onSubmitted: (value, value2) {
-                                print("Submitted: " + value);
-                                model.switchSearchFieldSize("from",30);
-                              },
-                              onEditingProgress: (value, value2) {
-                                if(model.adressTitles.length==0||model.adressTitles.contains(model.fromController.text)) model.switchSearchFieldSize("from",30);
-                                else if(value.length>0)model.switchSearchFieldSize("from",70);
-                                else if(value.length==0)model.switchSearchFieldSize("from",30);
-                              },
-                              onItemTap: (int index, String value) {
-                                model.selectSearchItem(model.fromController, value);
-                              },
-                            ),
+                              onSubmitted: (v){model.switchTextField();},
+                            )
                           ),
                           Image(image:AssetImage('asset/icons/line.png')),
                           UIHelper.verticalSpaceSmall,
@@ -158,31 +148,48 @@ class AdressSelectionView extends StatelessWidget {
                             height: model.addressSelection_ToSearchTextFieldInitialSize.toDouble(),
                             width: 250,
                             child:
-                            AdvancedTextField(
-                              controller: model.toController,
-                              textInputAction: TextInputAction.done,
-                              data: model.adressTitles,
-                              maxElementsToDisplay: 1,
-                              autoCorrect: false,
-                              onSearchClear: () {
-                                print("Cleared Search");
-                              },
-                              onSubmitted: (value, value2) {
-                                print("Submitted: " + value);
-                                model.switchSearchFieldSize("to",30);
-                                model.switchState(LabelRideOption);
-                              },
-                              onEditingProgress: (value, value2) {
-                                if(model.adressTitles.length==0||model.adressTitles.contains(model.toController.text)) model.switchSearchFieldSize("to",30);
-                                else if(value.length>0)model.switchSearchFieldSize("to",70);
-                                else if(value.length==0)model.switchSearchFieldSize("to",30);
-                                print("On Editing Progress :${model.addressSelection_ToSearchTextFieldInitialSize}");
-                              },
-                              onItemTap: (int index, String value) {
-                                model.selectSearchItem(model.toController, value);
-                                model.switchState(LabelRideOption);
-                              },
-                            ),
+                              TextField(
+                                onTap: (){
+                                  model.switchTextField();
+                                },
+                                controller: model.toController,
+                                decoration: InputDecoration.collapsed(hintText: 'From'),
+                                onChanged: (val){
+                                  model.debouncer.run(() {
+                                    print(model.toController.text);
+                                    if(model.toController.text.length>3)model.searchAdressOnTextField(model.toController.text);
+                                  });
+                                },
+                                textInputAction: TextInputAction.done,
+                                onSubmitted: (v){
+                                  model.switchState(LabelRideOption);
+                                },
+                              )
+                            // AdvancedTextField(
+                            //   controller: model.toController,
+                            //   textInputAction: TextInputAction.done,
+                            //   data: model.adressTitles,
+                            //   maxElementsToDisplay: 1,
+                            //   autoCorrect: false,
+                            //   onSearchClear: () {
+                            //     print("Cleared Search");
+                            //   },
+                            //   onSubmitted: (value, value2) {
+                            //     print("Submitted: " + value);
+                            //     model.switchSearchFieldSize("to",30);
+                            //     model.switchState(LabelRideOption);
+                            //   },
+                            //   onEditingProgress: (value, value2) {
+                            //     if(model.adressTitles.length==0||model.adressTitles.contains(model.toController.text)) model.switchSearchFieldSize("to",30);
+                            //     else if(value.length>0)model.switchSearchFieldSize("to",70);
+                            //     else if(value.length==0)model.switchSearchFieldSize("to",30);
+                            //     print("On Editing Progress :${model.addressSelection_ToSearchTextFieldInitialSize}");
+                            //   },
+                            //   onItemTap: (int index, String value) {
+                            //     model.selectSearchItem(model.toController, value);
+                            //     model.switchState(LabelRideOption);
+                            //   },
+                            // ),
                           ),
                         ],
                       )
@@ -200,20 +207,40 @@ class AdressSelectionView extends StatelessWidget {
                 ),
                 UIHelper.verticalSpaceMedium,
                 UIHelper.verticalSpaceSmall,
-                Text("Recent",style: boldHeading3.copyWith(color: onPrimaryColor2),),
+
                 UIHelper.verticalSpaceSmall,
                 Container(
                   height: 500,
-                  child: ListView.separated(
-                    controller: scrollController,
-                    itemCount: model.adressList.length,
-                    separatorBuilder:  (context, index) => Image(image:AssetImage('asset/icons/line.png')),
-                    itemBuilder: (context, index) =>
+                  //group list view
+                  child:
+                    GroupListView(
+                      sectionsCount: model.groupList.keys.toList().length,
+                      countOfItemInSection: (int section){
+                        return model.groupList.values.toList()[section].length;
+                      },
+                      itemBuilder: (context, index) =>
                         leadingListTile(
-                          title: model.adressList[index].adressTitle,
-                          model: model
+                          title: model.groupList.values.toList()[index.section][index.index],
+                          model: model,
+                          controller: scrollController
                         ),
-                  ),
+                      groupHeaderBuilder: (context, section) =>
+                          Text(model.groupList.keys.toList()[section],
+                            style: boldHeading3.copyWith(color: onPrimaryColor2),
+                          ),
+                      separatorBuilder: (context, index) => Image(image:AssetImage('asset/icons/line.png')),
+                      sectionSeparatorBuilder: (context, section) => UIHelper.verticalSpaceMedium,
+                    )
+                  // ListView.separated(
+                  //   controller: scrollController,
+                  //   itemCount: model.adressList.length,
+                  //   separatorBuilder:  (context, index) => Image(image:AssetImage('asset/icons/line.png')),
+                  //   itemBuilder: (context, index) =>
+                  //       leadingListTile(
+                  //         title: model.adressList[index].adressTitle,
+                  //         model: model
+                  //       ),
+                  // ),
                 ),
               ],
             )
@@ -233,6 +260,7 @@ class AdressSelectionView extends StatelessWidget {
           padding: UIHelper.pagePaddingSmall.copyWith(top: 0,bottom: 0),
           color: onSecondaryColor,
           child: ListView(
+            controller: scrollController,
             children: [
               //list view
               Container(
@@ -306,6 +334,7 @@ class AdressSelectionView extends StatelessWidget {
                   ontap: ()async {
                     await model.addAdress(model.toController.text);
                     await model.addAdress(model.fromController.text);
+                    model.initializegroupList(model.localAdressTitles);
                     await model.generateRequest();
                     if(model.generatedRide!=null)
                       Navigator.push(context, MaterialPageRoute(builder: (context) => DevScreenView(),));
@@ -383,20 +412,22 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget leadingListTile({required String title, required AdressSelectionViewModel model}){
+  Widget leadingListTile({required String title, required AdressSelectionViewModel model, required ScrollController controller }){
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage('asset/icons/ic_place.png'),
       ),
       title: Text(title,style: heading2,),
-      subtitle: Text("New york",style: heading3,),
+      //subtitle: Text("New york",style: heading3,),
       onTap: (){
-        if(model.fromController.text.isEmpty) model.selectSearchItem(model.fromController, title);
+        if(model.selectedfromTextField) model.selectSearchItem(model.fromController, title);
         else{
           model.selectSearchItem(model.toController, title);
+          model.showonMap();
           model.switchState(LabelRideOption);
         }
+        controller.animateTo(controller.position.minScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.ease);
       },
     );
   }

@@ -37,7 +37,8 @@ dependencies:
   sqflite: ^2.0.0+4
   geolocator: ^7.7.1
   textfield_search: ^0.8.0
-  advanced_search: ^2.0.0
+  advanced_search: ^2.0.0 #we dont use it anymore
+  group_list_view: ^1.1.1
 
 dev_dependencies:
   flutter_test:

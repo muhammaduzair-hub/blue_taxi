@@ -37,11 +37,8 @@ class LocalApi{
     return adressList;
   }
 
-  Future<List<AdressModel>> addAdress ({required String title}) async{
-    AdressModel taskModel = AdressModel(adressTitle: title);
-    await AdressDatabase.instance.create(taskModel);
-    adressList = await AdressDatabase.instance.readAllNotes();
-    return adressList;
+  Future addAdress ({required AdressModel adressModel}) async{
+    await AdressDatabase.instance.create(adressModel);
   }
 
   Future<bool> test()async{
