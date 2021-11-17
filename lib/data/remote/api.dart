@@ -1,8 +1,13 @@
 import 'package:bluetaxiapp/data/model/adress_model.dart';
+import 'package:bluetaxiapp/data/model/card_model.dart';
+import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 
 class Api {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -12,6 +17,7 @@ class Api {
   late var firestoreAdresses = firestore.collection("addresses");
 
 
+  late var fireStoreCards = firestore.collection("cards");
 
 
 
@@ -181,6 +187,42 @@ class Api {
       return  true;
     return false;
   }
+
+  Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear}) async{
+    if(await checkCardsAlreadyFound(cardNumber)){
+      bool check = false;
+      check = await fireStoreCards.add({
+        "userId":signedINUser.id,
+        "cardNumber":cardNumber,
+        "cardHolderName":cardHolder,
+        "expMonth":expMonth,
+        "expYear":expYear
+      })
+          .then((value) => true)
+          .catchError((e)=>false);
+      return check;
+    }
+  }
+
+  Future<bool> checkCardsAlreadyFound(String cardNumber) async{
+    if(fireStoreCards.doc().snapshots().length==0)
+      return true;
+    var stream = await fireStoreCards
+        .where('userId',isEqualTo: signedINUser.id)
+        .get();
+    var finalstream = await stream.docs.where((element) => element["cardNumber"] == cardNumber);
+    if(finalstream.length==0)
+      return  true;
+    return false;
+  }
+
+  Future getCards() async{
+    var stream= await fireStoreCards.where('userId',isEqualTo: signedINUser.id).get();
+    //List<CardModel> mycards = (json.decode(stream.docs.)as List).map((e) => CardModel.fromJson(e)).toList();
+    List<CardModel> mycards = stream.docs.map((e) => CardModel.fromJson(e.data())).toList();
+    return mycards;
+  }
+
 
   Future saveAddress(AdressModel address)async{
    await firestoreAdresses.add({
