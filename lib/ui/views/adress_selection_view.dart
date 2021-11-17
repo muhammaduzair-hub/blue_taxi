@@ -165,31 +165,6 @@ class AdressSelectionView extends StatelessWidget {
                                   model.switchState(LabelRideOption);
                                 },
                               )
-                            // AdvancedTextField(
-                            //   controller: model.toController,
-                            //   textInputAction: TextInputAction.done,
-                            //   data: model.adressTitles,
-                            //   maxElementsToDisplay: 1,
-                            //   autoCorrect: false,
-                            //   onSearchClear: () {
-                            //     print("Cleared Search");
-                            //   },
-                            //   onSubmitted: (value, value2) {
-                            //     print("Submitted: " + value);
-                            //     model.switchSearchFieldSize("to",30);
-                            //     model.switchState(LabelRideOption);
-                            //   },
-                            //   onEditingProgress: (value, value2) {
-                            //     if(model.adressTitles.length==0||model.adressTitles.contains(model.toController.text)) model.switchSearchFieldSize("to",30);
-                            //     else if(value.length>0)model.switchSearchFieldSize("to",70);
-                            //     else if(value.length==0)model.switchSearchFieldSize("to",30);
-                            //     print("On Editing Progress :${model.addressSelection_ToSearchTextFieldInitialSize}");
-                            //   },
-                            //   onItemTap: (int index, String value) {
-                            //     model.selectSearchItem(model.toController, value);
-                            //     model.switchState(LabelRideOption);
-                            //   },
-                            // ),
                           ),
                         ],
                       )
@@ -358,32 +333,18 @@ class AdressSelectionView extends StatelessWidget {
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
             color: onSecondaryColor,
-            padding: UIHelper.pagePaddingSmall.copyWith(top: 0),
-            child: ListView(
+            padding: UIHelper.pagePaddingSmall.copyWith(top: 20),
+            child: ListView.separated(
               controller: scrollController,
-              children: [
-                UIHelper.verticalSpaceMedium,
-                Text(LabelSelectPayment, style: boldHeading2,),
-                UIHelper.verticalSpaceMedium,
-                paymentOptionListTile(
-                    leadingImage: AssetImage("asset/icons/ic_mastercard.png"),
-                    text: "**** 8965",
-                    trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
-                ),
-                UIHelper.verticalSpaceSmall,
-                paymentOptionListTile(
-                    leadingImage: AssetImage("asset/icons/ic_visa.png"),
-                    text: "**** 8965",
-                    trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
-                ),
-                UIHelper.verticalSpaceSmall,
-                paymentOptionListTile(
-                    leadingImage: AssetImage("asset/icons/ic_cash.png"),
-                    text: LabelCash,
-                    trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
-                ),
-
-              ],
+              shrinkWrap: true,
+              itemCount: model.myCards.length,
+              separatorBuilder: (context, index) => UIHelper.verticalSpaceSmall,
+              itemBuilder: (context, index) =>
+                  paymentOptionListTile(
+                    leadingImage: model.myCards[index].leadingImage,
+                    text: model.myCards[index].cardNumber,
+                      trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
+                  ),
             ),
         ),
       ),

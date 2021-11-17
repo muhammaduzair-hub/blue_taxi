@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/local/local_db/adress_database.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
+import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/model/vehicles_model.dart';
@@ -38,9 +39,19 @@ class AdressSelectionViewModel extends BaseModel {
    final debouncer = Debouncer(milliseconds: 3000);
    late Map<String, List> groupList ;
    bool selectedfromTextField = true;
+   late List<CardModel> myCards;
 
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
+
+   AdressSelectionViewModel( {required this.authRepository,required this.signInUser}):super(false) {
+     state = LabelSelectAdress;
+     addressSelection_FromSearchTextFieldInitialSize = 25;
+     addressSelection_ToSearchTextFieldInitialSize = 25;
+     getAllAdress();
+     getAllVehiclesLocally();
+     getcards();
+   }
 
   switchTextField(){
     selectedfromTextField = false;
@@ -67,6 +78,12 @@ class AdressSelectionViewModel extends BaseModel {
     setBusy(false);
   }
 
+   getcards()async{
+     setBusy(true);
+     myCards = await authRepository.api.getCards();
+     setBusy(false);
+   }
+
   addMarkers(LatLng latLng, String description, String distance){
     markers.add(
       Marker(
@@ -81,13 +98,7 @@ class AdressSelectionViewModel extends BaseModel {
     setBusy(false);
   }
 
-  AdressSelectionViewModel( {required this.authRepository,required this.signInUser}):super(false) {
-    state = LabelSelectAdress;
-    addressSelection_FromSearchTextFieldInitialSize = 25;
-    addressSelection_ToSearchTextFieldInitialSize = 25;
-    getAllAdress();
-    getAllVehiclesLocally();
-  }
+
 
   initializegroupList(List<String> local){
     groupList = {

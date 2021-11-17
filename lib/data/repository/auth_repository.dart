@@ -45,7 +45,7 @@ class AuthRepository{
 
   Future addAdressLocally({required String adress}) async{
     late List<AdressModel> result;
-    result = await _api.getAddress(adress);
+    result = await api.getAddress(adress);
     result = result.where((element) => element.adressTitle.contains(adress)).toList();
     if(result.isNotEmpty)
     {
@@ -57,7 +57,7 @@ class AuthRepository{
 
   Future getAdressRemote({required String adress}) async{
     late List<AdressModel> result;
-    result = await _api.getAddress(adress);
+    result = await api.getAddress(adress);
     result = result.where((element) => element.adressTitle.contains(adress)).toList();
     if(result.isNotEmpty)
       {
@@ -70,9 +70,9 @@ class AuthRepository{
         UrlDataModel model = UrlDataModel.fromJson(con.jsonDecode(response.body));
 
         model.address.removeWhere((element) => element.country!='Pakistan');
-        model.address.forEach((element) async{await _api.saveAddress(element);});
+        model.address.forEach((element) async{await api.saveAddress(element);});
 
-        var res = await _api.firestoreAdresses.get();
+        var res = await api.firestoreAdresses.get();
         result =await res.docs.map((e) => AdressModel.fromJson(e.data())).toList();
         result = result.where((element) => element.adressTitle.contains(adress)).toList();
         return result;
