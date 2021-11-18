@@ -291,15 +291,18 @@ class AdressSelectionView extends StatelessWidget {
               ),
               //Payment List tile
               ListTile(
-                onTap:(){ model.switchState(LabelPaymentOption);},
+                onTap:(){},
                 title: Text(LabelEstimateTripTime,style:heading3.copyWith(color: onPrimaryColor2) ,),
-                subtitle: Text("24 min",style: heading3.copyWith(color: secondaryColor),),
-                trailing: Wrap(
-                  spacing: 3,
-                  children: [
-                    Image.asset("asset/icons/ic_mastercard.png"),
-                    Text("**** 8295",style: heading3,),
-                  ],
+                subtitle: Text("${model.distance.toInt()*3} min",style: heading3.copyWith(color: secondaryColor),),
+                trailing: InkWell(
+                  onTap: (){ model.switchState(LabelPaymentOption);},
+                  child: Wrap(
+                    spacing: 3,
+                    children: [
+                      Image.asset("asset/icons/ic_mastercard.png"),
+                      Text("**** 8295",style: heading3,),
+                    ],
+                  ),
                 ),
               ),
               Container(

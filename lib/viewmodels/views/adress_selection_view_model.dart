@@ -33,6 +33,7 @@ class AdressSelectionViewModel extends BaseModel {
   late List<String> remoteAdressTitle= [];
   late AdressModel from ;
   late AdressModel to;
+  late double distance;
   late String generatedRide;
   late int addressSelection_FromSearchTextFieldInitialSize;
    late int addressSelection_ToSearchTextFieldInitialSize;
@@ -69,7 +70,7 @@ class AdressSelectionViewModel extends BaseModel {
     }catch(e){
       to = remoteAdressList.firstWhere((element) => element.adressTitle == toController.text);
     }
-    double distance = await Geolocator.distanceBetween(to.lat, to.long, from.lat, from.long);
+    distance = await Geolocator.distanceBetween(to.lat, to.long, from.lat, from.long);
     distance=distance/1000;
     addMarkers(LatLng(from.lat, from.long), "From", "$distance KM");
     addMarkers(LatLng(to.lat, to.long), "To", "$distance KM");
