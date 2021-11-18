@@ -21,7 +21,7 @@ class MySplashScreenView extends StatelessWidget {
           duration: 4000,
           backgroundColor: Colors.blue,
           text: "Blue\nTaxi",
-          textStyle: boldHeading1.copyWith(color: Colors.white),
+          textStyle: boldHeading1.copyWith(color: Colors.white, fontSize: 48),
         ),
     );
   }
