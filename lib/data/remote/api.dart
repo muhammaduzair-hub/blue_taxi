@@ -1,12 +1,16 @@
+import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/requestData_model.dart';
 import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 
 class Api {
 
@@ -16,6 +20,7 @@ class Api {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
   late var  firestoreRequests = firestore.collection("request");
+  late var fireStoreCards = firestore.collection("cards");
 
   final _requestCollectionReference =
   FirebaseFirestore.instance.collection("request");
@@ -29,6 +34,8 @@ class Api {
   userModel.UserModel? _userFromFirebaseUser(User user) {
     return user != null ? userModel.UserModel( id: user.uid) : null;
   }
+
+
 
   Future signUpWithEmailPassword(String nameController, String emailController,String phoneNoController, String passwordController) async {
     await FirebaseFirestore.instance.collection("users").add({
@@ -256,5 +263,41 @@ class Api {
     'driverStatus' : 'Unassigned'
     });
   }
+
+  Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear}) async{
+    if(await checkCardsAlreadyFound(cardNumber)){
+      bool check = false;
+      check = await fireStoreCards.add({
+        "userId":signedINUser.id,
+        "cardNumber":cardNumber,
+        "cardHolderName":cardHolder,
+        "expMonth":expMonth,
+        "expYear":expYear
+      })
+          .then((value) => true)
+          .catchError((e)=>false);
+      return check;
+    }
+  }
+
+  Future<bool> checkCardsAlreadyFound(String cardNumber) async{
+    if(fireStoreCards.doc().snapshots().length==0)
+      return true;
+    var stream = await fireStoreCards
+        .where('userId',isEqualTo: signedINUser.id)
+        .get();
+    var finalstream = await stream.docs.where((element) => element["cardNumber"] == cardNumber);
+    if(finalstream.length==0)
+      return  true;
+    return false;
+  }
+
+  Future getCards() async{
+    var stream= await fireStoreCards.where('userId',isEqualTo: signedINUser.id).get();
+    //List<CardModel> mycards = (json.decode(stream.docs.)as List).map((e) => CardModel.fromJson(e)).toList();
+    List<CardModel> mycards = stream.docs.map((e) => CardModel.fromJson(e.data())).toList();
+    return mycards;
+  }
+
 
 }
