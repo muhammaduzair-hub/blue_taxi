@@ -1,6 +1,7 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/arriving_screen_view.dart';
@@ -17,14 +18,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class AdressSelectionView extends StatelessWidget {
-  final UserModel signInUser;
 
-  const AdressSelectionView({Key? key, required this.signInUser }) : super(key: key);
+  const AdressSelectionView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget<AdressSelectionViewModel>(
-      model: AdressSelectionViewModel(authRepository: Provider.of(context),signInUser: signInUser),
+      model: AdressSelectionViewModel(authRepository: Provider.of(context)),
       builder: (context, model, child) => WillPopScope(
         onWillPop: () async{
           if(model.state==LabelSelectAdress){
@@ -305,12 +305,12 @@ class AdressSelectionView extends StatelessWidget {
                 width: double.infinity,
                 child: PrimaryButton(
                   ontap: ()async {
-                    await model.addAdress(model.toController.text);
-                    await model.addAdress(model.fromController.text);
+                    //await model.addAdress(model.toController.text);
+                   // await model.addAdress(model.fromController.text);
                     dynamic result= await model.generateRequest();
                     if(model.generatedRide!=null) {
                       Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => ArrivingScreen(requestedId: result,),));
+                          context) => ArrivingScreen(requestedId: requestId,),));
                     }
                   },
                   text: Text(LabelBookRide, ),

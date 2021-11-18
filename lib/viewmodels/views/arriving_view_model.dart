@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
@@ -23,10 +21,11 @@ class ArrivingSelectionViewModel extends BaseModel {
   late String state;
   late Future<DriverModel?> driver;
   final String requestId;
-  late String OneBState='true';
-  late String TwoBState='false';
-  late String ThreeBState='false';
-  late String FourBState='false';
+  late int buttonState=1;
+  // late Timer _timer;
+  // var oneSec = const Duration(seconds: 1);
+  // int _start = 10;
+  //
 
 
 
@@ -38,13 +37,40 @@ class ArrivingSelectionViewModel extends BaseModel {
     print(driver);
   }
 
+  @override
+  dispose(){
+
+  }
+
   switchState(String newstate) {
     setBusy(true);
     state = newstate;
     if(state == EnumToString.convertToString(Status.Active)) {
+      //
+      // _timer = new Timer.periodic(
+      //   oneSec,
+      //       (Timer timer) {
+      //     if (_start == 0) {
+      //         timer.cancel();
+      //     } else {
+      //         _start--;
+      //     }
+      //   },
+      // );
+      //
+      //
+      //
+
       Timer(Duration(seconds: 8), () {
         switchState(EnumToString.convertToString(Status.Dispatched));
+        switchToDispatchedState();
       });
+    }
+
+
+    if(state == EnumToString.convertToString(Status.Cancelled)){
+      unassignDriver();
+      switchToCancelledState();
     }
     setBusy(false);
   }
@@ -53,7 +79,6 @@ class ArrivingSelectionViewModel extends BaseModel {
     setBusy(true);
     if(driver!=null)switchState(EnumToString.convertToString(Status.Active));
     setBusy(false);
-
     return driver;
   }
 
@@ -81,35 +106,24 @@ class ArrivingSelectionViewModel extends BaseModel {
   }
 
   void unassignDriver() {
-    repo.unassignDriver(requestId);
+    repo.unassignDriver();
   }
 
+  void switchToCompletedState() {
+    repo.switchToCompletedState(requestId);
+  }
+  void switchToDispatchedState() {
+    repo.switchToDispatchedState(requestId);
+  }
 
+  void switchToCancelledState() {
+    repo.switchToCancelledState(requestId);
+  }
 
-  // void switchButtonState(String BState) {
-  //   setBusy(true);
-  //   BState= 'true';
-  //   if(OneBState == 'true'){
-  //     TwoBState ='false';
-  //     ThreeBState ='false';
-  //     FourBState = 'false';
-  //   }
-  //   else if(TwoBState == 'true'){
-  //     OneBState ='false';
-  //     ThreeBState ='false';
-  //     FourBState = 'false';
-  //   }
-  //   else if(ThreeBState == 'true'){
-  //     OneBState ='false';
-  //     TwoBState ='false';
-  //     FourBState = 'false';
-  //   }
-  //   else if(FourBState == 'true'){
-  //     OneBState ='false';
-  //     ThreeBState ='false';
-  //     TwoBState = 'false';
-  //   }
-  //   setBusy(false);
-  // }
+  switchButtonState(int state){
+    buttonState=state;
+    setBusy(false);
+  }
+
 
 }

@@ -26,7 +26,7 @@ class SplashScreenViewModel extends BaseModel{
           context,
           MaterialPageRoute(builder: (context) =>
             signedINUser.id!=''
-                ? BookingView(signInUser: signedINUser)
+                ? BookingView()
                 :SignInSignUpView(),
           )
       );

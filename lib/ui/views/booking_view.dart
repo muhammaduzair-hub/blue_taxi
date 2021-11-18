@@ -12,8 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class BookingView extends StatelessWidget {
-  final UserModel signInUser;
-  const BookingView({Key? key, required this.signInUser}) : super(key: key);
+  const BookingView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +72,7 @@ class BookingView extends StatelessWidget {
                         // UIHelper.verticalSpaceMedium,
                         InkWell(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AdressSelectionView(signInUser: signInUser,),));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AdressSelectionView(),));
                           },
                           child: Container(
                             margin: UIHelper.pagePaddingSmall.copyWith(bottom: 0),

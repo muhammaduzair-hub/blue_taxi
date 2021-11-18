@@ -28,7 +28,6 @@ class ArrivingScreen extends StatelessWidget {
 
   ArrivingScreen({Key? key, required this.requestedId}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return BaseWidget<ArrivingSelectionViewModel>(
@@ -145,10 +144,11 @@ class ArrivingScreen extends StatelessWidget {
               child: LeadingBackButton(
                 radius: 30.0,
                 ontap: () {
+                  model.switchState(EnumToString.convertToString(Status.Cancelled));
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
-                          builder: (context) => new CancellationReasonView()));
+                          builder: (context) => new CancellationReasonView(requestedId: requestedId,)));
                 },
                 icon: AssetImage('asset/icons/btn_cancel.png'),
               ),
@@ -329,7 +329,11 @@ class ArrivingScreen extends StatelessWidget {
                               ),
                               NavButton(
                                 ontap: () {
-                                  model.switchState(LabelOnTrip);
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new CancellationReasonView(requestedId: requestedId,)));
+                                  model.switchState(EnumToString.convertToString(Status.Cancelled));
                                 },
                                 icon: AssetImage('asset/icons/btn_cancel.png'),
                               ),
@@ -714,11 +718,15 @@ class ArrivingScreen extends StatelessWidget {
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
+                                  color: 1==model.buttonState? secondaryColor : onSecondaryColor,
                                     text: Text(
                                       "0%",
-                                      style: buttonTextStyle,
+                                      style: buttonTextStyle.copyWith(
+                                        color: 1==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                      ),
                                     ),
                                     ontap: () {
+                                    model.switchButtonState(1);
                                     //  model.switchButtonState("OneBState");
                                     }),
                               ),
@@ -726,13 +734,15 @@ class ArrivingScreen extends StatelessWidget {
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
-                                    color: onSecondaryColor,
+                                    color: 2==model.buttonState?secondaryColor : onSecondaryColor,
                                     text: Text(
                                       "5%",
                                       style: buttonTextStyle.copyWith(
-                                          color: onPrimaryColor),
+                                        color: 2==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                      ),
                                     ),
                                     ontap: () {
+                                      model.switchButtonState(2);
                                     //  model.switchButtonState("TwoBState");
                                     }),
                               ),
@@ -740,28 +750,32 @@ class ArrivingScreen extends StatelessWidget {
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
-                                    color: onSecondaryColor,
+                                    color: 3==model.buttonState? secondaryColor : onSecondaryColor,
                                     text: Text(
                                       "10%",
                                       style: buttonTextStyle.copyWith(
-                                          color: onPrimaryColor),
+                                        color: 3==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                      ),
                                     ),
                                     ontap: () {
-                                    //  model.switchButtonState("ThreeBState");
+                                      model.switchButtonState(3);
+                                      //  model.switchButtonState("ThreeBState");
                                     }),
                               ),
                               Container(
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
-                                    color: onSecondaryColor,
+                                    color: 4==model.buttonState? secondaryColor : onSecondaryColor,
                                     text: Text(
                                       "20%",
                                       style: buttonTextStyle.copyWith(
-                                          color: onPrimaryColor),
+                                          color: 4==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                      ),
                                     ),
                                     ontap: () {
-                                     // model.switchButtonState("FourBState");
+                                      model.switchButtonState(4);
+                                      // model.switchButtonState("FourBState");
                                     }),
                               ),
                             ],
@@ -919,6 +933,7 @@ class ArrivingScreen extends StatelessWidget {
                                 textStyle: const TextStyle(fontSize: 20),
                               ),
                               onPressed: () async {
+                                model.switchToCompletedState();
                                 model.switchState(EnumToString.convertToString(Status.Completed));
                               },
                               child: const Text('Enjoy Your Ride'),

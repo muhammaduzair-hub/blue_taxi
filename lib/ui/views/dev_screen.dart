@@ -1,3 +1,4 @@
+import 'package:bluetaxiapp/data/local/local_api.dart';
 import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
@@ -26,7 +27,7 @@ import 'package:provider/provider.dart';
 
 class DevScreenView extends StatelessWidget {
   DevScreenView({Key? key}) : super(key: key);
-
+  late LocalApi _localApi;
   @override
   Widget build(BuildContext context) {
 
@@ -44,7 +45,7 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => AdressSelectionView(signInUser: UserModel(id: ''),)));
+                    builder: (context) => AdressSelectionView()));
               },
               child: const Text('Adress Selection View'),
             ),
@@ -54,7 +55,7 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new BookingView(signInUser: UserModel(id: ''),))
+                    builder: (context) => new BookingView())
                 );
               },
               child: const Text('Booking View'),
@@ -120,7 +121,7 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new CancellationReasonView(key: null,))
+                    builder: (context) => new CancellationReasonView(key: null, requestedId: null,))
                 );
               },
               child: const Text('CancellationReason'),
@@ -144,7 +145,7 @@ class DevScreenView extends StatelessWidget {
 
                // dynamic requesty =await  model.getRequest("RTW048yQFu98nbzwfa6q");
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new ArrivingScreen(requestedId: 'RTW048yQFu98nbzwfa6q',))
+                    builder: (context) => new ArrivingScreen(requestedId: 'LZoVUvFa31fk0Jsb0evm',))
                 );
               },
               child: const Text('Arriving View'),
@@ -193,6 +194,7 @@ class DevScreenView extends StatelessWidget {
               },
               child: const Text('Notification View'),
             ),
+
           ]
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/model/vehicles_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/viewmodels/views/signin_signup_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -12,7 +13,6 @@ import 'package:provider/provider.dart';
 
 class AdressSelectionViewModel extends BaseModel {
    final AuthRepository authRepository;
-   final UserModel signInUser;
 
   //varibles who are going to communicate with UI
   TextEditingController toController = TextEditingController();
@@ -29,7 +29,7 @@ class AdressSelectionViewModel extends BaseModel {
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
 
-  AdressSelectionViewModel( {required this.authRepository,required this.signInUser}):super(false) {
+  AdressSelectionViewModel( {required this.authRepository}):super(false) {
     state = LabelSelectAdress;
     addressSelection_FromSearchTextFieldInitialSize = 30;
     addressSelection_ToSearchTextFieldInitialSize = 30;
@@ -86,10 +86,13 @@ class AdressSelectionViewModel extends BaseModel {
 
    Future generateRequest() async{
      dynamic ans = await authRepository.generateRequest(
-         userToken: signInUser.id,
+         userToken: signedINUser.id,
          carType: vehiclesList[vehicleSelectedIndex].vName,
          expectedBill: "1000");
-     if(ans!=null) generatedRide = ans;
+
+     if(ans!=null){
+       requestId=ans;
+       generatedRide = ans;}
      print(generatedRide);
    }
 }

@@ -74,8 +74,8 @@ class AuthRepository{
     return person;
   }
 
-  void unassignDriver(String requestedId) {
-    api.unassignDriver(requestedId);
+  void unassignDriver() {
+    api.unassignDriver();
   }
 
   Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear})async{
@@ -83,5 +83,20 @@ class AuthRepository{
     return ans;
   }
 
+  void switchToCompletedState(String requestId) {
+    api.switchToCompletedState(requestId);
+  }
 
+  void switchToCancelledState(String requestId) {
+    api.switchToCancelledState(requestId);
+  }
+
+  void switchToDispatchedState(String requestId) {
+    api.switchToDispatchedState(requestId);
+  }
+
+  validateEmail(String value, String phoneNo) async {
+    Future<bool> result = api.validateEmail(email: value,phoneNo: phoneNo);
+    return result;
+  }
 }
