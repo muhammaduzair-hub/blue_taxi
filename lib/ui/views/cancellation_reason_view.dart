@@ -16,9 +16,8 @@ import 'base_widget.dart';
 
 
 class CancellationReasonView extends StatefulWidget {
-  var requestedId;
 
-  CancellationReasonView({Key? key, required this.requestedId}) : super(key: key);
+  CancellationReasonView({Key? key}) : super(key: key);
 
   @override
   State<CancellationReasonView> createState() => _CancellationReasonViewState();

@@ -45,13 +45,14 @@ class AdressSelectionViewModel extends BaseModel {
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
 
-   AdressSelectionViewModel( {required this.authRepository,required this.signInUser}):super(false) {
+   AdressSelectionViewModel( {required this.authRepository}):super(false) {
      state = LabelSelectAdress;
      addressSelection_FromSearchTextFieldInitialSize = 25;
      addressSelection_ToSearchTextFieldInitialSize = 25;
      getAllAdress();
      getAllVehiclesLocally();
      getcards();
+     initializegroupList(localAdressTitles);
    }
 
   switchTextField(){

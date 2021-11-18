@@ -148,7 +148,7 @@ class ArrivingScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
-                          builder: (context) => new CancellationReasonView(requestedId: requestedId,)));
+                          builder: (context) => new CancellationReasonView()));
                 },
                 icon: AssetImage('asset/icons/btn_cancel.png'),
               ),
@@ -332,7 +332,7 @@ class ArrivingScreen extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       new MaterialPageRoute(
-                                          builder: (context) => new CancellationReasonView(requestedId: requestedId,)));
+                                          builder: (context) => new CancellationReasonView()));
                                   model.switchState(EnumToString.convertToString(Status.Cancelled));
                                 },
                                 icon: AssetImage('asset/icons/btn_cancel.png'),

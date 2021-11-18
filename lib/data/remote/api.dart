@@ -175,17 +175,6 @@ class Api {
       }).then((value) {
         print(value.id);
         ride = value.id;
-        // ride = RideModel(
-        //     id: value.id,
-        //     paymentMethod: paymentMethod,
-        //     carType: carType,
-        //     expectedBill: expectedBill,
-        //     fromAdress: fromAdress,
-        //     toAdress: toAdress,
-        //     rideStatus: 0,
-        //     riderId: '',
-        //     userId: userToken
-        // );
         return true;
       }).catchError((e){
         print(e);
@@ -201,9 +190,9 @@ class Api {
         .get();
     var finalstream = await stream.docs.where(
             (element) =>
-              element["rideStatus"] != EnumToString.convertToString(Status.Completed)
-                  ||
-                  element["rideStatus"] !=EnumToString.convertToString(Status.Cancelled)
+              element["rideStatus"] != 'Completed'
+                  &&
+                  element["rideStatus"] !='Cancelled'
     );
     if(finalstream.length==0)
       return  true;

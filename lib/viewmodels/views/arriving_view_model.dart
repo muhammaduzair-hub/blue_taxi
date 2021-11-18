@@ -22,10 +22,6 @@ class ArrivingSelectionViewModel extends BaseModel {
   late Future<DriverModel?> driver;
   final String requestId;
   late int buttonState=1;
-  // late Timer _timer;
-  // var oneSec = const Duration(seconds: 1);
-  // int _start = 10;
-
 
 
 
@@ -42,18 +38,17 @@ class ArrivingSelectionViewModel extends BaseModel {
 
   }
 
-  switchState(String newstate) {
+  switchState(String newstate) async {
     setBusy(true);
     state = newstate;
     if(state == EnumToString.convertToString(Status.Active)) {
      // startTimer();
-
-      Timer(Duration(seconds: 8), () {
-        switchState(EnumToString.convertToString(Status.Dispatched));
-        switchToDispatchedState();
-      });
+    await Future.delayed(Duration(seconds: 8));
+     if(state !=  EnumToString.convertToString(Status.Cancelled)){
+       switchState(EnumToString.convertToString(Status.Dispatched));
+       switchToDispatchedState();
+     }
     }
-
 
     if(state == EnumToString.convertToString(Status.Cancelled)){
       unassignDriver();
@@ -62,18 +57,6 @@ class ArrivingSelectionViewModel extends BaseModel {
     setBusy(false);
   }
 
-  // void startTimer(){
-  //   _timer = new Timer.periodic(
-  //     oneSec,
-  //         (Timer timer) {
-  //       if (_start == 0 || state == EnumToString.convertToString(Status.Cancelled)) {
-  //         timer.cancel();
-  //       } else {
-  //         _start--;
-  //       }
-  //     },
-  //   );
-  // }
 
   Future<DriverModel?> checkDriver() async {
     setBusy(true);
