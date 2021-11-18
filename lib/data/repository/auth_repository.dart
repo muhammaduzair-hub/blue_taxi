@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:bluetaxiapp/data/local/local_api.dart';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
 import 'package:bluetaxiapp/data/remote/firebase_directory/firebase.dart';
@@ -32,6 +33,10 @@ class AuthRepository{
     return result;
   }
 
+  Future<DriverModel?> getRequestData(String uid) async {
+    Future<DriverModel?> result= _api.getRequestData(uid);
+    return result;
+  }
 
   // Signup Without Firebase Auth
   Future signInWithEmailAndPassword(String phoneNo, String password) async {
@@ -67,6 +72,10 @@ class AuthRepository{
   Future<UserModel> getAlreadySignIn() async{
     UserModel person = await localApi.getAlreadySignIn();
     return person;
+  }
+
+  void unassignDriver(String requestedId) {
+    _api.unassignDriver(requestedId);
   }
 
 }

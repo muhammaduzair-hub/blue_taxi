@@ -3,6 +3,7 @@ import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+import 'package:bluetaxiapp/ui/views/arriving_screen_view.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
@@ -306,9 +307,11 @@ class AdressSelectionView extends StatelessWidget {
                   ontap: ()async {
                     await model.addAdress(model.toController.text);
                     await model.addAdress(model.fromController.text);
-                    await model.generateRequest();
-                    if(model.generatedRide!=null)
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DevScreenView(),));
+                    dynamic result= await model.generateRequest();
+                    if(model.generatedRide!=null) {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => ArrivingScreen(requestedId: result,),));
+                    }
                   },
                   text: Text(LabelBookRide, ),
                 ),

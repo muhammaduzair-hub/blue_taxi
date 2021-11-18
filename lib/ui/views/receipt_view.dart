@@ -176,6 +176,7 @@ class ReceiptView extends StatelessWidget {
                                 ),
                                 ontap: () {
                                   //Move back to First Page
+                                  //Store Data in DB Collection of Trips
                                 }),
                           ),
                         ),

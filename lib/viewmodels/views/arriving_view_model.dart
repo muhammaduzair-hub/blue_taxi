@@ -1,38 +1,60 @@
+import 'dart:async';
+
 import 'package:bluetaxiapp/constants/strings.dart';
-import 'package:bluetaxiapp/data/model/request_model.dart';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+
+enum Status {
+  Booked, //Searching
+  Active, //Arriving
+  Dispatched, //Arrived
+  OnGoing, //
+  Completed,
+  Rate,
+  Tips,
+  Cancelled,
+}
 
 
 class ArrivingSelectionViewModel extends BaseModel {
   final AuthRepository repo;
   late String state;
+  late Future<DriverModel?> driver;
+  final String requestId;
+  late String OneBState='true';
+  late String TwoBState='false';
+  late String ThreeBState='false';
+  late String FourBState='false';
 
-  final _requestCollectionReference =
-  FirebaseFirestore.instance.collection("request");
-
-  final _driverCollectionReference =
-  FirebaseFirestore.instance.collection("driver");
 
 
-  ArrivingSelectionViewModel({required this.repo}) : super(false) {
-    state = LabelSearching;
-    Future.delayed(Duration(seconds: 1), () {
-      switchState(LabelArriving);
-    });
+  ArrivingSelectionViewModel({required this.requestId, required this.repo}) : super(false) {
+    state = EnumToString.convertToString(Status.Booked);
+
+    print(state);
+    driver = getRequest(requestId);
+    print(driver);
   }
 
   switchState(String newstate) {
     setBusy(true);
     state = newstate;
-    // if(newstate==LabelArriving){
-    //   Future.delayed(Duration(seconds: 5), () {
-    //     switchState(LabelArrived);
-    //   });
-    // }
+    if(state == EnumToString.convertToString(Status.Active)) {
+      Timer(Duration(seconds: 8), () {
+        switchState(EnumToString.convertToString(Status.Dispatched));
+      });
+    }
     setBusy(false);
+  }
+
+  Future<DriverModel?> checkDriver() async {
+    setBusy(true);
+    if(driver!=null)switchState(EnumToString.convertToString(Status.Active));
+    setBusy(false);
+
+    return driver;
   }
 
   String switchRateLabel(double rating) {
@@ -53,76 +75,41 @@ class ArrivingSelectionViewModel extends BaseModel {
     return rated;
   }
 
-  Future getRequest(String uid) async {
-    try{
-      dynamic driverID = await getActiveDriver();
-      var requestData = await _requestCollectionReference.doc(uid).get()
-          .whenComplete(() async {
-        await updateRequestData(uid, driverID);
-      });
+  Future<DriverModel?> getRequest(String uid) async {
+    dynamic result= repo.getRequestData(uid);
+    return result;
+  }
 
-
-      print(requestData.data().toString());
-      //requestData.data()!.update('riderId', (driverID) => driverID);
-
-
-
-
-
-      RequestModel RequestGot = new RequestModel.fromJson(requestData.data(), uid, driverID);
-
-      print(RequestGot.expectedBill);
-      print(RequestGot.id);
-      print(RequestGot.toAddress);
-      print(RequestGot.userId);
-      print(RequestGot.rideStatus);
-      print(RequestGot.riderId);
-      print(RequestGot.fromAddress);
-      print(RequestGot.carType);
-      print(RequestGot.paymentMethod);
-
-      return RequestGot;
-
-    } catch (e) {
-      // TODO: Find or create a way to repeat error handling without so much repeated code
-      if (e is PlatformException) {
-        return e.message;
-      }
-      return e.toString();
-    }
+  void unassignDriver() {
+    repo.unassignDriver(requestId);
   }
 
 
-  Future<void> updateRequestData(String rid, String driverId) async {
-    return await _requestCollectionReference.doc(rid).update({
-      'riderId': driverId,
-      'rideStatus': 1,
-    });
-  }
 
-  Future getActiveDriver() async {
-    var driverId;
-    try {
-      //Getting any driver in INACTIVE STATE (0),
-      // Changing Driver Status to 1 and assigning him to Request
-      var dData = await _driverCollectionReference.where('driverStatus' , isEqualTo: 0)
-          .limit(1)
-          .get()
-          .then((value) =>
-          value.docs.forEach((doc)=> {
-            print(doc['driverName']),
-            doc.reference.update({'driverStatus' : 1}),
-            driverId= doc.id,
-            print(driverId),
-          })
-      );
-      return driverId;
-    } catch (e) {
-      if (e is PlatformException) {
-        return e.message;
-      }
-      return e.toString();
-    }
-  }
+  // void switchButtonState(String BState) {
+  //   setBusy(true);
+  //   BState= 'true';
+  //   if(OneBState == 'true'){
+  //     TwoBState ='false';
+  //     ThreeBState ='false';
+  //     FourBState = 'false';
+  //   }
+  //   else if(TwoBState == 'true'){
+  //     OneBState ='false';
+  //     ThreeBState ='false';
+  //     FourBState = 'false';
+  //   }
+  //   else if(ThreeBState == 'true'){
+  //     OneBState ='false';
+  //     TwoBState ='false';
+  //     FourBState = 'false';
+  //   }
+  //   else if(FourBState == 'true'){
+  //     OneBState ='false';
+  //     ThreeBState ='false';
+  //     TwoBState = 'false';
+  //   }
+  //   setBusy(false);
+  // }
 
 }

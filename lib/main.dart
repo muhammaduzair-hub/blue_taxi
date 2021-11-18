@@ -1,15 +1,15 @@
 import 'package:bluetaxiapp/ui/views/dev_screen.dart';
-import 'package:bluetaxiapp/ui/views/home_view_sample.dart';
-import 'package:bluetaxiapp/ui/views/login_view_sample.dart';
-import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'constants/app_contstants.dart';
 
-void main() => runApp(MyApp());
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

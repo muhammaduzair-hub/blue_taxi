@@ -1,13 +1,20 @@
+import 'package:enum_to_string/enum_to_string.dart';
+
 class Driver {
   final String did;
 
   Driver({required this.did});
 }
 
+enum DriverStatus {
+  Assigned, //Searching
+  Unassigned, //Arriving
+}
+
 class DriverModel {
   late String id;
   String? driverName;
-  int? driverStatus;
+  DriverStatus? driverStatus;
   String? like;
   String? rating;
 
@@ -23,7 +30,7 @@ class DriverModel {
   DriverModel.initial()
       : id = '0',
         driverName = '',
-        driverStatus =0,
+        driverStatus =DriverStatus.Unassigned,
         like ='',
         rating='';
 

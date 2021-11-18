@@ -1,6 +1,7 @@
 import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
+import 'package:bluetaxiapp/data/services/pushNotificationServices.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/arriving_screen_view.dart';
@@ -18,6 +19,7 @@ import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/views/verify_code.dart';
 import 'package:bluetaxiapp/ui/views/dialPad_View.dart';
 import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,160 +29,172 @@ class DevScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ArrivingSelectionViewModel model=ArrivingSelectionViewModel(repo:Provider.of(context));
-    RequestModel request = RequestModel(id:'', riderId: '', paymentMethod: '', expectedBill: '', fromAddress: '', rideStatus: '', carType: '', userId: '', toAddress: '');
 
 
     return Scaffold(
       backgroundColor: onSecondaryColor,
-      body:Column(
-        children:<Widget>[
-          UIHelper.verticalSpaceXLarge,
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+      body:SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children:<Widget>[
+            UIHelper.verticalSpaceXLarge,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => AdressSelectionView(signInUser: UserModel(id: ''),)));
+              },
+              child: const Text('Adress Selection View'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => AdressSelectionView(signInUser: UserModel(id: ''),)));
-            },
-            child: const Text('Adress Selection View'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new BookingView(signInUser: UserModel(id: ''),))
+                );
+              },
+              child: const Text('Booking View'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new BookingView(signInUser: UserModel(id: ''),))
-              );
-            },
-            child: const Text('Booking View'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new MyProfileView())
+                );
+              },
+              child: const Text('My Profile View'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new MyProfileView())
-              );
-            },
-            child: const Text('My Profile View'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new DriverDetailView())
+                );
+              },
+              child: const Text('Driver Detail View'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new DriverDetailView())
-              );
-            },
-            child: const Text('Driver Detail View'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new SplashScreenView())
+                );
+              },
+              child: const Text('Signin Signup'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new SplashScreenView())
-              );
-            },
-            child: const Text('Signin Signup'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new UserMenuView())
+                );
+              },
+              child: const Text('Menu'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new UserMenuView())
-              );
-            },
-            child: const Text('Menu'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new VerifyCodeView(signInUser: UserModel(id: ''),))
+                );
+              },
+              child: const Text('VerifyCode'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new VerifyCodeView(signInUser: UserModel(id: ''),))
-              );
-            },
-            child: const Text('VerifyCode'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new CancellationReasonView(key: null,))
+                );
+              },
+              child: const Text('CancellationReason'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new CancellationReasonView(key: null,))
-              );
-            },
-            child: const Text('CancellationReason'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new TermsConditionView())
+                );
+              },
+              child: const Text('Terms&Condition'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new TermsConditionView())
-              );
-            },
-            child: const Text('Terms&Condition'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
-            ),
-            onPressed: () async {
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: () async {
 
-              dynamic requesty =await  model.getRequest("7jVA4vGnzenK4R2JBlY6");
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new ArrivingScreen())
-              );
-            },
-            child: const Text('Arriving View'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+               // dynamic requesty =await  model.getRequest("RTW048yQFu98nbzwfa6q");
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new ArrivingScreen(requestedId: 'RTW048yQFu98nbzwfa6q',))
+                );
+              },
+              child: const Text('Arriving View'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new DialPadView())
-              );
-            },
-            child: const Text('Dialpad View'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new DialPadView())
+                );
+              },
+              child: const Text('Dialpad View'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new MessageView())
-              );
-            },
-            child: const Text('Message View'),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new MessageView())
+                );
+              },
+              child: const Text('Message View'),
             ),
-            onPressed: (){
-              Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new ReceiptView())
-              );
-            },
-            child: const Text('Reciept View'),
-          ),
-        ]
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new ReceiptView())
+                );
+              },
+              child: const Text('Reciept View'),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: () async {
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new NotificationScreen())
+                );
+              },
+              child: const Text('Notification View'),
+            ),
+          ]
+        ),
       ),
     );
   }
