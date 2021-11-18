@@ -82,7 +82,7 @@ class DevScreenView extends StatelessWidget {
             ),
             onPressed: (){
               Navigator.push(context, new MaterialPageRoute(
-                  builder: (context) => new SplashScreenView())
+                  builder: (context) => new MySplashScreenView())
               );
             },
             child: const Text('Signin Signup'),

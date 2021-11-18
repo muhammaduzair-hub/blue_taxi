@@ -3,10 +3,11 @@
 import 'dart:async';
 
 import 'package:bluetaxiapp/data/local/local_api.dart';
+import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
-import 'package:bluetaxiapp/data/remote/firebase_directory/firebase.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as con;
 
 class AuthRepository{
   final Api api;
@@ -43,8 +44,44 @@ class AuthRepository{
   }
 
   Future addAdressLocally({required String adress}) async{
-    dynamic result = await localApi.addAdress(title: adress);
-    return result;
+    late List<AdressModel> result;
+    result = await api.getAddress(adress);
+    result = result.where((element) => element.adressTitle.contains(adress)).toList();
+    if(result.isNotEmpty)
+    {
+      await localApi.addAdress(adressModel: result.first);
+      return localApi.readAllAdresses();
+    }
+    return;
+  }
+
+  Future getAdressRemote({required String adress}) async{
+    late List<AdressModel> result;
+    result = await api.getAddress(adress);
+    result = result.where((element) => element.adressTitle.contains(adress)).toList();
+    if(result.isNotEmpty)
+      {
+        return result;
+      }
+    else{
+      String url = 'http://api.positionstack.com/v1/forward?access_key=628ca0078b787fa83e11e4e06b35cc8d&query= $adress';
+      final response = await http.get(Uri.parse(url));
+      if(response.statusCode == 200){
+        UrlDataModel model = UrlDataModel.fromJson(con.jsonDecode(response.body));
+
+        model.address.removeWhere((element) => element.country!='Pakistan');
+        model.address.forEach((element) async{await api.saveAddress(element);});
+
+        var res = await api.firestoreAdresses.get();
+        result =await res.docs.map((e) => AdressModel.fromJson(e.data())).toList();
+        result = result.where((element) => element.adressTitle.contains(adress)).toList();
+        return result;
+      }
+      else {
+        print(response.body);
+      }
+      return;
+    }
   }
 
   Future getAdressLocally() async{
