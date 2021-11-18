@@ -9,12 +9,11 @@ import 'package:flutter/material.dart';
 class SplashScreenViewModel extends BaseModel{
 
   final AuthRepository _repo ;
-  final BuildContext context;
+  late Widget nextRoute=Scaffold();
 
   SplashScreenViewModel({
     required AuthRepository repo,
-    required BuildContext con
-  }): _repo = repo,context=con,super(false){
+  }): _repo = repo,super(false){
     getALreadySignIn();
   }
 
@@ -22,14 +21,9 @@ class SplashScreenViewModel extends BaseModel{
   void getALreadySignIn() async{
     setBusy(true);
     signedINUser=await _repo.getAlreadySignIn();
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>
-            signedINUser.id!=''
-                ? BookingView()
-                :SignInSignUpView(),
-          )
-      );
+    signedINUser.id!=''
+        ? nextRoute=BookingView(signInUser: signedINUser)
+        :nextRoute=SignInSignUpView();
     setBusy(false);
   }
 }

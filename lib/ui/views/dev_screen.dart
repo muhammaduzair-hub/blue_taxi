@@ -197,6 +197,153 @@ class DevScreenView extends StatelessWidget {
 
           ]
         ),
+      body:Column(
+        children:<Widget>[
+          UIHelper.verticalSpaceXLarge,
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => AdressSelectionView(signInUser: UserModel(id: ''),)));
+            },
+            child: const Text('Adress Selection View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new BookingView(signInUser: UserModel(id: ''),))
+              );
+            },
+            child: const Text('Booking View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new MyProfileView())
+              );
+            },
+            child: const Text('My Profile View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new DriverDetailView())
+              );
+            },
+            child: const Text('Driver Detail View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new MySplashScreenView())
+              );
+            },
+            child: const Text('Signin Signup'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new UserMenuView())
+              );
+            },
+            child: const Text('Menu'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new VerifyCodeView(signInUser: UserModel(id: ''),))
+              );
+            },
+            child: const Text('VerifyCode'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new CancellationReasonView(key: null,))
+              );
+            },
+            child: const Text('CancellationReason'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new TermsConditionView())
+              );
+            },
+            child: const Text('Terms&Condition'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              model.getRequestId("7jVA4vGnzenK4R2JBlY6");
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new ArrivingScreen())
+              );
+            },
+            child: const Text('Arriving View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new DialPadView())
+              );
+            },
+            child: const Text('Dialpad View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new MessageView())
+              );
+            },
+            child: const Text('Message View'),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: (){
+              Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new ReceiptView())
+              );
+            },
+            child: const Text('Reciept View'),
+          ),
+        ]
       ),
     );
   }

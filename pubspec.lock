@@ -324,6 +324,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
+  group_list_view:
+    dependency: "direct main"
+    description:
+      name: group_list_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   http:
     dependency: "direct main"
     description:
@@ -338,6 +345,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  image:
+    dependency: transitive
+    description:
+      name: image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.8"
   intl:
     dependency: transitive
     description:
@@ -387,6 +401,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.4.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -420,6 +441,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+  splash_screen_view:
+    dependency: "direct main"
+    description:
+      name: splash_screen_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   sqflite:
     dependency: "direct main"
     description:
@@ -497,6 +525,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
+  universal_io:
+    dependency: transitive
+    description:
+      name: universal_io
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.4"
   vector_math:
     dependency: transitive
     description:
@@ -504,6 +539,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.3.1"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
 sdks:
   dart: "2.14.4"
   flutter: ">=2.5.0"

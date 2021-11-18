@@ -1,3 +1,4 @@
+import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/requestData_model.dart';
@@ -22,6 +23,9 @@ class Api {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
   late var  firestoreRequests = firestore.collection("request");
+  late var firestoreAdresses = firestore.collection("addresses");
+
+
   late var fireStoreCards = firestore.collection("cards");
   late var fireStoreUsers = firestore.collection("users");
 
@@ -332,4 +336,19 @@ class Api {
   }
 
 
+  Future saveAddress(AdressModel address)async{
+   await firestoreAdresses.add({
+      "label":address.adressTitle,
+      "latitude":address.lat,
+     "longitude":address.long
+    }).then((value) => print(value.id)).catchError((e)=>print(e));
+  }
+
+  Future getAddress(String Adress)async{
+    var stream =await firestoreAdresses.where(
+      "label",isGreaterThanOrEqualTo: Adress
+    ).get();
+    List<AdressModel> model =  stream.docs.map((e) => AdressModel.fromJson(e.data())).toList();
+    return model;
+  }
 }
