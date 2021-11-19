@@ -96,13 +96,11 @@ CREATE TABLE $userTable (
     );
   }
 
-  Future<int> delete(int id) async {
+  Future<int> delete() async {
     final db = await instance.database;
 
     return await db.delete(
-      userTable,
-      where: '${UserField.id} = ?',
-      whereArgs: [id],
+      userTable
     );
   }
 

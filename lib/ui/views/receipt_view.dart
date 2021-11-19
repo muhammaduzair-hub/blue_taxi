@@ -1,6 +1,9 @@
+import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+import 'package:bluetaxiapp/ui/views/adress_selection_view.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
@@ -11,7 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ReceiptView extends StatelessWidget {
-  ReceiptView({Key? key}) : super(key: key);
+
+  ReceiptView({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -176,6 +180,10 @@ class ReceiptView extends StatelessWidget {
                                 ),
                                 ontap: () {
                                   //Move back to First Page
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new AdressSelectionView()));
                                 }),
                           ),
                         ),

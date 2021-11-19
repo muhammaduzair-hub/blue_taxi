@@ -18,17 +18,6 @@ class VerifyCodeViewModel extends BaseModel{
   required AuthRepository repo
 }): _repo = repo,super(false);
 
-
-
-  // Future<String?> inputData() async {
-  //
-  //   final fAuth.User? user = auth.currentUser;
-  //   final uid = user!.uid;
-  //    phoneno=user.phoneNumber;
-  //   print(phoneno);
-  //   return phoneno;
-  // }
-
   void startTimer() async{
     while(true){
       setBusy(true);

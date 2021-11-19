@@ -22,7 +22,7 @@ class SplashScreenViewModel extends BaseModel{
     setBusy(true);
     signedINUser=await _repo.getAlreadySignIn();
     signedINUser.id!=''
-        ? nextRoute=BookingView(signInUser: signedINUser)
+        ? nextRoute=BookingView()
         :nextRoute=SignInSignUpView();
     setBusy(false);
   }

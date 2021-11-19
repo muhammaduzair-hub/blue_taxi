@@ -37,9 +37,9 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => MyProfileView());
         break;
       case RoutePaths.BookingView:
-        return MaterialPageRoute(builder: (_) => BookingView(signInUser: UserModel(id: ''),));
+        return MaterialPageRoute(builder: (_) => BookingView());
       case RoutePaths.AdressSelect:
-        return MaterialPageRoute(builder: (_) => AdressSelectionView(signInUser: UserModel(id: ''),));
+        return MaterialPageRoute(builder: (_) => AdressSelectionView());
 
       default:
         return MaterialPageRoute(

@@ -37,6 +37,11 @@ dependencies:
   sqflite: ^2.0.0+4
   geolocator: ^7.7.1
   textfield_search: ^0.8.0
+  firebase_messaging: ^11.1.0
+  firebase_core: ^1.10.0
+  cloud_functions: ^3.1.1
+  enum_to_string: ^2.0.1
+
   advanced_search: ^2.0.0 #we dont use it anymore
   group_list_view: ^1.1.1
   splash_screen_view: ^3.0.0

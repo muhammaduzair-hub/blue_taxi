@@ -23,7 +23,9 @@ class LocalApi{
     refreshAdresses();
     refreshLoginUSer();
   }
-
+  Future<void> signOut() async {
+    await UserDatabase.instance.delete();
+  }
   void refreshAdresses() async{
     adressList = await AdressDatabase.instance.readAllNotes();
   }

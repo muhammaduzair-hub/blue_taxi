@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:bluetaxiapp/data/local/local_api.dart';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
@@ -33,6 +34,10 @@ class AuthRepository{
     return result;
   }
 
+  Future<DriverModel?> getRequestData(String uid) async {
+    Future<DriverModel?> result= api.getRequestData(uid);
+    return result;
+  }
 
   // Signup Without Firebase Auth
   Future signInWithEmailAndPassword(String phoneNo, String password) async {
@@ -106,10 +111,29 @@ class AuthRepository{
     return person;
   }
 
+  void unassignDriver() {
+    api.unassignDriver();
+  }
+
   Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear})async{
     dynamic ans = await api.addCard(cardNumber: cardNumber, cardHolder: cardHolder, expMonth: expMonth, expYear: expYear);
     return ans;
   }
 
+  void switchToCompletedState(String requestId) {
+    api.switchToCompletedState(requestId);
+  }
 
+  void switchToCancelledState(String requestId) {
+    api.switchToCancelledState(requestId);
+  }
+
+  void switchToDispatchedState(String requestId) {
+    api.switchToDispatchedState(requestId);
+  }
+
+  validateEmail(String value, String phoneNo) async {
+    Future<bool> result = api.validateEmail(email: value,phoneNo: phoneNo);
+    return result;
+  }
 }

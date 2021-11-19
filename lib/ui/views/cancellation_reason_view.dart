@@ -2,13 +2,21 @@ import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
+import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'base_widget.dart';
+
+
 
 class CancellationReasonView extends StatefulWidget {
+
   CancellationReasonView({Key? key}) : super(key: key);
 
   @override
@@ -80,7 +88,7 @@ class _CancellationReasonViewState extends State<CancellationReasonView> {
                 ontap:(){
                   //Sending to MenuPage for Testing Purposes
                   Navigator.push(context, new MaterialPageRoute(
-                      builder: (context) => new UserMenuView())
+                      builder: (context) => new DevScreenView())
                   );
                 },
               ),
@@ -88,6 +96,7 @@ class _CancellationReasonViewState extends State<CancellationReasonView> {
       ]),
     );
   }
+
 
   Widget _myRadioButton({required String title, required int value,Function(int?)? onChanged}) {
     return RadioListTile(

@@ -181,7 +181,7 @@ class VerifyCodeView extends StatelessWidget {
                               &&threeController.text=="9"
                               && oneController.text=="9"){
                             FocusScope.of(context).unfocus();
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(signInUser: signInUser),));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(),));
                           }
                         },
                         style: numberTextStyle.copyWith(color: secondaryColor),

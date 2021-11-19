@@ -60,9 +60,12 @@ class SignInSignUpViewModel extends ChangeNotifier {
     return ans;
   }
 
-  bool validateEmail(String value) {
+  bool validateEmail(String value, String phoneNo) {
     setBusy(true);
+    //method to check if this email is already existing
+
     bool ans = EmailValidator.validate(value);
+    if(ans) ans= _repo.validateEmail(value,phoneNo);
     setBusy(false);
     return ans;
   }

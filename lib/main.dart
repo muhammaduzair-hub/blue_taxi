@@ -10,9 +10,12 @@ import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'constants/app_contstants.dart';
 
-void main() => runApp(MyApp());
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

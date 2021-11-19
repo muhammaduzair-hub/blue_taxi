@@ -1,75 +1,112 @@
-import 'package:bluetaxiapp/constants/strings.dart';
+import 'dart:async';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enum_to_string/enum_to_string.dart';
+
+enum Status {
+  Booked, //Searching
+  Active, //Arriving
+  Dispatched, //Arrived
+  OnGoing, //
+  Completed,
+  Rate,
+  Tips,
+  Cancelled,
+}
 
 
 class ArrivingSelectionViewModel extends BaseModel {
   final AuthRepository repo;
   late String state;
-  final firestoreDriver = FirebaseFirestore.instance.collection("driver");
+  late Future<DriverModel?> driver;
+  final String requestId;
+  late int buttonState=1;
 
 
-  ArrivingSelectionViewModel({required this.repo}) : super(false) {
 
-    state=LabelSearching;
-    Future.delayed(Duration(seconds: 1), () {
-      switchState(LabelArriving);
-    });
+  ArrivingSelectionViewModel({required this.requestId, required this.repo}) : super(false) {
+    state = EnumToString.convertToString(Status.Booked);
+
+    print(state);
+    driver = getRequest(requestId);
+    print(driver);
   }
 
-  switchState(String newstate){
+  @override
+  dispose(){
+
+  }
+
+  switchState(String newstate) async {
     setBusy(true);
-    state =newstate;
-    // if(newstate==LabelArriving){
-    //   Future.delayed(Duration(seconds: 5), () {
-    //     switchState(LabelArrived);
-    //   });
-    // }
+    state = newstate;
+    if(state == EnumToString.convertToString(Status.Active)) {
+     // startTimer();
+    await Future.delayed(Duration(seconds: 8));
+     if(state !=  EnumToString.convertToString(Status.Cancelled)){
+       switchState(EnumToString.convertToString(Status.Dispatched));
+       switchToDispatchedState();
+     }
+    }
+
+    if(state == EnumToString.convertToString(Status.Cancelled)){
+      unassignDriver();
+      switchToCancelledState();
+    }
     setBusy(false);
   }
 
-  String switchRateLabel(double rating){
-    String rated="Excellent";
+
+  Future<DriverModel?> checkDriver() async {
+    setBusy(true);
+    if(driver!=null)switchState(EnumToString.convertToString(Status.Active));
+    setBusy(false);
+    return driver;
+  }
+
+  String switchRateLabel(double rating) {
+    String rated = "Excellent";
     setBusy(true);
 
-    if(rating == 1.0)
-      rated="Very Bad";
-    else if(rating == 2.0)
-      rated="Bad";
-    else if(rating == 3.0)
-      rated="Good";
-    else if(rating == 4.0)
-      rated="Very Good";
-    else if(rating == 5.0)
-      rated="Excellent";
+    if (rating == 1.0)
+      rated = "Very Bad";
+    else if (rating == 2.0)
+      rated = "Bad";
+    else if (rating == 3.0)
+      rated = "Good";
+    else if (rating == 4.0)
+      rated = "Very Good";
+    else if (rating == 5.0)
+      rated = "Excellent";
     setBusy(false);
     return rated;
   }
 
-  Future getRequestId(String requestId) async{
-    dynamic result=FirebaseFirestore.instance.collection('request').doc(requestId).get();
-    print(result);
-    assignDriver();
+  Future<DriverModel?> getRequest(String uid) async {
+    dynamic result= repo.getRequestData(uid);
     return result;
   }
 
-  Future assignDriver() async {
-      var stream = await firestoreDriver
-          .where('driverStatus', isEqualTo: 0)
-          .get()
-          .then((QuerySnapshot querySnapshot) {
-            querySnapshot.docs.forEach((element) {
-              print(element["driverStatus"]);
-            });
-          }
-      );
-
-      if(stream.size==1){
-        print("*********************GOT THE OBJECT**********"+stream.toString());
-        return  true;
-      }
-      print("*******************STREAM SIZE********** "+stream.size.toString());
-      return false;
+  void unassignDriver() {
+    repo.unassignDriver();
   }
+
+  void switchToCompletedState() {
+    repo.switchToCompletedState(requestId);
+  }
+  void switchToDispatchedState() {
+    repo.switchToDispatchedState(requestId);
+  }
+
+  void switchToCancelledState() {
+    repo.switchToCancelledState(requestId);
+  }
+
+  switchButtonState(int state){
+    buttonState=state;
+    setBusy(false);
+  }
+
+
 }

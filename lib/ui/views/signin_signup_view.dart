@@ -92,18 +92,27 @@ class SignInSignUpView extends StatelessWidget {
                          child: PrimaryButton(
                            text: Text(LabelSignup,style: buttonTextStyle,),
                            ontap:() async {
-                             bool passAns=model.validatePassword(passwordController.text);
-                              bool emailAns=model.validateEmail(emailController.text);
-                              bool mobilAns=model.validateMobileNumber(numberController.text) ;
-                              bool nameAns = model.validateName(nameController.text);
-                               if(passAns==true && emailAns==true && mobilAns==true && nameAns==true){
+                               if(model.validatePassword(passwordController.text)
+                                   && model.validateEmail(emailController.text,numberController.text)
+                                   && model.validateMobileNumber(numberController.text)
+                                   && model.validateName(nameController.text)){
                                  //Send Data to a method inside Model Class to access Database
                                  await model.signUp(nameController, emailController,numberController, passwordController);
                                  //Route to VerifyCode View
                                  _pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
                              }
-                               //else Check Which Validator is wrong and throw respective error
-
+                               else if(model.validatePassword(passwordController.text)==false){
+                                 print("Invalid Password");
+                               }
+                               else if(model.validateMobileNumber(numberController.text)==false){
+                                 print("Invalid Mobile Number");
+                               }
+                               else if(model.validateEmail(emailController.text, numberController.text)==false){
+                                 print("Invalid Email");
+                               }
+                               else if(model.validateName(nameController.text)==false){
+                                 print("Invalid Name");
+                               }
                            },
                          ),
                        ),

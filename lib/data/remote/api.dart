@@ -1,15 +1,24 @@
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
+import 'package:bluetaxiapp/data/model/requestData_model.dart';
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
+import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
 class Api {
+
+  dynamic driverID=null;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
@@ -18,6 +27,14 @@ class Api {
 
 
   late var fireStoreCards = firestore.collection("cards");
+  late var fireStoreUsers = firestore.collection("users");
+
+
+  final _requestCollectionReference =
+  FirebaseFirestore.instance.collection("request");
+
+  final _driverCollectionReference =
+  FirebaseFirestore.instance.collection("driver");
 
 
 
@@ -152,23 +169,12 @@ class Api {
         },
         "carType":carType,
         "expectedBill":'',
-        "rideStatus":0,
+        "rideStatus":EnumToString.convertToString(Status.Booked),
         "createDate":DateTime.now(),
 
       }).then((value) {
         print(value.id);
         ride = value.id;
-        // ride = RideModel(
-        //     id: value.id,
-        //     paymentMethod: paymentMethod,
-        //     carType: carType,
-        //     expectedBill: expectedBill,
-        //     fromAdress: fromAdress,
-        //     toAdress: toAdress,
-        //     rideStatus: 0,
-        //     riderId: '',
-        //     userId: userToken
-        // );
         return true;
       }).catchError((e){
         print(e);
@@ -182,10 +188,69 @@ class Api {
     var stream = await firestoreRequests
         .where('userId',isEqualTo: userToken)
         .get();
-    var finalstream = await stream.docs.where((element) => element["rideStatus"] != 2);
+    var finalstream = await stream.docs.where(
+            (element) =>
+              element["rideStatus"] != 'Completed'
+                  &&
+                  element["rideStatus"] !='Cancelled'
+    );
     if(finalstream.length==0)
       return  true;
     return false;
+  }
+
+  Future<DriverModel?> getRequestData(String rid) async {
+    DriverModel? DriverDataModel=null;
+    try{
+      driverID = await getActiveDriver();
+      print('***************DRIVER ID IN 195: $driverID');
+
+      var requestData = await _requestCollectionReference.doc(rid).get()
+          .whenComplete(() async {
+        await updateRequestData(rid, driverID);
+      });
+
+      RequestDataModel RequestModelGot = new RequestDataModel.fromJson(requestData.data()!);
+
+    } catch (e) {
+      return DriverDataModel;
+    }
+    return DriverDataModel;
+  }
+
+  getActiveDriver() async {
+    try {
+      //Getting any driver in INACTIVE STATE (0),
+      // Changing Driver Status to 1 and assigning him to Request
+      var dData = await _driverCollectionReference.where('driverStatus' , isEqualTo: "Unassigned")
+          .limit(1)
+          .get()
+          .then((value) =>
+          value.docs.forEach((doc)=> {
+            print(doc['driverName']),
+            doc.reference.update({'driverStatus' : 'Assigned'}),//CHANGE***********
+            driverID= doc.id,
+          print('***************DRIVER ID IN 235: $driverID'),
+          })
+      );
+      print('*************************$driverID**********************');
+      return driverID;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<void> updateRequestData(String rid, String driverId) async {
+    return await _requestCollectionReference.doc(rid).update({
+      'riderId': driverId,
+      'rideStatus': 'Active',//CHANGE***********
+    });
+  }
+
+  Future<void> unassignDriver() async {
+    return await _driverCollectionReference.doc(driverID).update({
+    'driverStatus' : 'Unassigned'
+    });
   }
 
   Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear}) async{
@@ -221,6 +286,42 @@ class Api {
     //List<CardModel> mycards = (json.decode(stream.docs.)as List).map((e) => CardModel.fromJson(e)).toList();
     List<CardModel> mycards = stream.docs.map((e) => CardModel.fromJson(e.data())).toList();
     return mycards;
+  }
+
+  Future<void> switchToCompletedState(String rid) async {
+    return await _requestCollectionReference.doc(rid).update({
+      'rideStatus': 'Completed',//CHANGE***********
+    });
+  }
+
+  Future<void> switchToCancelledState(String requestId) async {
+    return await _requestCollectionReference.doc(requestId).update({
+      'rideStatus': 'Cancelled',//CHANGE***********
+    });
+  }
+
+  Future<void> switchToDispatchedState(String requestId) async {
+    return await _requestCollectionReference.doc(requestId).update({
+      'rideStatus': 'Dispatched',//CHANGE***********
+    });
+  }
+
+  Future<bool> validateEmail({required String email, required String phoneNo}) async {
+    if(fireStoreUsers.doc().snapshots().length==0) {
+      return true;
+    }
+    bool _final = false;
+    var stream = await fireStoreUsers
+        .where('email',isEqualTo: email)
+        .get();
+    if(stream.size==0)
+      _final=  true;
+     stream = await fireStoreUsers
+        .where('phoneNo',isEqualTo: phoneNo)
+        .get();
+     if(stream.size==0)
+       return true;
+     return _final;
   }
 
 

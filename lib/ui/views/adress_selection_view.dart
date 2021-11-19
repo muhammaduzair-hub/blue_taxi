@@ -1,8 +1,10 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
+import 'package:bluetaxiapp/ui/views/arriving_screen_view.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
@@ -16,14 +18,13 @@ import 'package:provider/provider.dart';
 import 'package:group_list_view/group_list_view.dart';
 
 class AdressSelectionView extends StatelessWidget {
-  final UserModel signInUser;
 
-  const AdressSelectionView({Key? key, required this.signInUser }) : super(key: key);
+  const AdressSelectionView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget<AdressSelectionViewModel>(
-      model: AdressSelectionViewModel(authRepository: Provider.of(context),signInUser: signInUser),
+      model: AdressSelectionViewModel(authRepository: Provider.of(context)),
       builder: (context, model, child) => WillPopScope(
         onWillPop: () async{
           if(model.state==LabelSelectAdress){
@@ -314,8 +315,12 @@ class AdressSelectionView extends StatelessWidget {
                     await model.addAdress(model.fromController.text);
                     model.initializegroupList(model.localAdressTitles);
                     await model.generateRequest();
-                    if(model.generatedRide!=null)
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DevScreenView(),));
+
+
+                    if(model.generatedRide!=null) {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) => ArrivingScreen(requestedId: requestId,),));
+                    }
                   },
                   text: Text(LabelBookRide, ),
                 ),
