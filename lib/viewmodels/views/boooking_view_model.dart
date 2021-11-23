@@ -47,7 +47,6 @@ class BookingViewModel extends BaseModel {
       addMarker(latLng: LatLng(	currentLocation.latitude,currentLocation.longitude),marker: currentLocationMarker);
       addMarker(latLng: LatLng(currentLocation.latitude,currentLocation.longitude),marker: icPick);
     }
-
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {

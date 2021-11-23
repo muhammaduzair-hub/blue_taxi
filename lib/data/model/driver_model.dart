@@ -36,9 +36,10 @@ class DriverModel {
 
 
   DriverModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+
+    id = 'json';
     driverName = json['driverName'];
-    driverStatus =json['driverStatus'];
+    driverStatus =DriverStatus.Assigned;
     like =json['like'];
     rating=json['rating'];
   }

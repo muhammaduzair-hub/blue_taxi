@@ -35,14 +35,13 @@ class ArrivingSelectionViewModel extends BaseModel {
 
   @override
   dispose(){
-
   }
 
   switchState(String newstate) async {
     setBusy(true);
     state = newstate;
     if(state == EnumToString.convertToString(Status.Active)) {
-     // startTimer();
+     // startTimer
     await Future.delayed(Duration(seconds: 8));
      if(state !=  EnumToString.convertToString(Status.Cancelled)){
        switchState(EnumToString.convertToString(Status.Dispatched));

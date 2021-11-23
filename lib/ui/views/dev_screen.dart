@@ -13,6 +13,7 @@ import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/receipt_view.dart';
 import 'package:bluetaxiapp/ui/views/splash_screen_view.dart';
 import 'package:bluetaxiapp/ui/views/terms_conitions_view.dart';
+import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/views/verify_code.dart';
 import 'package:bluetaxiapp/ui/views/dialPad_View.dart';
@@ -50,6 +51,16 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => RideHistoryView()));
+              },
+              child: const Text('Trip History View'),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: (){
+                Navigator.push(context, new MaterialPageRoute(
                     builder: (context) => new BookingView())
                 );
               },
@@ -71,9 +82,9 @@ class DevScreenView extends StatelessWidget {
                 textStyle: const TextStyle(fontSize: 20),
               ),
               onPressed: (){
-                Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new DriverDetailView())
-                );
+                // Navigator.push(context, new MaterialPageRoute(
+                //     builder: (context) => new DriverDetailView())
+                // );
               },
               child: const Text('Driver Detail View'),
             ),

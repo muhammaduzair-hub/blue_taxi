@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^1.10.0
   cloud_functions: ^3.1.1
   enum_to_string: ^2.0.1
+  date_format: ^2.0.4
 
   advanced_search: ^2.0.0 #we dont use it anymore
   group_list_view: ^1.1.1

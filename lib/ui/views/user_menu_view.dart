@@ -5,6 +5,7 @@ import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/my_card_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
+import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
 import 'package:flutter/material.dart';
 
 class UserMenuView extends StatelessWidget {
@@ -94,22 +95,25 @@ class UserMenuView extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    color: onSecondaryColor,
-                    borderRadius: BorderRadius.circular(15.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: shadow,
-                        blurRadius: 5.0,
-                        offset: Offset(4, 3.0),
-                      ),
-                    ],
-                  ),
-                  width: 148.0,
-                  height: 120.0,
-                  child: GestureDetector(
-                    onTap: () {}, // handle your image tap here
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) => new RideHistoryView()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: onSecondaryColor,
+                      borderRadius: BorderRadius.circular(15.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: shadow,
+                          blurRadius: 5.0,
+                          offset: Offset(4, 3.0),
+                        ),
+                      ],
+                    ),
+                    width: 148.0,
+                    height: 120.0,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       //padding: const EdgeInsets.all(28.0),
