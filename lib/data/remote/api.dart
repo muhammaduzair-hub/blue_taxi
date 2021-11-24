@@ -138,8 +138,8 @@ class Api {
  // Book a ride
   Future generateRequest(
       {required String userToken,
-        String toAdress="ABC",
-        String fromAdress="XYZ",
+        required AdressModel toAdress,
+        required AdressModel fromAdress,
         String paymentMethod="Unknown",
         required String carType,
         required String expectedBill,
@@ -152,14 +152,14 @@ class Api {
         "riderId":'',
         "Addresses": {
           'from':{
-            "place_name": fromAdress,
-            "lat": 20.45543,
-            "lng": 21.4353
+            "place_name": fromAdress.adressTitle,
+            "lat": fromAdress.lat,
+            "lng": fromAdress.long
           },
           'to':{
-            "place_name": toAdress,
-            "lat": 20.45543,
-            "lng": 21.4353
+            "place_name": toAdress.adressTitle,
+            "lat": toAdress.lat,
+            "lng": toAdress.long
           },
         },
         "payment":{
@@ -339,5 +339,11 @@ class Api {
     ).get();
     List<AdressModel> model =  stream.docs.map((e) => AdressModel.fromJson(e.data())).toList();
     return model;
+  }
+
+  Future<DriverModel> getDriver(String driverId) async {
+     var driverDoc= await _driverCollectionReference.doc(driverId).get();
+     late DriverModel driverDocument = DriverModel.fromJson(driverDoc.data()!);
+   return driverDocument;
   }
 }

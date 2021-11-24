@@ -100,9 +100,12 @@ class AuthRepository{
   Future generateRequest({
     required String userToken,
     required String carType,
-    required String expectedBill,}) async
+    required String expectedBill,
+    required AdressModel toAdress,
+    required AdressModel fromAdress,
+  }) async
   {
-    dynamic res = await api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill);
+    dynamic res = await api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill, toAdress: toAdress, fromAdress: fromAdress,);
     return res;
   }
 
@@ -135,5 +138,10 @@ class AuthRepository{
   validateEmail(String value, String phoneNo) async {
     Future<bool> result = api.validateEmail(email: value,phoneNo: phoneNo);
     return result;
+  }
+
+  Future<DriverModel> getDriver(String driverId) async {
+   DriverModel driverDocument=  await api.getDriver(driverId);
+   return driverDocument;
   }
 }

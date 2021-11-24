@@ -10,5 +10,4 @@ class DriverDetailViewModel extends BaseModel {
     required AuthRepository authRepository,
   }) : _authRepository = authRepository,super(false);
 
-
 }

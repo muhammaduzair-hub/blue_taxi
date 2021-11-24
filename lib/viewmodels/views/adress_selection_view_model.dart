@@ -161,7 +161,8 @@ class AdressSelectionViewModel extends BaseModel {
      dynamic ans = await authRepository.generateRequest(
          userToken: signedINUser.id,
          carType: vehiclesList[vehicleSelectedIndex].vName,
-         expectedBill: "1000");
+         expectedBill: "1000",
+      toAdress: to, fromAdress: from);
 
      if(ans!=null){
        requestId=ans;

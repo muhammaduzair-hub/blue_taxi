@@ -1,3 +1,6 @@
+import 'package:date_format/date_format.dart';
+
+
 class RequestDataModel{
   final Addresses? address;
   final String? carType;
@@ -20,6 +23,13 @@ class RequestDataModel{
   });
 
   factory RequestDataModel.fromJson(Map<String, dynamic> json){
+    //
+    // final formatter = formatDate(r'''MMMM dd, yyyy 'at' hh:mm:ss a Z''');
+    //
+    // final dateTimeFromStr = formatter.parse(DateTime.fromMillisecondsSinceEpoch(
+    //     json['createDate'].millisecondsSinceEpoch));
+    //
+
     return RequestDataModel(
       carType: json["carType"],
         createDate: DateTime.fromMillisecondsSinceEpoch(

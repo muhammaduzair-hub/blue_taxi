@@ -1,6 +1,5 @@
-
-
 import 'package:bluetaxiapp/constants/strings.dart';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
@@ -12,7 +11,8 @@ import 'package:provider/provider.dart';
 
 
 class DriverDetailView extends StatelessWidget {
-  const DriverDetailView({Key? key}) : super(key: key);
+  DriverModel? driverDocument;
+  DriverDetailView({required this.driverDocument, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,14 @@ class DriverDetailView extends StatelessWidget {
                 UIHelper.verticalSpaceMedium,
                 ListTile(
                   leading: CircleAvatar(backgroundImage: AssetImage('asset/images/jurica-koletic-317414-unsplash.png'),),
-                  title: Text("Patrick",style: boldHeading2 ,),//Its name and come from model
+                  title: Text(driverDocument!.driverName ?? "Patrick",style: boldHeading2 ,),//Its name and come from model
                   subtitle: Text("Mercedes Vito"),
                 ),
                 UIHelper.verticalSpaceMedium,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    profileContainer(AssetImage('asset/images/ic_rating.png',),"4.8"),
+                    profileContainer(AssetImage('asset/images/ic_rating.png',),driverDocument!.rating ?? "4.8"),
                     profileContainer(AssetImage('asset/images/ic_rating.png',),"126"),
                     profileContainer(AssetImage('asset/images/ic_calendar.png',),"2 years")
                   ],
