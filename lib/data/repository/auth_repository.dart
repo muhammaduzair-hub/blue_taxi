@@ -135,13 +135,19 @@ class AuthRepository{
     api.switchToDispatchedState(requestId);
   }
 
-  validateEmail(String value, String phoneNo) async {
-    Future<bool> result = api.validateEmail(email: value,phoneNo: phoneNo);
+  validateEmail(String value,) async {
+    dynamic result =await api.validateEmail(email: value);
+    print('Result in Auth $result');
     return result;
   }
 
   Future<DriverModel> getDriver(String driverId) async {
    DriverModel driverDocument=  await api.getDriver(driverId);
    return driverDocument;
+  }
+
+  validatePhone(String phoneNo) async {
+    dynamic result =await api.validatePhone(phoneNo);
+    return result;
   }
 }

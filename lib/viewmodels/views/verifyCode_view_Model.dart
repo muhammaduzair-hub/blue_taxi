@@ -1,13 +1,7 @@
-
 import 'dart:async';
-
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
-
-
-
-//final fAuth.FirebaseAuth auth = fAuth.FirebaseAuth.instance;
 
 class VerifyCodeViewModel extends BaseModel{
   late final phoneno;
@@ -50,7 +44,7 @@ class VerifyCodeViewModel extends BaseModel{
 
   @override
   void dispose() {
-    
+
     _timer.cancel();
     super.dispose();
   }

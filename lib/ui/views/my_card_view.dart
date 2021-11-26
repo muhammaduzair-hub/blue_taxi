@@ -66,13 +66,15 @@ class MyCardView extends StatelessWidget {
                   Container(
                     width: double.infinity,
                     child: PrimaryButton(
-                      ontap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddCardView(),));
+                      ontap: () async {
+                        // print(await Navigator.push(context, MaterialPageRoute(builder: (context) => AddCardView(),)));
+                        model.myCards= await Navigator.push(context, MaterialPageRoute(builder: (context) => AddCardView(),));
+                        print(model.myCards.length.toString());
+                        model.setBusy(false);
                       },
                       text: Text(LabelAddCard,style: heading2.copyWith(color: onSecondaryColor),) ,
                     ),
                   )
-
                 ],
               ),
             ),

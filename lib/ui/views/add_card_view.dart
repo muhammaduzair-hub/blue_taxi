@@ -1,4 +1,5 @@
 import 'package:bluetaxiapp/constants/strings.dart';
+import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
@@ -63,10 +64,11 @@ class AddCardView extends StatelessWidget {
                       width: double.infinity,
                       child: PrimaryButton(
                         text: Text(LabelAddCard),
-                        ontap: (){
-                          model.addCard();
-                          Navigator.of(context).pop();
-                          Navigator.pop(context);
+                        ontap: ()async {
+                          await model.addCard();
+                          // Navigator.of(context).pop();
+                          List<CardModel> cards=await model.getcards();
+                          Navigator.pop(context, cards);
                         },
                       ),
                     )

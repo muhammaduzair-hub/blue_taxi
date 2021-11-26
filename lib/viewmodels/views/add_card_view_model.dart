@@ -7,6 +7,7 @@ class AddCardViewModel extends BaseModel{
 
   final AuthRepository _repo ;
 
+
   //variabels who are going to communicate with UI
   final TextEditingController cardNumberController = TextEditingController();
   final TextEditingController cardHolderController = TextEditingController();
@@ -17,13 +18,19 @@ class AddCardViewModel extends BaseModel{
     required AuthRepository repo
   }): _repo = repo,super(false);
 
+
+  getcards()async{
+
+    return  await _repo.api.getCards();
+  }
+
   addCard() async{
     setBusy(true);
     if(
       cardHolderController.text.length>4&&
       cardNumberController.text.length>4&&
       expYearController.text.length>0&&
-      expYearController.text.length<=2&&
+      expMonthController.text.length<=2&&
       expYearController.text.length==4
     )
     {
@@ -33,7 +40,7 @@ class AddCardViewModel extends BaseModel{
           expMonth: int.parse(expMonthController.text),
           expYear: int.parse(expYearController.text)
       );
-      ans?print("ok"):print("not ok");
+      // ans?print("ok"):print("not ok");
     }
     setBusy(false);
   }

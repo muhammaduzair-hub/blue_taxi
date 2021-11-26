@@ -2,15 +2,11 @@ import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
-import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/trip_summary.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
-import 'package:bluetaxiapp/viewmodels/views/trip_summary_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 
 class RideHistoryView extends StatelessWidget {
 
@@ -22,6 +18,7 @@ class RideHistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -82,7 +79,7 @@ class CustomCard extends StatelessWidget {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => new RideSummary(snapshot: snapshot, index: index,)));
+                      builder: (context) =>  RideSummary(snapshot: snapshot, index: index,)));
             },
             child: Card(
               elevation: 9,

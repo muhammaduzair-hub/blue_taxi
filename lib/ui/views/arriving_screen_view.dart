@@ -53,10 +53,11 @@ class ArrivingScreen extends StatelessWidget {
                       },
                     ),
 
-                    // Chnage Navigation Button on Model State
-                    if (model.busy)
-                      CircularProgressIndicator()
-                    else if (model.state == EnumToString.convertToString(Status.Active) ||
+                    // Change Navigation Button on Model State
+                    // if (model.busy)
+                    //   CircularProgressIndicator()
+                    // else
+                      if (model.state == EnumToString.convertToString(Status.Active) ||
                         model.state == EnumToString.convertToString(Status.Completed) ||
                         model.state == EnumToString.convertToString(Status.Rate))
                       LeadingBackButton(

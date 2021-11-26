@@ -1,12 +1,11 @@
-
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/verify_code.dart';
-import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
+import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/viewmodels/views/signin_signup_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,99 +38,98 @@ class SignInSignUpView extends StatelessWidget {
 
      return BaseWidget<SignInSignUpViewModel>(
        model: SignInSignUpViewModel(repo: Provider.of(context)),
-       builder: (context, model, child) =>
-       model.busy?
-       Center(child: CircularProgressIndicator(),) :
-       Scaffold(
-         appBar: AppBar(
-           elevation: 0.0,
-           backgroundColor: Colors.transparent,
-           shadowColor: Colors.transparent,
-           title: Text(LabelSignup,style: boldHeading1.copyWith(color: onPrimaryColor)),
-           centerTitle: true,
-         ),
-         body: Form(
-           child: SingleChildScrollView(
-               child: SizedBox(
-                 height: size.height-120,
-                 width: double.infinity,
-                 child: Padding(
-                   padding: UIHelper.pagePaddingSmall,
-                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Spacer(flex: 2,),
-                       Text(LabelName,style: boldHeading3),
-                       UIHelper.verticalSpaceSmall,
-                       CustomTextField(
-                         controller: nameController,
-                       ),
-                       UIHelper.verticalSpaceMedium,
-                       Text(LabelEmail,style: boldHeading3),
-                       UIHelper.verticalSpaceSmall,
-                       CustomTextField(controller: emailController),
-                       UIHelper.verticalSpaceMedium,
-                       Text(LabelMobile,style: boldHeading3),
-                       UIHelper.verticalSpaceSmall,
-                       CustomTextField(controller: numberController,),
-                       UIHelper.verticalSpaceMedium,
-                       Text(LabelPassword,style: boldHeading3),
-                       UIHelper.verticalSpaceSmall,
-                       CustomTextField(
-                         controller: passwordController,
-                         showPassword: true,
-                       ),
-                       UIHelper.verticalSpaceLarge,
-                       Container(
-                         width: double.infinity,
-                         height: 50,
-                         child: PrimaryButton(
-                           text: Text(LabelSignup,style: buttonTextStyle,),
-                           ontap:() async {
-                               if(model.validatePassword(passwordController.text)
-                                   && model.validateEmail(emailController.text)
-                                   && model.validateMobileNumber(numberController.text)
-                                   && model.validateName(nameController.text)){
-                                 //Send Data to a method inside Model Class to access Database
-                                 await model.signUp(nameController, emailController,numberController, passwordController);
-                                 //Route to VerifyCode View
-                                 _pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
-                             }
-                               else if(model.validatePassword(passwordController.text)==false){
-                                 print("Invalid Password");
+       builder: (context, model, child) =>SafeArea(
+         child: Scaffold(
+           appBar: AppBar(
+             elevation: 0.0,
+             backgroundColor: Colors.transparent,
+             shadowColor: Colors.transparent,
+             title: Text(LabelSignup,style: boldHeading1.copyWith(color: onPrimaryColor)),
+             centerTitle: true,
+           ),
+           body: Form(
+             child: SingleChildScrollView(
+                 child: SizedBox(
+                   height: size.height-120,
+                   width: double.infinity,
+                   child: Padding(
+                     padding: UIHelper.pagePaddingSmall,
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         Spacer(flex: 2,),
+                         Text(LabelName,style: boldHeading3),
+                         UIHelper.verticalSpaceSmall,
+                         CustomTextField(controller: nameController, keyboardType: TextInputType.name),
+                         if(model.nameState==false)Text(labelNameError, style: TextStyle(color: errorMessage),),
+
+                         UIHelper.verticalSpaceMedium,
+                         Text(LabelEmail,style: boldHeading3),
+                         UIHelper.verticalSpaceSmall,
+                         CustomTextField(controller: emailController, keyboardType: TextInputType.emailAddress,),
+                         if(model.emailState==false)Text(labelEmailError, style: TextStyle(color: errorMessage),),
+
+                         UIHelper.verticalSpaceMedium,
+                         Text(LabelMobile,style: boldHeading3),
+                         UIHelper.verticalSpaceSmall,
+                         CustomTextField(controller: numberController, keyboardType: TextInputType.number,),
+                         if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
+
+                         UIHelper.verticalSpaceMedium,
+                         Text(LabelPassword,style: boldHeading3),
+                         UIHelper.verticalSpaceSmall,
+                         CustomTextField(controller: passwordController, showPassword: true,),
+                         if(model.passState==false)Text(labelPasswordError, style: TextStyle(color: errorMessage),),
+
+                         UIHelper.verticalSpaceLarge,
+                         Container(
+                           width: double.infinity,
+                           height: 50,
+                           child:
+                           model.busy?
+                           Center(child: CircularProgressIndicator(),) :
+                           PrimaryButton(
+                             text: Text(LabelSignup,style: buttonTextStyle,),
+                             ontap:() async {
+                               model.validateName(nameController.text);
+                               await model.validateEmail(emailController.text,numberController.text);
+                               model.validateMobileNumber(numberController.text);
+                               model.validatePassword(passwordController.text);
+
+                               if(model.validateName(nameController.text)
+                                     && await model.validateEmail(emailController.text,numberController.text)
+                                     && model.validateMobileNumber(numberController.text)
+                                     && model.validatePassword(passwordController.text)){
+
+                                   //Send Data to a method inside Model Class to access Database
+                                   await model.signUp(nameController, emailController,numberController, passwordController);
+                                   //Route to VerifyCode View
+                                   _pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
                                }
-                               else if(model.validateMobileNumber(numberController.text)==false){
-                                 print("Invalid Mobile Number");
-                               }
-                               else if(model.validateEmail(emailController.text)==false){
-                                 print("Invalid Email");
-                               }
-                               else if(model.validateName(nameController.text)==false){
-                                 print("Invalid Name");
-                               }
-                           },
-                         ),
-                       ),
-                       //SizedBox(height: 200,),
-                       Spacer(flex: 2,),
-                       Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Text(LabelAlreadyHaveAccount, style: heading3.copyWith(color: onPrimaryColor2 )),
-                           InkWell(
-                             onTap: (){
-                               _pageController.previousPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
                              },
-                             child: Text(
-                               LabelSignIn, style: heading2.copyWith(color: secondaryColor ),
-                             ),
                            ),
-                         ],
-                       ),
-                     ],
+                         ),
+                         //SizedBox(height: 200,),
+                         Spacer(flex: 2,),
+                         Row(
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                             Text(LabelAlreadyHaveAccount, style: heading3.copyWith(color: onPrimaryColor2 )),
+                             InkWell(
+                               onTap: (){
+                                 _pageController.previousPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
+                               },
+                               child: Text(
+                                 LabelSignIn, style: heading2.copyWith(color: secondaryColor ),
+                               ),
+                             ),
+                           ],
+                         ),
+                       ],
+                     ),
                    ),
-                 ),
-               )
+                 )
+             ),
            ),
          ),
        ),
@@ -141,9 +139,7 @@ class SignInSignUpView extends StatelessWidget {
    Widget signIn(BuildContext context, Size size){
      return BaseWidget<SignInSignUpViewModel>(  //we use signup model for both
        model: SignInSignUpViewModel(repo: Provider.of(context)),
-       builder: (context, model, child) =>
-       model.busy?Center(child: CircularProgressIndicator(),):
-       Scaffold(
+       builder: (context, model, child) =>Scaffold(
          appBar: AppBar(
          elevation: 0.0,
          backgroundColor: Colors.transparent,
@@ -163,19 +159,23 @@ class SignInSignUpView extends StatelessWidget {
                      Spacer(flex: 2,),
                      Text(LabelMobile,style: boldHeading3),
                      UIHelper.verticalSpaceSmall,
-                     CustomTextField(
-                       controller: numberController,
-                     ),
+                     CustomTextField(controller: numberController,),
+                     if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
+
                      UIHelper.verticalSpaceMedium,
                      Text(LabelPassword,style: boldHeading3),
                      UIHelper.verticalSpaceSmall,
                      CustomTextField(controller: passwordController, showPassword: true,),
-                     //
+                     if(model.passState==false)Text(labelPasswordError, style: TextStyle(color: errorMessage),),
+
                      UIHelper.verticalSpaceLarge,
                      Container(
                        width: double.infinity,
                        height: 50,
-                       child: PrimaryButton(
+                       child:
+                       model.busy?
+                       Center(child: CircularProgressIndicator(),) :
+                       PrimaryButton(
                          text: Text(LabelSignIn,style: buttonTextStyle,),
                          ontap:() async {
                            bool passAns=model.validatePassword(passwordController.text);
@@ -184,7 +184,8 @@ class SignInSignUpView extends StatelessWidget {
                              //Send Data to a method inside Model Class to access Database
                              await model.signin( numberController, passwordController);
                              if(model.signedIdnUser.id==''){
-                               print("cannot Signin with those credentials");
+                               model.error=true;
+                               // print("cannot Signin with those credentials");
                              }
                              else {
                                Navigator.push(context, new MaterialPageRoute(
@@ -193,10 +194,19 @@ class SignInSignUpView extends StatelessWidget {
                                    ))
                                );
                              }
+
                            }
                          } ,
                        ),
                      ),
+                     if(model.error)
+                       Center(
+                         child: Text(labelSignInError,
+                         style: TextStyle(
+                             color:errorMessage
+                         ),
+                         ),
+                       ),
                      UIHelper.verticalSpaceMedium,
                      UIHelper.verticalSpaceMedium,
                      Expanded(

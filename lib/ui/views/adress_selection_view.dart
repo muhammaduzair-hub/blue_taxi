@@ -52,8 +52,9 @@ class AdressSelectionView extends StatelessWidget {
                   ),
 
                   //Navigator Button
-                  if(model.busy)CircularProgressIndicator()
-                  else if(model.state==LabelSelectAdress)
+                  // if(model.busy)CircularProgressIndicator()
+                  // else
+                    if(model.state==LabelSelectAdress)
                     LeadindBackButton(
                       ontap: (){Navigator.pop(context);},
                       icon: AssetImage('asset/icons/nav btn.png'),
@@ -307,7 +308,10 @@ class AdressSelectionView extends StatelessWidget {
               Container(
                 margin: UIHelper.pagePaddingSmall.copyWith(bottom: 0,top: 0),
                 width: double.infinity,
-                child: PrimaryButton(
+                child:
+                model.busy?
+                Center(child: CircularProgressIndicator(),) :
+                PrimaryButton(
                   ontap: ()async {
                     await model.addAdress(model.toController.text);
                     await model.addAdress(model.fromController.text);
@@ -315,7 +319,7 @@ class AdressSelectionView extends StatelessWidget {
                     await model.generateRequest();
 
 
-                    if(model.generatedRide!=null) {
+                    if(requestId!="") {
                       Navigator.push(context, MaterialPageRoute(builder: (
                           context) => ArrivingScreen(requestedId: requestId,),));
                     }

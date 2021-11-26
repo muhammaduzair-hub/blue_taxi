@@ -11,6 +11,7 @@ import 'package:bluetaxiapp/ui/views/driver_detail_view.dart';
 import 'package:bluetaxiapp/ui/views/message_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/receipt_view.dart';
+import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:bluetaxiapp/ui/views/splash_screen_view.dart';
 import 'package:bluetaxiapp/ui/views/terms_conitions_view.dart';
 import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
@@ -94,7 +95,7 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new MySplashScreenView())
+                    builder: (context) => new SignInSignUpView())
                 );
               },
               child: const Text('Signin Signup'),
@@ -127,7 +128,7 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new CancellationReasonView(key: null,))
+                    builder: (context) => new CancellationReasonView())
                 );
               },
               child: const Text('CancellationReason'),
