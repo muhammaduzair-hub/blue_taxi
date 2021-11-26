@@ -20,8 +20,6 @@ class SignInSignUpView extends StatelessWidget {
    TextEditingController numberController = TextEditingController();
    PageController _pageController = PageController(initialPage: 0);
 
-
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -182,7 +180,7 @@ class SignInSignUpView extends StatelessWidget {
                          ontap:() async {
                            bool passAns=model.validatePassword(passwordController.text);
                            bool mobilAns=model.validateMobileNumber(numberController.text);
-                           if(passAns==true && mobilAns==true){
+                           if(passAns && mobilAns){
                              //Send Data to a method inside Model Class to access Database
                              await model.signin( numberController, passwordController);
                              if(model.signedIdnUser.id==''){

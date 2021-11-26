@@ -30,6 +30,8 @@ class BookingViewModel extends BaseModel {
     loadCustomMarker();
   }
 
+
+
   void loadCustomMarker() async{
     setBusy(true);
     //carMaker = await getBytesFromAsset('asset/images/car_top.png', 100);
