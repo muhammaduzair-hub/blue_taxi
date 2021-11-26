@@ -2,37 +2,28 @@
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
-import 'package:bluetaxiapp/ui/views/booking_view.dart';
-import 'package:bluetaxiapp/ui/views/verify_code.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
+import '../base_model.dart';
 
-class SignInSignUpViewModel extends ChangeNotifier {
-  bool _busy = false;
-  bool get busy => _busy;
+
+class SignInSignUpViewModel extends BaseModel {
+
   late final AuthRepository _repo ;
   late UserModel signedIdnUser ;
 
 
   SignInSignUpViewModel({
     required AuthRepository repo,
-  }){
+  }) : super(false){
     _repo = repo;
   }
-
-
 
   @override
   void dispose() {
     // TODO: implement dispose
-    //super.dispose();
-  }
-
-  void setBusy(bool value) {
-    _busy = value;
-    notifyListeners();
   }
 
 
@@ -60,12 +51,9 @@ class SignInSignUpViewModel extends ChangeNotifier {
     return ans;
   }
 
-  bool validateEmail(String value, String phoneNo) {
+  bool validateEmail(String value) {
     setBusy(true);
-    //method to check if this email is already existing
-
     bool ans = EmailValidator.validate(value);
-    if(ans) ans= _repo.validateEmail(value,phoneNo);
     setBusy(false);
     return ans;
   }

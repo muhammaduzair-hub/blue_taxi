@@ -41,6 +41,7 @@ class AdressSelectionViewModel extends BaseModel {
    late Map<String, List> groupList ;
    bool selectedfromTextField = true;
    late List<CardModel> myCards;
+   late int selectedCardIndex =0;
 
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
@@ -53,6 +54,11 @@ class AdressSelectionViewModel extends BaseModel {
      getAllVehiclesLocally();
      getcards();
      initializegroupList(localAdressTitles);
+   }
+
+   switchSelectCardIndex(int index){
+     selectedCardIndex = index;
+     setBusy(false);
    }
 
   switchTextField(){

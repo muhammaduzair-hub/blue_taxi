@@ -1,17 +1,13 @@
-import 'package:bluetaxiapp/constants/app_contstants.dart';
+
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
-import 'package:bluetaxiapp/ui/views/booking_view.dart';
-import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/views/verify_code.dart';
-import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
-import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
+import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/signin_signup_view_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -93,7 +89,7 @@ class SignInSignUpView extends StatelessWidget {
                            text: Text(LabelSignup,style: buttonTextStyle,),
                            ontap:() async {
                                if(model.validatePassword(passwordController.text)
-                                   && model.validateEmail(emailController.text,numberController.text)
+                                   && model.validateEmail(emailController.text)
                                    && model.validateMobileNumber(numberController.text)
                                    && model.validateName(nameController.text)){
                                  //Send Data to a method inside Model Class to access Database
@@ -107,7 +103,7 @@ class SignInSignUpView extends StatelessWidget {
                                else if(model.validateMobileNumber(numberController.text)==false){
                                  print("Invalid Mobile Number");
                                }
-                               else if(model.validateEmail(emailController.text, numberController.text)==false){
+                               else if(model.validateEmail(emailController.text)==false){
                                  print("Invalid Email");
                                }
                                else if(model.validateName(nameController.text)==false){
@@ -184,7 +180,7 @@ class SignInSignUpView extends StatelessWidget {
                          ontap:() async {
                            bool passAns=model.validatePassword(passwordController.text);
                            bool mobilAns=model.validateMobileNumber(numberController.text);
-                           if(passAns==true && mobilAns==true){
+                           if(passAns && mobilAns){
                              //Send Data to a method inside Model Class to access Database
                              await model.signin( numberController, passwordController);
                              if(model.signedIdnUser.id==''){
@@ -197,7 +193,6 @@ class SignInSignUpView extends StatelessWidget {
                                    ))
                                );
                              }
-
                            }
                          } ,
                        ),

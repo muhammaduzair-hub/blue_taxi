@@ -1,12 +1,10 @@
 import 'package:bluetaxiapp/constants/strings.dart';
-import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/arriving_screen_view.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
-import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/adress_selection_view_model.dart';
@@ -14,8 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:group_list_view/group_list_view.dart';
+import 'package:provider/provider.dart';
 
 class AdressSelectionView extends StatelessWidget {
 
@@ -342,7 +340,9 @@ class AdressSelectionView extends StatelessWidget {
         child: Container(
             color: onSecondaryColor,
             padding: UIHelper.pagePaddingSmall.copyWith(top: 20),
-            child: ListView.separated(
+            child:
+            model.myCards.length==0? Center(child: Text("You Don't have any Card",style: heading1,),):
+            ListView.separated(
               controller: scrollController,
               shrinkWrap: true,
               itemCount: model.myCards.length,
@@ -351,7 +351,9 @@ class AdressSelectionView extends StatelessWidget {
                   paymentOptionListTile(
                     leadingImage: model.myCards[index].leadingImage,
                     text: model.myCards[index].cardNumber,
-                      trailingImage: AssetImage("asset/icons/ic_arrow (2).png")
+                    trailingImage: AssetImage("asset/icons/ic_arrow (2).png"),
+                    index: index,
+                    model: model
                   ),
             ),
         ),
@@ -359,7 +361,7 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget paymentOptionListTile({required AssetImage leadingImage, required String text, required AssetImage trailingImage }) {
+  Widget paymentOptionListTile({required AssetImage leadingImage, required String text, required AssetImage trailingImage, required AdressSelectionViewModel model , required int index}) {
     return  Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -377,6 +379,10 @@ class AdressSelectionView extends StatelessWidget {
         leading: Image(image: leadingImage),
         title: Text(text),
         trailing: Image(image: trailingImage,),
+        onTap: (){
+          model.switchSelectCardIndex(index);
+         // model.switchState();
+        },
       ),
     );
   }
