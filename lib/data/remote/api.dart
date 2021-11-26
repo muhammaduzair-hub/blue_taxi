@@ -1,9 +1,6 @@
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
-import 'package:bluetaxiapp/data/model/requestData_model.dart';
-import 'package:bluetaxiapp/data/model/request_model.dart';
-import 'package:bluetaxiapp/data/model/ride_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
@@ -11,9 +8,6 @@ import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:convert';
 
 class Api {
 
@@ -21,7 +15,7 @@ class Api {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
+ // late var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
   late var  firestoreRequests = firestore.collection("request");
   late var firestoreAdresses = firestore.collection("addresses");
 
@@ -76,11 +70,9 @@ class Api {
     then((val){
       if(val.docs.length > 0){
         int index=val.docs.length;
-        print("***************************Index is: "+index.toString());
         for(var i=0; i<index;i++){
           if(phoneNo == val.docs[i].data()['phoneNo']){
             if(password == val.docs[i].data()['password']){
-              print("Password Matched");
               //Return Bool True(Credentials are Okay) To View class so it can proceed
               user.phoneno = val.docs[i].data()['phoneNo'];
               user.id = val.docs[i].id;
@@ -91,8 +83,6 @@ class Api {
               exist = true;
             }
             else{
-              print("Password didnt Matched");
-              print(password + val.docs[i].data()['password']);
               exist = false;
             }
           }
@@ -101,12 +91,10 @@ class Api {
       }
       else{
         //No Document Exists
-        print("Not Found");
         return false;
       }
     })
         .catchError((error) {return false;});
-    print("EXist value After GetData()" );
     return user;
   }
 
@@ -200,22 +188,19 @@ class Api {
   }
 
   Future<DriverModel?> getRequestData(String rid) async {
-    DriverModel? DriverDataModel=null;
+    DriverModel? driverDataModel=null;
     try{
       driverID = await getActiveDriver();
-      print('***************DRIVER ID IN 195: $driverID');
 
       var requestData = await _requestCollectionReference.doc(rid).get()
           .whenComplete(() async {
         await updateRequestData(rid, driverID);
       });
 
-      RequestDataModel RequestModelGot = new RequestDataModel.fromJson(requestData.data()!);
-
     } catch (e) {
-      return DriverDataModel;
+      return driverDataModel;
     }
-    return DriverDataModel;
+    return driverDataModel;
   }
 
   getActiveDriver() async {
@@ -230,10 +215,8 @@ class Api {
             print(doc['driverName']),
             doc.reference.update({'driverStatus' : 'Assigned'}),//CHANGE***********
             driverID= doc.id,
-          print('***************DRIVER ID IN 235: $driverID'),
           })
       );
-      print('*************************$driverID**********************');
       return driverID;
     } catch (e) {
       return e.toString();
@@ -306,24 +289,24 @@ class Api {
     });
   }
 
-  Future<bool> validateEmail({required String email, required String phoneNo}) async {
-    if(fireStoreUsers.doc().snapshots().length==0) {
+  validateEmail({required String email}) async {
+    if(fireStoreUsers.doc().snapshots().length==0)
       return true;
+    else {
+      bool _final = true;
+      var stream = await fireStoreUsers
+          .where('email', isEqualTo: email)
+          .get();
+      print(stream.size);
+      if (stream.size == 0) {
+        _final = true;
+      }
+      else {
+        _final = false;
+      }
+      return _final;
     }
-    bool _final = false;
-    var stream = await fireStoreUsers
-        .where('email',isEqualTo: email)
-        .get();
-    if(stream.size==0)
-      _final=  true;
-     stream = await fireStoreUsers
-        .where('phoneNo',isEqualTo: phoneNo)
-        .get();
-     if(stream.size==0)
-       return true;
-     return _final;
   }
-
 
   Future saveAddress(AdressModel address)async{
    await firestoreAdresses.add({
@@ -345,5 +328,23 @@ class Api {
      var driverDoc= await _driverCollectionReference.doc(driverId).get();
      late DriverModel driverDocument = DriverModel.fromJson(driverDoc.data()!);
    return driverDocument;
+  }
+
+  validatePhone(String phoneNo) async {
+    if(fireStoreUsers.doc().snapshots().length==0)
+      return true;
+    else {
+      bool _final = true;
+    var stream = await fireStoreUsers
+        .where('phoneNo', isEqualTo: phoneNo)
+        .get();
+    if (stream.size == 0) {
+      _final = true;
+    }
+    else {
+      _final = false;
+    }
+      return _final;
+    }
   }
 }

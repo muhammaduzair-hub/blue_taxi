@@ -1,18 +1,12 @@
-
 import 'dart:async';
-
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
-
-
-
-//final fAuth.FirebaseAuth auth = fAuth.FirebaseAuth.instance;
 
 class VerifyCodeViewModel extends BaseModel{
   late final phoneno;
   final AuthRepository _repo ;
   int start = 30;
-  late Timer _timer;
+   Timer? _timer;
 
   VerifyCodeViewModel({
   required AuthRepository repo
@@ -38,7 +32,7 @@ class VerifyCodeViewModel extends BaseModel{
   }
 
   dispose() {
-    _timer.cancel();
+    _timer!.cancel();
     super.dispose();
   }
 

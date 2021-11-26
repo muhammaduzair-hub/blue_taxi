@@ -4,6 +4,7 @@ import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
+import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/my_profile_view_model.dart';
@@ -82,7 +83,10 @@ class MyProfileView extends StatelessWidget {
                       width: double.infinity,
                       child: PrimaryButton(
                         text: Text(LabelDeleteAccount,style: boldHeading2,),
-                        ontap: (){},
+                        ontap: (){
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) => new SignInSignUpView()));
+                        },
                       ),
                     )
                   ],

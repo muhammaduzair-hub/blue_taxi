@@ -16,12 +16,14 @@ class MySplashScreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseWidget<SplashScreenViewModel>(
         model: SplashScreenViewModel(repo: Provider.of(context)),
-        builder: (context, model, child) => SplashScreenView(
-          navigateRoute: model.nextRoute,
-          duration: 4000,
-          backgroundColor: Colors.blue,
-          text: "Blue\nTaxi",
-          textStyle: boldHeading1.copyWith(color: Colors.white, fontSize: 48),
+        builder: (context, model, child) => SafeArea(
+          child: SplashScreenView(
+            navigateRoute: model.nextRoute,
+            duration: 4000,
+            backgroundColor: Colors.blue,
+            text: "Blue\nTaxi",
+            textStyle: boldHeading1.copyWith(color: Colors.white, fontSize: 48),
+          ),
         ),
     );
   }

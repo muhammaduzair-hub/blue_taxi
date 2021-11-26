@@ -1,7 +1,6 @@
 import 'package:bluetaxiapp/data/model/message_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
-import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:flutter/material.dart';
 
@@ -87,9 +86,6 @@ class MessageView extends StatelessWidget {
                         width: 15,
                       ),
                       Expanded(
-                        // child: CustomTextField(
-                        //   controller: messageController,
-                        // ),
                         child: TextField(
                           controller: messageController,
                           cursorColor: secondaryColor,

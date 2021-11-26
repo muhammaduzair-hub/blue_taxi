@@ -1,4 +1,5 @@
 
+import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
@@ -14,6 +15,14 @@ class SignInSignUpViewModel extends ChangeNotifier {
   bool get busy => _busy;
   late final AuthRepository _repo ;
   late UserModel signedIdnUser ;
+
+  bool nameState=true;
+  bool passState=true;
+  bool emailState=true;
+  bool phoneState=true;
+  bool error=false;
+
+
 
 
   SignInSignUpViewModel({
@@ -36,13 +45,13 @@ class SignInSignUpViewModel extends ChangeNotifier {
   }
 
 
-  Future<bool> login({required String name, String? email, required String pass}) async {
-    setBusy(true);
-    await Future.delayed(Duration(seconds: 1));
-    bool success = true;
-    setBusy(false);
-    return success;
-  }
+  // Future<bool> login({required String name, String? email, required String pass}) async {
+  //   setBusy(true);
+  //   await Future.delayed(Duration(seconds: 1));
+  //   bool success = true;
+  //   setBusy(false);
+  //   return success;
+  // }
 
   bool validateMobileNumber(String value) {
     setBusy(true);
@@ -51,38 +60,59 @@ class SignInSignUpViewModel extends ChangeNotifier {
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       ans= false;
+      phoneState=false;
     }
     else if (!regExp.hasMatch(value)) {
       ans= false;
+      phoneState=false;
     }
-    else ans =  true;
+    else {
+      ans = true;
+      phoneState=true;
+    }
     setBusy(false);
     return ans;
   }
 
-  bool validateEmail(String value, String phoneNo) {
+   validateEmail(String value, String phoneNo) async {
     setBusy(true);
     //method to check if this email is already existing
-
     bool ans = EmailValidator.validate(value);
-    if(ans) ans= _repo.validateEmail(value,phoneNo);
+    emailState=ans;
+    if(ans) {
+      var anss=  await _repo.validateEmail(value);
+      ans=anss;
+      print("Email State at Model: $ans");
+      emailState=ans;
+      if(ans){
+        var ano = await _repo.validatePhone(phoneNo);
+        ans=ano;
+        phoneState=ano;
+        print("Phone State at Model: $ano");
+      }
+    }
     setBusy(false);
+    print('Validate Email Ans in Model: $ans');
     return ans;
   }
 
   bool validateName(String value){
     setBusy(true);
-
     bool ans;
     String pattern = r'^[a-zA-Z][a-zA-Z\s]+[a-zA-Z]$';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       ans= false;
+      nameState=false;
     }
     else if (!regExp.hasMatch(value)) {
+      nameState=false;
       ans= false;
     }
-    else ans =  true;
+    else {
+      nameState=true;
+      ans = true;
+    }
 
     setBusy(false);
     return ans;
@@ -94,12 +124,18 @@ class SignInSignUpViewModel extends ChangeNotifier {
     String pattern = r'^(?=.*[A-Za-z])(?=.*\d)\S{8,}$';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
+      passState=false;
       ans= false;
     }
     else if (!regExp.hasMatch(value)) {
       ans= false;
+      passState=false;
+
     }
-    else ans =  true;
+    else {
+      ans =  true;
+    passState=true;
+    }
     setBusy(false);
     return ans;
   }

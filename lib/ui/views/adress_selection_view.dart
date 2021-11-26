@@ -1,12 +1,10 @@
 import 'package:bluetaxiapp/constants/strings.dart';
-import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/arriving_screen_view.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
-import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/adress_selection_view_model.dart';
@@ -54,8 +52,9 @@ class AdressSelectionView extends StatelessWidget {
                   ),
 
                   //Navigator Button
-                  if(model.busy)CircularProgressIndicator()
-                  else if(model.state==LabelSelectAdress)
+                  // if(model.busy)CircularProgressIndicator()
+                  // else
+                    if(model.state==LabelSelectAdress)
                     LeadindBackButton(
                       ontap: (){Navigator.pop(context);},
                       icon: AssetImage('asset/icons/nav btn.png'),
@@ -309,7 +308,10 @@ class AdressSelectionView extends StatelessWidget {
               Container(
                 margin: UIHelper.pagePaddingSmall.copyWith(bottom: 0,top: 0),
                 width: double.infinity,
-                child: PrimaryButton(
+                child:
+                model.busy?
+                Center(child: CircularProgressIndicator(),) :
+                PrimaryButton(
                   ontap: ()async {
                     await model.addAdress(model.toController.text);
                     await model.addAdress(model.fromController.text);
@@ -317,7 +319,7 @@ class AdressSelectionView extends StatelessWidget {
                     await model.generateRequest();
 
 
-                    if(model.generatedRide!=null) {
+                    if(requestId!="") {
                       Navigator.push(context, MaterialPageRoute(builder: (
                           context) => ArrivingScreen(requestedId: requestId,),));
                     }

@@ -51,7 +51,7 @@ class RideSummary extends StatelessWidget {
                 new MaterialPageRoute(
                     builder: (context) => new RideHistoryView()));
           },
-          icon: AssetImage('asset/icons/nav_btn.png'),
+          icon: AssetImage('asset/icons/back_btn.png'),
         ),
       ),
       body: SingleChildScrollView(

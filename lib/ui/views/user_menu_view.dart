@@ -1,10 +1,10 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/my_card_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
-import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +16,7 @@ class UserMenuView extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: onSecondaryColor,
       body: Column(
         children: [
@@ -96,8 +97,8 @@ class UserMenuView extends StatelessWidget {
               shrinkWrap: true,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, new MaterialPageRoute(
+                  onTap: () async {
+                    await Navigator.push(context, MaterialPageRoute(
                         builder: (context) => new RideHistoryView()));
                   },
                   child: Container(

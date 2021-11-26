@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
 
 
 
