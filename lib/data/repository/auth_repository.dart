@@ -10,32 +10,36 @@ import 'package:bluetaxiapp/data/remote/api.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as con;
 
-class AuthRepository{
+class AuthRepository {
   final Api api;
   final LocalApi localApi;
 
-  AuthRepository({required Api api,required LocalApi localApi,}):api= api,localApi=localApi;
-  
+  AuthRepository({required Api api, required LocalApi localApi,})
+      :api= api,
+        localApi=localApi;
+
   StreamController<UserModel> _userController = StreamController<UserModel>();
+
   Stream<UserModel> get user => _userController.stream;
 
   Future<bool> test() async {
-    bool res =  await localApi.test();
+    bool res = await localApi.test();
     return res;
   }
 
 // Signup Without Firebase Auth
-  Future signUpWithEmailAndPassword(String name,String email,String phoneNo, password) async {
-
-    dynamic result = await api.signUpWithEmailPassword(name, email,phoneNo, password);
-    if(result == null) {
+  Future signUpWithEmailAndPassword(String name, String email, String phoneNo,
+      password) async {
+    dynamic result = await api.signUpWithEmailPassword(
+        name, email, phoneNo, password);
+    if (result == null) {
       print("Not SignedUp");
     }
     return result;
   }
 
   Future<DriverModel?> getRequestData(String uid) async {
-    Future<DriverModel?> result= api.getRequestData(uid);
+    Future<DriverModel?> result = api.getRequestData(uid);
     return result;
   }
 
@@ -48,38 +52,43 @@ class AuthRepository{
     return result;
   }
 
-  Future addAdressLocally({required String adress}) async{
+  Future addAdressLocally({required String adress}) async {
     late List<AdressModel> result;
     result = await api.getAddress(adress);
-    result = result.where((element) => element.adressTitle.contains(adress)).toList();
-    if(result.isNotEmpty)
-    {
+    result = result.where((element) => element.adressTitle.contains(adress))
+        .toList();
+    if (result.isNotEmpty) {
       await localApi.addAdress(adressModel: result.first);
       return localApi.readAllAdresses();
     }
     return;
   }
 
-  Future getAdressRemote({required String adress}) async{
+  Future getAdressRemote({required String adress}) async {
     late List<AdressModel> result;
     result = await api.getAddress(adress);
-    result = result.where((element) => element.adressTitle.contains(adress)).toList();
-    if(result.isNotEmpty)
-      {
-        return result;
-      }
-    else{
+    result = result.where((element) => element.adressTitle.contains(adress))
+        .toList();
+    if (result.isNotEmpty) {
+      return result;
+    }
+    else {
       String url = 'http://api.positionstack.com/v1/forward?access_key=628ca0078b787fa83e11e4e06b35cc8d&query= $adress';
       final response = await http.get(Uri.parse(url));
-      if(response.statusCode == 200){
-        UrlDataModel model = UrlDataModel.fromJson(con.jsonDecode(response.body));
+      if (response.statusCode == 200) {
+        UrlDataModel model = UrlDataModel.fromJson(
+            con.jsonDecode(response.body));
 
-        model.address.removeWhere((element) => element.country!='Pakistan');
-        model.address.forEach((element) async{await api.saveAddress(element);});
+        model.address.removeWhere((element) => element.country != 'Pakistan');
+        model.address.forEach((element) async {
+          await api.saveAddress(element);
+        });
 
         var res = await api.firestoreAdresses.get();
-        result =await res.docs.map((e) => AdressModel.fromJson(e.data())).toList();
-        result = result.where((element) => element.adressTitle.contains(adress)).toList();
+        result =
+        await res.docs.map((e) => AdressModel.fromJson(e.data())).toList();
+        result = result.where((element) => element.adressTitle.contains(adress))
+            .toList();
         return result;
       }
       else {
@@ -89,11 +98,11 @@ class AuthRepository{
     }
   }
 
-  Future getAdressLocally() async{
+  Future getAdressLocally() async {
     return await localApi.readAllAdresses();
   }
 
-  Future getVehiclesLocally() async{
+  Future getVehiclesLocally() async {
     return await localApi.vehicalList;
   }
 
@@ -105,11 +114,15 @@ class AuthRepository{
     required AdressModel fromAdress,
   }) async
   {
-    dynamic res = await api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill, toAdress: toAdress, fromAdress: fromAdress,);
+    dynamic res = await api.generateRequest(userToken: userToken,
+      carType: carType,
+      expectedBill: expectedBill,
+      toAdress: toAdress,
+      fromAdress: fromAdress,);
     return res;
   }
 
-  Future<UserModel> getAlreadySignIn() async{
+  Future<UserModel> getAlreadySignIn() async {
     UserModel person = await localApi.getAlreadySignIn();
     return person;
   }
@@ -118,8 +131,12 @@ class AuthRepository{
     api.unassignDriver();
   }
 
-  Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear})async{
-    dynamic ans = await api.addCard(cardNumber: cardNumber, cardHolder: cardHolder, expMonth: expMonth, expYear: expYear);
+  Future addCard(
+      {required String cardNumber, required String cardHolder, required int expMonth, required int expYear}) async {
+    dynamic ans = await api.addCard(cardNumber: cardNumber,
+        cardHolder: cardHolder,
+        expMonth: expMonth,
+        expYear: expYear);
     return ans;
   }
 
@@ -135,19 +152,28 @@ class AuthRepository{
     api.switchToDispatchedState(requestId);
   }
 
+  void switchToOnGoingState(String requestId) {
+    api.switchToOnGoingState(requestId);
+  }
+
   validateEmail(String value,) async {
-    dynamic result =await api.validateEmail(email: value);
+    dynamic result = await api.validateEmail(email: value);
     print('Result in Auth $result');
     return result;
   }
 
   Future<DriverModel> getDriver(String driverId) async {
-   DriverModel driverDocument=  await api.getDriver(driverId);
-   return driverDocument;
+    DriverModel driverDocument = await api.getDriver(driverId);
+    return driverDocument;
   }
 
   validatePhone(String phoneNo) async {
-    dynamic result =await api.validatePhone(phoneNo);
+    dynamic result = await api.validatePhone(phoneNo);
     return result;
+  }
+
+  getDriverDetails() async {
+    DriverModel driverDocument =await api.getDriverDetails();
+    return driverDocument;
   }
 }

@@ -66,8 +66,11 @@ class RideSummary extends StatelessWidget {
                   zoomControlsEnabled: false,
                   zoomGesturesEnabled : false,
                   markers: Set.of([
-                    Marker(
+                    Marker (
                         markerId: MarkerId('0'),
+                      // icon:await BitmapDescriptor.fromAssetImage(
+                      //     ImageConfiguration(size: Size(24, 24)), 'asset/icons/ic_dropoff.png')
+                      //     ,
                       position: LatLng(
                         snapshot.docs[index]['Addresses']['from']['lat'],
                         snapshot.docs[index]['Addresses']['from']['lng'],),
@@ -96,6 +99,9 @@ class RideSummary extends StatelessWidget {
                   onTap: (latlng) {
                     print("${latlng.latitude}     ${latlng.longitude}");
                   },
+
+
+
                 ),
               ),
               Padding(

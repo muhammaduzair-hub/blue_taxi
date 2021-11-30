@@ -1,24 +1,27 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/booking_view.dart';
-import 'package:bluetaxiapp/ui/views/dev_screen.dart';
-import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
-import 'package:bluetaxiapp/viewmodels/views/cancellation_reason_view_model.dart';
+import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
 class CancellationReasonView extends StatelessWidget {
-  const CancellationReasonView({Key? key}) : super(key: key);
+  CancellationReasonView({Key? key}) : super(key: key);
+
+  ArrivingSelectionViewModel? arrivingModel;
+
 
   @override
   Widget build(BuildContext context) {
-    return BaseWidget<CancellationReasonViewModel>(
-      model: CancellationReasonViewModel(repo: Provider.of(context)),
+    return BaseWidget<ArrivingSelectionViewModel>(
+      model: ArrivingSelectionViewModel(requestId,repo: Provider.of(context),),
       builder: (context, model, child) => SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -78,10 +81,9 @@ class CancellationReasonView extends StatelessWidget {
                   child: PrimaryButton(
                     text: Text(submit,style: buttonTextStyle,),
                     ontap:(){
-                      //Sending to MenuPage for Testing Purposes
+                      model.switchState(EnumToString.convertToString(Status.Cancelled));
                       Navigator.push(context, new MaterialPageRoute(
-                          builder: (context) => BookingView())
-                      );
+                          builder: (context) => BookingView()));
                     },
                   ),
                 ),
@@ -92,7 +94,7 @@ class CancellationReasonView extends StatelessWidget {
   }
 
 
-  Widget _myRadioButton({required String title, required int value,Function(int?)? onChanged, required CancellationReasonViewModel model}) {
+  Widget _myRadioButton({required String title, required int value,Function(int?)? onChanged, required ArrivingSelectionViewModel model}) {
     return RadioListTile(
       value: value,
       onChanged: onChanged!,
@@ -101,7 +103,7 @@ class CancellationReasonView extends StatelessWidget {
     );
   }
 
-  Widget _buildCheckListItems(int index, CancellationReasonViewModel model) {
+  Widget _buildCheckListItems(int index, ArrivingSelectionViewModel model) {
     return Column(
       //Via List Model
       children: <Widget>[

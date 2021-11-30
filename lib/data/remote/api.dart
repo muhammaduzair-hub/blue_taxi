@@ -37,8 +37,6 @@ class Api {
     return user != null ? userModel.UserModel( id: user.uid) : null;
   }
 
-
-
   Future signUpWithEmailPassword(String nameController, String emailController,String phoneNoController, String passwordController) async {
     await FirebaseFirestore.instance.collection("users").add({
       "name" : nameController,
@@ -212,7 +210,7 @@ class Api {
           .get()
           .then((value) =>
           value.docs.forEach((doc)=> {
-            print(doc['driverName']),
+            print("*********** AT API DRIVER NAME IS : ${doc['driverName']}"),
             doc.reference.update({'driverStatus' : 'Assigned'}),//CHANGE***********
             driverID= doc.id,
           })
@@ -231,6 +229,7 @@ class Api {
   }
 
   Future<void> unassignDriver() async {
+    if(driverID !=null)
     return await _driverCollectionReference.doc(driverID).update({
     'driverStatus' : 'Unassigned'
     });
@@ -324,7 +323,7 @@ class Api {
     return model;
   }
 
-  Future<DriverModel> getDriver(String driverId) async {
+  getDriver(String driverId) async {
      var driverDoc= await _driverCollectionReference.doc(driverId).get();
      late DriverModel driverDocument = DriverModel.fromJson(driverDoc.data()!);
    return driverDocument;
@@ -346,5 +345,16 @@ class Api {
     }
       return _final;
     }
+  }
+
+  Future<void> switchToOnGoingState(String requestId) async {
+    return await _requestCollectionReference.doc(requestId).update({
+      'rideStatus': 'OnGoing',//CHANGE***********
+    });
+  }
+
+   getDriverDetails() async {
+     DriverModel driverDocument = await getDriver(driverID);
+    return driverDocument;
   }
 }
