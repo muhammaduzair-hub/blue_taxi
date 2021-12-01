@@ -131,7 +131,7 @@ class AdressSelectionView extends StatelessWidget {
                             child:
                             TextField(
                               controller: model.fromController,
-                              decoration: InputDecoration.collapsed(hintText: 'To'),
+                              decoration: InputDecoration.collapsed(hintText: 'From'),
                               onChanged: (val){
                                 model.debouncer.run(() {
                                   print(model.fromController.text);
@@ -153,7 +153,7 @@ class AdressSelectionView extends StatelessWidget {
                                   model.switchTextField();
                                 },
                                 controller: model.toController,
-                                decoration: InputDecoration.collapsed(hintText: 'From'),
+                                decoration: InputDecoration.collapsed(hintText: 'To'),
                                 onChanged: (val){
                                   model.debouncer.run(() {
                                     print(model.toController.text);

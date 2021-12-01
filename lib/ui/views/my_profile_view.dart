@@ -1,6 +1,6 @@
-
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
@@ -40,7 +40,7 @@ class MyProfileView extends StatelessWidget {
                       //child: Icon(Icons.person,size: 50,color: onPrimaryColor,),
                     ),
                     UIHelper.verticalSpaceSmall,
-                    Text("Carson",style: boldHeading1,),
+                    Text(signedINUser.name!,style: boldHeading1,),
                     UIHelper.verticalSpaceLarge,
                     Material(
                       elevation: 15,
@@ -53,9 +53,9 @@ class MyProfileView extends StatelessWidget {
                           padding: EdgeInsets.all(8),
                           children: [
                             // i use hard coded values here because we will fetch these texts from models
-                            listTile(icon: Icons.call,title: "+1 926 483 32 52"),
+                            listTile(icon: Icons.call,title: signedINUser.phoneno!),
                             Padding(padding: EdgeInsets.only(left: 61.58,right: 20),child: Divider(height: 3,color: secondaryColor2,),),
-                            listTile(icon: Icons.email,title: "Carson@mobility.com"),
+                            listTile(icon: Icons.email,title: signedINUser.email!),
                             Padding(padding: EdgeInsets.only(left: 61.58,right: 20),child: Divider(height: 3,color: secondaryColor2,),),
                             listTile(icon: FontAwesomeIcons.facebookF,title: "@carsonmobility"),
                           ],

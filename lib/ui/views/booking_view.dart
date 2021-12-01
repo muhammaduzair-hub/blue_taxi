@@ -8,6 +8,7 @@ import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/boooking_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:group_list_view/group_list_view.dart';
 import 'package:provider/provider.dart';
 
 class BookingView extends StatelessWidget {
@@ -93,17 +94,16 @@ class BookingView extends StatelessWidget {
                           ),
                         ),
                         UIHelper.verticalSpaceSmall,
-                        leadingListTile(),
-                        Padding(
-                          padding: EdgeInsets.only(left: 60,right: 20 ),
-                          child: Divider(),
-                        ),
-                        leadingListTile(),
-                        Padding(
-                          padding: EdgeInsets.only(left: 60,right: 20 ),
-                          child: Divider(),
-                        ),
-                        leadingListTile(),
+                        ListView.separated(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: model.localAdressTitles.length,
+                          separatorBuilder: (context, index) => Image(image:AssetImage('asset/icons/line.png')),
+                            itemBuilder: (context, index) =>
+                                (
+                                    leadingListTile(title: model.localAdressTitles[index].toString())
+                                ),
+                        )
                       ],
                     )
                   ),
@@ -116,16 +116,15 @@ class BookingView extends StatelessWidget {
     );
   }
 
-
-
-  Widget leadingListTile(){
+  Widget leadingListTile({required String title}){
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage('asset/icons/ic_place.png'),
       ),
-      title: Text('Kings',style: heading2,),
-      subtitle: Text("New york",style: heading3,),
+      title: Text(title,style: heading2,),
+      //subtitle: Text("New york",style: heading3,),
+      onTap: (){},
     );
   }
 }

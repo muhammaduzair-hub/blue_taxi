@@ -1,18 +1,9 @@
-import 'package:bluetaxiapp/ui/views/base_widget.dart';
-import 'package:bluetaxiapp/ui/views/dev_screen.dart';
-import 'package:bluetaxiapp/ui/views/home_view_sample.dart';
-import 'package:bluetaxiapp/ui/views/login_view_sample.dart';
-import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
 import 'package:bluetaxiapp/ui/views/splash_screen_view.dart';
-import 'package:bluetaxiapp/viewmodels/views/splash_screen_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:splash_screen_view/SplashScreenView.dart';
-
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +33,7 @@ class MyApp extends StatelessWidget {
                     theme:  ThemeData(
                             primarySwatch: Colors.blue,
                           ),
-                    home:MySplashScreenView()
+                    home:MySplashScreenView(),
                   ),
                 );
               }

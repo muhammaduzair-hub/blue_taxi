@@ -14,6 +14,8 @@ class UserMenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
 
     return Scaffold(
       backgroundColor: onSecondaryColor,
@@ -72,12 +74,12 @@ class UserMenuView extends StatelessWidget {
                   ])),
               UIHelper.verticalSpaceSmall,
               Text(
-                "Carson",
+                signedINUser.name!,
                 style: boldHeading2.copyWith(color: userNameText),
               ),
               UIHelper.verticalSpaceSmall,
               Text(
-                "carson@mail.com",
+                signedINUser.email!,
                 style: heading2.copyWith(
                     color: onPrimaryColor2, fontWeight: FontWeight.w400),
               )
@@ -111,8 +113,8 @@ class UserMenuView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    width: 148.0,
-                    height: 120.0,
+                    width: width/2,
+                    height: height/4,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       //padding: const EdgeInsets.all(28.0),
@@ -148,8 +150,8 @@ class UserMenuView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  width: 148.0,
-                  height: 120.0,
+                  width: width/2,
+                  height: height/4,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
@@ -188,8 +190,8 @@ class UserMenuView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  width: 148.0,
-                  height: 120.0,
+                  width: width/2,
+                  height: height/4,
                   child: GestureDetector(
                     onTap: () {}, // handle your image tap here
                     child: Padding(
@@ -226,8 +228,8 @@ class UserMenuView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  width: 148.0,
-                  height: 120.0,
+                  width: width/2,
+                  height: height/4,
                   child: GestureDetector(
                     onTap: () {}, // handle your image tap here
                     child: Padding(

@@ -11,7 +11,7 @@ import 'package:bluetaxiapp/data/remote/api.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as con;
 
-class AuthRepository{
+class AuthRepository {
   final Api api;
   final LocalApi localApi;
 
@@ -21,15 +21,16 @@ class AuthRepository{
   Stream<UserModel> get user => _userController.stream;
 
   Future<bool> test() async {
-    bool res =  await localApi.test();
+    bool res = await localApi.test();
     return res;
   }
 
 // Signup Without Firebase Auth
-  Future signUpWithEmailAndPassword(String name,String email,String phoneNo, password) async {
-
-    dynamic result = await api.signUpWithEmailPassword(name, email,phoneNo, password);
-    if(result == null) {
+  Future signUpWithEmailAndPassword(String name, String email, String phoneNo,
+      password) async {
+    dynamic result = await api.signUpWithEmailPassword(
+        name, email, phoneNo, password);
+    if (result == null) {
       print("Not SignedUp");
     }
     return result;
@@ -144,19 +145,28 @@ class AuthRepository{
     api.switchToDispatchedState(requestId);
   }
 
+  void switchToOnGoingState(String requestId) {
+    api.switchToOnGoingState(requestId);
+  }
+
   validateEmail(String value,) async {
-    dynamic result =await api.validateEmail(email: value);
+    dynamic result = await api.validateEmail(email: value);
     print('Result in Auth $result');
     return result;
   }
 
   Future<DriverModel> getDriver(String driverId) async {
-   DriverModel driverDocument=  await api.getDriver(driverId);
-   return driverDocument;
+    DriverModel driverDocument = await api.getDriver(driverId);
+    return driverDocument;
   }
 
   validatePhone(String phoneNo) async {
-    dynamic result =await api.validatePhone(phoneNo);
+    dynamic result = await api.validatePhone(phoneNo);
     return result;
+  }
+
+  getDriverDetails() async {
+    DriverModel driverDocument =await api.getDriverDetails();
+    return driverDocument;
   }
 }

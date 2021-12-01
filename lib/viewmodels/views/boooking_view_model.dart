@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -19,6 +20,9 @@ class BookingViewModel extends BaseModel {
   late Uint8List icPick;
   late Uint8List carMarkerrr;
   late Uint8List currentLocationMarker;
+  late List<AdressModel> adressList=[];
+  late List<String> localAdressTitles=[];
+
   late Position currentLocation;
   late Completer<GoogleMapController> mapController = Completer();
 
@@ -28,9 +32,21 @@ class BookingViewModel extends BaseModel {
     //loading Custom marker of car
     getCurrentLocation();
     loadCustomMarker();
+    getAllAdress();
   }
 
 
+
+  getAllAdress() async{
+    setBusy(true);
+    adressList = await _authRepository.getAdressLocally();
+    adressList.forEach((element) {
+      localAdressTitles.add(element.adressTitle);
+    });
+
+    print("There are ${localAdressTitles.length} addresses");
+    setBusy(false);
+  }
 
   void loadCustomMarker() async{
     setBusy(true);
