@@ -159,7 +159,7 @@ class SignInSignUpView extends StatelessWidget {
                      Spacer(flex: 2,),
                      Text(LabelMobile,style: boldHeading3),
                      UIHelper.verticalSpaceSmall,
-                     CustomTextField(controller: numberController,),
+                     CustomTextField(controller: numberController,keyboardType: TextInputType.number,),
                      if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
 
                      UIHelper.verticalSpaceMedium,

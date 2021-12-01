@@ -128,7 +128,7 @@ class Api {
       {required String userToken,
         required AdressModel toAdress,
         required AdressModel fromAdress,
-        String paymentMethod="Unknown",
+        required CardModel card,
         required String carType,
         required String expectedBill,
       }) async {
@@ -151,9 +151,8 @@ class Api {
           },
         },
         "payment":{
-          "type":"card",
-          "card_no":"*****8149",
-          "id":"xyz"
+          "type":card.cardNumber=="Cash"?"Cash":"Card",
+          "card_no":card.cardNumber,
         },
         "carType":carType,
         "expectedBill":'',

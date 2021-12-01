@@ -35,11 +35,7 @@ class ArrivingScreen extends StatelessWidget {
     return BaseWidget<ArrivingSelectionViewModel>(
         model: ArrivingSelectionViewModel(requestedId, repo: Provider.of(context)),
         builder: (context, model, child) => SafeArea(
-            child: model.busy
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Scaffold(
+            child: Scaffold(
                     body: Stack(children: [
                     GoogleMap(
                       zoomControlsEnabled: false,
@@ -109,20 +105,22 @@ class ArrivingScreen extends StatelessWidget {
                       ),
 
                     //Chnage Bottom sheets on Model State
-                    if (state == EnumToString.convertToString(Status.Booked))
-                      selectDriverSearchingSheet(model, context) //Checked
-                    else if (state == EnumToString.convertToString(Status.Active))
-                      selectArrivingBottomSheet(model) //Checked
-                    else if (state == EnumToString.convertToString(Status.Dispatched))
-                      selectArrivedBottomSheet(model, context) //Checked
-                     else if (state == EnumToString.convertToString(Status.OnGoing))
-                       selectDisbaledArrivingBottomSheet(model) //Checked
-                    else if (state == EnumToString.convertToString(Status.Completed))
-                      selectTipAndRateSheet(model) //Checked
-                    else if (state == EnumToString.convertToString(Status.Tips))
-                      selectTipsSheet(model)
-                    else if (state == EnumToString.convertToString(Status.Rate))
-                      selectRateSheet(model),
+
+                      if(model.busy)Center(child: CircularProgressIndicator())
+                      else if (state == EnumToString.convertToString(Status.Booked))
+                        selectDriverSearchingSheet(model, context) //Checked
+                      else if (state == EnumToString.convertToString(Status.Active))
+                        selectArrivingBottomSheet(model) //Checked
+                      else if (state == EnumToString.convertToString(Status.Dispatched))
+                        selectArrivedBottomSheet(model, context) //Checked
+                       else if (state == EnumToString.convertToString(Status.OnGoing))
+                         selectDisbaledArrivingBottomSheet(model) //Checked
+                      else if (state == EnumToString.convertToString(Status.Completed))
+                        selectTipAndRateSheet(model) //Checked
+                      else if (state == EnumToString.convertToString(Status.Tips))
+                        selectTipsSheet(model)
+                      else if (state == EnumToString.convertToString(Status.Rate))
+                        selectRateSheet(model),
                   ]))));
   }
   //Booked

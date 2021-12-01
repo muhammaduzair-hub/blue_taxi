@@ -299,8 +299,8 @@ class AdressSelectionView extends StatelessWidget {
                   child: Wrap(
                     spacing: 3,
                     children: [
-                      Image.asset("asset/icons/ic_mastercard.png"),
-                      Text("**** 8295",style: heading3,),
+                      Image(image: model.myCards[model.selectedCardIndex].leadingImage),
+                      Text(model.myCards[model.selectedCardIndex].cardNumber,style: heading3,),
                     ],
                   ),
                 ),
@@ -319,7 +319,8 @@ class AdressSelectionView extends StatelessWidget {
                     await model.generateRequest();
 
 
-                    if(requestId!="") {
+                    if(requestId!='') {
+                      model.switchState(LabelSelectAdress);
                       Navigator.push(context, MaterialPageRoute(builder: (
                           context) => ArrivingScreen(requestedId: requestId,),));
                     }
@@ -365,7 +366,12 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget paymentOptionListTile({required AssetImage leadingImage, required String text, required AssetImage trailingImage, required AdressSelectionViewModel model , required int index}) {
+  Widget paymentOptionListTile({
+    required AssetImage leadingImage,
+    required String text,
+    required AssetImage trailingImage,
+    required AdressSelectionViewModel model ,
+    required int index}) {
     return  Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -382,10 +388,10 @@ class AdressSelectionView extends StatelessWidget {
       child: ListTile(
         leading: Image(image: leadingImage),
         title: Text(text),
-        trailing: Image(image: trailingImage,),
+        trailing:model.selectedCardIndex==index?Image(image: AssetImage("asset/icons/check.png"),height: 15,): Image(image: trailingImage,),
         onTap: (){
           model.switchSelectCardIndex(index);
-         // model.switchState();
+          model.switchState(LabelRideOption);
         },
       ),
     );
