@@ -10,7 +10,14 @@ class CardModel{
   factory CardModel.fromJson(Map<String, dynamic> json) {
     return CardModel(
       leadingImage:  AssetImage("asset/icons/shape.png"),
-      cardNumber: "****"+json['cardNumber']
+      cardNumber: maskDigit(json['cardNumber'])
     );
   }
+
+  static String maskDigit(String input){
+    String firstPart = "XXXXXXXXXXX".toLowerCase();
+    String last = input.substring(input.length-4,input.length);
+    return firstPart+last;
+  }
 }
+

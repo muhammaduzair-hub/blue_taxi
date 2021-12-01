@@ -180,10 +180,8 @@ class ReceiptView extends StatelessWidget {
                                 ),
                                 ontap: () {
                                   //Move back to First Page
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => new AdressSelectionView()));
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
                                 }),
                           ),
                         ),

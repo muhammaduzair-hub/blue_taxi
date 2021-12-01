@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:bluetaxiapp/data/local/local_api.dart';
+import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
@@ -14,12 +15,9 @@ class AuthRepository {
   final Api api;
   final LocalApi localApi;
 
-  AuthRepository({required Api api, required LocalApi localApi,})
-      :api= api,
-        localApi=localApi;
-
+  AuthRepository({required Api api,required LocalApi localApi,}):api= api,localApi=localApi;
+  
   StreamController<UserModel> _userController = StreamController<UserModel>();
-
   Stream<UserModel> get user => _userController.stream;
 
   Future<bool> test() async {
@@ -39,7 +37,7 @@ class AuthRepository {
   }
 
   Future<DriverModel?> getRequestData(String uid) async {
-    Future<DriverModel?> result = api.getRequestData(uid);
+    Future<DriverModel?> result= api.getRequestData(uid);
     return result;
   }
 
@@ -52,43 +50,38 @@ class AuthRepository {
     return result;
   }
 
-  Future addAdressLocally({required String adress}) async {
+  Future addAdressLocally({required String adress}) async{
     late List<AdressModel> result;
     result = await api.getAddress(adress);
-    result = result.where((element) => element.adressTitle.contains(adress))
-        .toList();
-    if (result.isNotEmpty) {
+    result = result.where((element) => element.adressTitle.contains(adress)).toList();
+    if(result.isNotEmpty)
+    {
       await localApi.addAdress(adressModel: result.first);
       return localApi.readAllAdresses();
     }
     return;
   }
 
-  Future getAdressRemote({required String adress}) async {
+  Future getAdressRemote({required String adress}) async{
     late List<AdressModel> result;
     result = await api.getAddress(adress);
-    result = result.where((element) => element.adressTitle.contains(adress))
-        .toList();
-    if (result.isNotEmpty) {
-      return result;
-    }
-    else {
+    result = result.where((element) => element.adressTitle.contains(adress)).toList();
+    if(result.isNotEmpty)
+      {
+        return result;
+      }
+    else{
       String url = 'http://api.positionstack.com/v1/forward?access_key=628ca0078b787fa83e11e4e06b35cc8d&query= $adress';
       final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        UrlDataModel model = UrlDataModel.fromJson(
-            con.jsonDecode(response.body));
+      if(response.statusCode == 200){
+        UrlDataModel model = UrlDataModel.fromJson(con.jsonDecode(response.body));
 
-        model.address.removeWhere((element) => element.country != 'Pakistan');
-        model.address.forEach((element) async {
-          await api.saveAddress(element);
-        });
+        model.address.removeWhere((element) => element.country!='Pakistan');
+        model.address.forEach((element) async{await api.saveAddress(element);});
 
         var res = await api.firestoreAdresses.get();
-        result =
-        await res.docs.map((e) => AdressModel.fromJson(e.data())).toList();
-        result = result.where((element) => element.adressTitle.contains(adress))
-            .toList();
+        result =await res.docs.map((e) => AdressModel.fromJson(e.data())).toList();
+        result = result.where((element) => element.adressTitle.contains(adress)).toList();
         return result;
       }
       else {
@@ -98,11 +91,11 @@ class AuthRepository {
     }
   }
 
-  Future getAdressLocally() async {
+  Future getAdressLocally() async{
     return await localApi.readAllAdresses();
   }
 
-  Future getVehiclesLocally() async {
+  Future getVehiclesLocally() async{
     return await localApi.vehicalList;
   }
 
@@ -112,17 +105,21 @@ class AuthRepository {
     required String expectedBill,
     required AdressModel toAdress,
     required AdressModel fromAdress,
+    required CardModel card
   }) async
   {
-    dynamic res = await api.generateRequest(userToken: userToken,
+    dynamic res = await api.generateRequest(
+      userToken: userToken,
       carType: carType,
       expectedBill: expectedBill,
       toAdress: toAdress,
-      fromAdress: fromAdress,);
+      fromAdress: fromAdress,
+      card: card
+    );
     return res;
   }
 
-  Future<UserModel> getAlreadySignIn() async {
+  Future<UserModel> getAlreadySignIn() async{
     UserModel person = await localApi.getAlreadySignIn();
     return person;
   }
@@ -131,12 +128,8 @@ class AuthRepository {
     api.unassignDriver();
   }
 
-  Future addCard(
-      {required String cardNumber, required String cardHolder, required int expMonth, required int expYear}) async {
-    dynamic ans = await api.addCard(cardNumber: cardNumber,
-        cardHolder: cardHolder,
-        expMonth: expMonth,
-        expYear: expYear);
+  Future addCard({required String cardNumber, required String cardHolder, required int expMonth, required int expYear})async{
+    dynamic ans = await api.addCard(cardNumber: cardNumber, cardHolder: cardHolder, expMonth: expMonth, expYear: expYear);
     return ans;
   }
 
