@@ -7,7 +7,7 @@ class RequestDataModel{
   final DateTime? createDate;
   final String? expectedBill;
   final Payment? payment;
-  final int? rideStatus;
+  final String? rideStatus;
   final String? riderId;
   final String? userId;
 

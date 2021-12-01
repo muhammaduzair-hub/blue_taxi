@@ -1,6 +1,8 @@
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
+import 'package:bluetaxiapp/data/model/requestData_model.dart';
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
@@ -356,5 +358,12 @@ class Api {
    getDriverDetails() async {
      DriverModel driverDocument = await getDriver(driverID);
     return driverDocument;
+  }
+
+  getRide(String requestId) async {
+    var reqDocument= await _requestCollectionReference.doc(requestId).get();
+    late RequestDataModel reqDoc =  RequestDataModel.fromJson(reqDocument.data()!);
+    print("*****************${reqDoc.createDate}");
+    return reqDoc;
   }
 }

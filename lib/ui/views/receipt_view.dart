@@ -1,6 +1,5 @@
-import 'package:bluetaxiapp/data/model/user_model.dart';
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
-import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/adress_selection_view.dart';
@@ -14,13 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ReceiptView extends StatelessWidget {
+  final String requestId;
 
-  ReceiptView({Key? key,}) : super(key: key);
+  ReceiptView({Key? key,required this.requestId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BaseWidget<ReceiptViewModel>(
-        model: ReceiptViewModel(repo: Provider.of(context)),
+        model: ReceiptViewModel(repo: Provider.of(context), requestId: requestId),
         builder: (context, model, child) => SafeArea(
             child: model.busy
                 ? Center(
@@ -66,74 +66,77 @@ class ReceiptView extends StatelessWidget {
                                       fontWeight: FontWeight.w700),
                                 )),
                                 UIHelper.verticalSpaceMedium,
-                                Container(
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15.0)),
-                                    border: Border.all(
-                                      color: Color(0xffD5DDE0),
-                                      width: 1.0,
+                                IntrinsicHeight(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(15.0)),
+                                      border: Border.all(
+                                        color: Color(0xffD5DDE0),
+                                        width: 1.0,
+                                      ),
                                     ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          children: <Widget>[
-                                            SizedBox(height: 2.0),
-                                            Container(
-                                              width: 40.0,
-                                              child: Text(
-                                                '11:24',
-                                                style: heading3.copyWith(
-                                                    color: onPrimaryColor2,
-                                                    fontWeight: FontWeight.w400),
-                                                textAlign: TextAlign.start,
-                                              ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: IntrinsicHeight(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              children: <Widget>[
+                                                Container(
+                                                  width: 40.0,
+                                                  child: Text(
+                                                    '11:24',
+                                                    style: heading3.copyWith(
+                                                        color: onPrimaryColor2,
+                                                        fontWeight: FontWeight.w400),
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                                Spacer(),
+                                                Container(
+                                                  width: 40.0,
+                                                  child: Text(
+                                                    '11:38',
+                                                    style: heading3.copyWith(
+                                                        color: onPrimaryColor2,
+                                                        fontWeight: FontWeight.w400),
+                                                    textAlign: TextAlign.start,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(height:12.0),
-                                            UIHelper.verticalSpaceMedium,
-                                            Container(
-                                              width: 40.0,
-                                              child: Text(
-                                                '11:38',
-                                                style: heading3.copyWith(
-                                                    color: onPrimaryColor2,
-                                                    fontWeight: FontWeight.w400),
-                                                textAlign: TextAlign.start,
-                                              ),
+                                            Expanded(
+                                              child: Image(
+                                                  image: AssetImage(
+                                                      'asset/icons/ic_route.png')),
                                             ),
+                                            Column(
+                                            children: <Widget>[
+                                              Container(
+                                                width: 175.0,
+                                                child: Text(
+                                                  model.requestDataModel.address!.from!.place_name.toString(),
+                                                  style: heading2.copyWith(fontWeight: FontWeight.w400),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                              UIHelper.verticalSpaceSmall,
+                                              Container(
+                                                width: 175.0,
+                                                child: Text(
+                                                  model.requestDataModel.address!.to!.place_name.toString(),
+                                                  style: heading2.copyWith(fontWeight: FontWeight.w400),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                            ],
+                                            )
                                           ],
                                         ),
-                                        Image(
-                                            image: AssetImage(
-                                                'asset/icons/ic_route.png')),
-                                        Column(
-                                          children: <Widget>[
-                                            Container(
-                                              width: 175.0,
-                                              child: Text(
-                                                '1, Thrale Street, London, SE19HW, UK',
-                                                style: heading2.copyWith(fontWeight: FontWeight.w400),
-                                                textAlign: TextAlign.start,
-                                              ),
-                                            ),
-                                            UIHelper.verticalSpaceSmall,
-                                            Container(
-                                              width: 175.0,
-                                              child: Text(
-                                                'Ealing Broadway Shopping Centre, London, W55JY',
-                                                style: heading2.copyWith(fontWeight: FontWeight.w400),
-                                                textAlign: TextAlign.start,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -158,7 +161,7 @@ class ReceiptView extends StatelessWidget {
                                         Image(
                                             image: AssetImage(
                                                 'asset/icons/shape.png')),
-                                        Text('**** 8295'),
+                                        Text(model.requestDataModel.payment!.card_no.toString()),
                                         Text('\$763'),
                                       ],
                                     ),
@@ -180,10 +183,14 @@ class ReceiptView extends StatelessWidget {
                                 ),
                                 ontap: () {
                                   //Move back to First Page
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => new AdressSelectionView()));
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+
+                                  // Navigator.push(
+                                  //     context,
+                                  //     new MaterialPageRoute(
+                                  //         builder: (context) => new AdressSelectionView()));
                                 }),
                           ),
                         ),

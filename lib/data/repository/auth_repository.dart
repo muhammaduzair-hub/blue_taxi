@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:bluetaxiapp/data/local/local_api.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
+import 'package:bluetaxiapp/data/model/requestData_model.dart';
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
 import 'package:http/http.dart' as http;
@@ -175,5 +177,10 @@ class AuthRepository {
   getDriverDetails() async {
     DriverModel driverDocument =await api.getDriverDetails();
     return driverDocument;
+  }
+
+  Future<RequestDataModel> getRide(String requestId) async {
+    RequestDataModel reqDoc = await api.getRide(requestId);
+    return reqDoc;
   }
 }

@@ -1027,7 +1027,7 @@ class ArrivingScreen extends StatelessWidget {
                                       context,
                                       new MaterialPageRoute(
                                           builder: (context) =>
-                                          new ReceiptView()));
+                                          new ReceiptView(requestId: model.requestId,)));
                                   // model.switchState("On Trip");
                                 },
                               )),
@@ -1065,4 +1065,5 @@ class ArrivingScreen extends StatelessWidget {
       ),
     );
   }
+
 }
