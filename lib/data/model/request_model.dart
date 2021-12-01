@@ -41,12 +41,12 @@ class RequestModel {
   userId='';
 
 
-   factory RequestModel.fromJson(Map<String, dynamic>? json, String uid, String driverID) {
+   factory RequestModel.fromJson(Map<String, dynamic> json, String uid, String driverID) {
     return RequestModel(
         id: uid,
-        expectedBill: json!['expectedBill'].toString(),
+        expectedBill: json['expectedBill'].toString(),
         userId: json['userId'].toString(),
-        rideStatus: json!['rideStatus'],
+        rideStatus: json['rideStatus'],
         riderId: driverID,
         paymentMethod: json['paymentMethod'].toString(),
         carType: json['carType'].toString(),

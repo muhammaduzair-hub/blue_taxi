@@ -12,7 +12,9 @@ class RideHistoryView extends StatelessWidget {
 
   var historyTrip = FirebaseFirestore.instance
       .collection('request')
-      .where('userId', isEqualTo: signedINUser.id).orderBy('createDate')
+      .where('userId', isEqualTo: signedINUser.id)
+
+      .orderBy('createDate', descending: true)
       .snapshots();
 
   @override

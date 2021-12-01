@@ -320,9 +320,10 @@ class AdressSelectionView extends StatelessWidget {
 
 
                     if(requestId!='') {
-                      model.switchState(LabelSelectAdress);
+
                       Navigator.push(context, MaterialPageRoute(builder: (
                           context) => ArrivingScreen(requestedId: requestId,),));
+                      model.switchState(LabelSelectAdress);
                     }
                   },
                   text: Text(LabelBookRide, ),
