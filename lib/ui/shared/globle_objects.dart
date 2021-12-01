@@ -2,7 +2,7 @@ import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 
 late UserModel signedINUser;
-late String? requestId;
+late String requestId='';
 late String state=EnumToString.convertToString(Status.Booked);
 
 

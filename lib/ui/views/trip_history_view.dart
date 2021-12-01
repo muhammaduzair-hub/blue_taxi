@@ -94,7 +94,7 @@ class CustomCard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(21.0),
+            padding: UIHelper.pagePaddingSmall.copyWith(bottom: 4),
             child: Column(
               children: [
                 Row(
@@ -147,31 +147,33 @@ class CustomCard extends StatelessWidget {
                         height: 105.0,
                         image: AssetImage('asset/icons/routeIc.png')),
                     UIHelper.horizontalSpaceMedium,
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          height: 80,
-                          width: 200,
-                          child: Text(
-                            snapshot.docs[index]['Addresses']['from']
-                            ['place_name'],
-                            style: heading2.copyWith(
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.start,
+                    Expanded(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 80,
+                            width: 200,
+                            child: Text(
+                              snapshot.docs[index]['Addresses']['from']
+                              ['place_name'],
+                              style: heading2.copyWith(
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.start,
+                            ),
                           ),
-                        ),
-                        UIHelper.verticalSpaceSmall,
-                        Container(
-                          width: 200,
-                          child: Text(
-                            snapshot.docs[index]['Addresses']['to']
-                            ['place_name'],
-                            style: heading2.copyWith(
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                      ],
+                          UIHelper.verticalSpaceSmall,
+                          Container(
+                            width: 200,
+                            child: Text(
+                              snapshot.docs[index]['Addresses']['to']
+                              ['place_name'],
+                              style: heading2.copyWith(
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.start,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

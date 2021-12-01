@@ -189,7 +189,7 @@ class RideSummary extends StatelessWidget {
                     },
                     child: Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(21.0),
+                        padding: UIHelper.pagePaddingSmall.copyWith(right: 2),
                         child: Row(
                           children: [
                             Container(
@@ -276,19 +276,20 @@ class RideSummary extends StatelessWidget {
                               color: onPrimaryColor3,
                             ),
                             child: Image(
-                                image: AssetImage('asset/icons/shape.png')),
+                                image: snapshot.docs[index]['payment']['card_no']=="Cash"?AssetImage("asset/icons/ic_cash.png"): AssetImage('asset/icons/shape.png')),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 10, right: 100),
                             child: Text(
-                              '**** 8295',
+                              snapshot
+                                  .docs[index]['payment']['card_no'],
                               style:
                               boldHeading2.copyWith(color: onPrimaryColor),
                             ),
                           ),
                           Text(
-                            '\$7',
+                            '\$${snapshot.docs[index]['expectedBill']}',
                             style:
                             boldHeading2.copyWith(color: onPrimaryColor),
                           ),

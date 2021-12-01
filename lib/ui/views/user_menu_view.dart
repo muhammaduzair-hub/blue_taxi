@@ -138,24 +138,24 @@ class UserMenuView extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: onSecondaryColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: shadow,
-                        blurRadius: 5.0,
-                        offset: Offset(-4, 3.0),
-                      ),
-                    ],
-                  ),
-                  width: width/2,
-                  height: height/4,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
-                    }, // handle your image tap here
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: onSecondaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: shadow,
+                          blurRadius: 5.0,
+                          offset: Offset(-4, 3.0),
+                        ),
+                      ],
+                    ),
+                    width: width/2,
+                    height: height/4,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       child: Column(
@@ -178,22 +178,22 @@ class UserMenuView extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: onSecondaryColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: shadow,
-                        blurRadius: 5.0,
-                        offset: Offset(3.0, -4),
-                      ),
-                    ],
-                  ),
-                  width: width/2,
-                  height: height/4,
-                  child: GestureDetector(
-                    onTap: () {}, // handle your image tap here
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: onSecondaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: shadow,
+                          blurRadius: 5.0,
+                          offset: Offset(3.0, -4),
+                        ),
+                      ],
+                    ),
+                    width: width/2,
+                    height: height/4,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       child: Column(
@@ -216,22 +216,22 @@ class UserMenuView extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: onSecondaryColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: shadow,
-                        blurRadius: 5.0,
-                        offset: Offset(-4, -3.0),
-                      ),
-                    ],
-                  ),
-                  width: width/2,
-                  height: height/4,
-                  child: GestureDetector(
-                    onTap: () {}, // handle your image tap here
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: onSecondaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: shadow,
+                          blurRadius: 5.0,
+                          offset: Offset(-4, -3.0),
+                        ),
+                      ],
+                    ),
+                    width: width/2,
+                    height: height/4,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       child: Column(

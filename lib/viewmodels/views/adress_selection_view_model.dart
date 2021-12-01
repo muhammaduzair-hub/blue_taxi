@@ -170,6 +170,7 @@ class AdressSelectionViewModel extends BaseModel {
          card: myCards[selectedCardIndex],
      );
 
+     print("here it is answer: $ans");
      if(ans!=null){
        requestId=ans;
        generatedRide = ans;}

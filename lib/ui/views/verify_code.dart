@@ -98,6 +98,7 @@ class VerifyCodeView extends StatelessWidget {
                           },
                           focusNode: FocusNode(),
                           child: TextFormField(
+                            autofocus: true,
                             controller: model.boxControllers[0],
                             focusNode: model.boxFocusNodes[0],
                             textInputAction: TextInputAction.next,
