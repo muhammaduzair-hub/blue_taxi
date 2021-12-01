@@ -1,21 +1,15 @@
 import 'dart:async';
-
 import 'package:bluetaxiapp/constants/strings.dart';
-import 'package:bluetaxiapp/data/local/local_db/adress_database.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
-import 'package:bluetaxiapp/data/model/ride_model.dart';
-import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/model/vehicles_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
-import 'package:bluetaxiapp/viewmodels/views/signin_signup_view_model.dart';
+import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 class AdressSelectionViewModel extends BaseModel {
    final AuthRepository authRepository;
@@ -40,7 +34,7 @@ class AdressSelectionViewModel extends BaseModel {
    final debouncer = Debouncer(milliseconds: 3000);
    late Map<String, List> groupList ;
    bool selectedfromTextField = true;
-   late List<CardModel> myCards;
+   late List<CardModel> myCards=[];
    late int selectedCardIndex =0;
 
   //for disable button from list of vehicles in ride option state bottom sheet
@@ -67,6 +61,7 @@ class AdressSelectionViewModel extends BaseModel {
   }
 
   showonMap() async{
+
     try{
      from = adressList.firstWhere((element) => element.adressTitle == fromController.text);
     }catch(e){
@@ -82,13 +77,15 @@ class AdressSelectionViewModel extends BaseModel {
     addMarkers(LatLng(from.lat, from.long), "From", "$distance KM");
     addMarkers(LatLng(to.lat, to.long), "To", "$distance KM");
 
-
     setBusy(false);
   }
 
    getcards()async{
      setBusy(true);
-     myCards = await authRepository.api.getCards();
+     myCards.add(
+       CardModel(leadingImage: AssetImage('asset/icons/ic_cash.png'), cardNumber: "Cash",),
+     );
+     myCards.addAll(await authRepository.api.getCards());
      setBusy(false);
    }
 
@@ -168,7 +165,10 @@ class AdressSelectionViewModel extends BaseModel {
          userToken: signedINUser.id,
          carType: vehiclesList[vehicleSelectedIndex].vName,
          expectedBill: "1000",
-      toAdress: to, fromAdress: from);
+         toAdress: to,
+         fromAdress: from,
+         card: myCards[selectedCardIndex],
+     );
 
      if(ans!=null){
        requestId=ans;

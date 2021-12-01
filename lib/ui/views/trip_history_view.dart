@@ -12,13 +12,12 @@ class RideHistoryView extends StatelessWidget {
 
   var historyTrip = FirebaseFirestore.instance
       .collection('request')
-      .where('userId', isEqualTo: signedINUser.id)
+      .where('userId', isEqualTo: signedINUser.id).orderBy('createDate')
       .snapshots();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -28,10 +27,7 @@ class RideHistoryView extends StatelessWidget {
         leading: LeadingBackButton(
           radius: 30.0,
           ontap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new UserMenuView()));
+            Navigator.pop(context);
           },
           icon: AssetImage('asset/icons/nav_btn.png'),
         ),
@@ -43,7 +39,7 @@ class RideHistoryView extends StatelessWidget {
               separatorBuilder: (context, index) => SizedBox(
                     height: 10,
                   ),
-              itemCount: snapshot.data!.docs.length,
+              itemCount: snapshot.data != null ? snapshot.data!.docs.length: 0,
               itemBuilder: (context, int index) {
                 if (!snapshot.hasData) return CircularProgressIndicator();
                 return CustomCard(
@@ -74,108 +70,116 @@ class CustomCard extends StatelessWidget {
           ),
           padding: EdgeInsets.symmetric(horizontal: 21.0),
           height: 220,
-          child: GestureDetector(
+          child: snapshot.docs[index]['rideStatus'] !="Cancelled"?GestureDetector(
             onTap: () {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
                       builder: (context) =>  RideSummary(snapshot: snapshot, index: index,)));
             },
-            child: Card(
-              elevation: 9,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(21.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "21 Nov 2021, 18:39",
-                              style:
-                                  boldHeading3.copyWith(color: onPrimaryColor),
-                            ),
-                            if (snapshot.docs[index]['rideStatus'] ==
-                                "Cancelled")
-                              Text(
-                                "CANCELLED",
-                                style: boldHeading3.copyWith(color: Colors.red),
-                              ),
-                          ],
+            child:MyCard(snapshot: snapshot, index: index)
+          ):
+          MyCard(snapshot: snapshot, index: index, elevatin: 0)
+        ),
+      ],
+    );
+  }
+
+
+  Widget MyCard({required QuerySnapshot snapshot, required int index, int elevatin = 9}){
+
+    DateTime date = (snapshot.docs[index]['createDate']).toDate();
+    return  Card(
+      elevation: elevatin.toDouble(),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(21.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${date}",
+                      style:
+                      boldHeading3.copyWith(color: onPrimaryColor),
+                    ),
+                    if (snapshot.docs[index]['rideStatus'] ==
+                        "Cancelled")
+                      Text(
+                        "CANCELLED",
+                        style: boldHeading3.copyWith(color: Colors.red),
+                      ),
+                  ],
+                ),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          height: 80,
+                          child: Text(
+                            "${date.hour}:${date.minute}",
+                            style: heading2.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: onPrimaryColor2),
+                            textAlign: TextAlign.start,
+                          ),
                         ),
-                        Divider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  height: 80,
-                                  child: Text(
-                                    "11:24",
-                                    style: heading2.copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        color: onPrimaryColor2),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                UIHelper.verticalSpaceSmall,
-                                Container(
-                                  child: Text(
-                                    "11:38",
-                                    style: heading2.copyWith(
-                                        fontWeight: FontWeight.w400,
-                                        color: onPrimaryColor2),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            UIHelper.horizontalSpaceMedium,
-                            Image(
-                                height: 105.0,
-                                image: AssetImage('asset/icons/routeIc.png')),
-                            UIHelper.horizontalSpaceMedium,
-                            Column(
-                              children: <Widget>[
-                                Container(
-                                  height: 80,
-                                  width: 200,
-                                  child: Text(
-                                    snapshot.docs[index]['Addresses']['from']
-                                        ['place_name'],
-                                    style: heading2.copyWith(
-                                        fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                UIHelper.verticalSpaceSmall,
-                                Container(
-                                  width: 200,
-                                  child: Text(
-                                    snapshot.docs[index]['Addresses']['to']
-                                        ['place_name'],
-                                    style: heading2.copyWith(
-                                        fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                        UIHelper.verticalSpaceSmall,
+                        Container(
+                          child: Text(
+                            "",
+                            style: heading2.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: onPrimaryColor2),
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
+                    UIHelper.horizontalSpaceMedium,
+                    Image(
+                        height: 105.0,
+                        image: AssetImage('asset/icons/routeIc.png')),
+                    UIHelper.horizontalSpaceMedium,
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          height: 80,
+                          width: 200,
+                          child: Text(
+                            snapshot.docs[index]['Addresses']['from']
+                            ['place_name'],
+                            style: heading2.copyWith(
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        UIHelper.verticalSpaceSmall,
+                        Container(
+                          width: 200,
+                          child: Text(
+                            snapshot.docs[index]['Addresses']['to']
+                            ['place_name'],
+                            style: heading2.copyWith(
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

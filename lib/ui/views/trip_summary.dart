@@ -30,7 +30,17 @@ class RideSummary extends StatelessWidget {
 
 
     return BaseWidget<TripViewModel>(
-        model: TripViewModel(authRepository: Provider.of(context), driverId: driverId,),
+        model: TripViewModel(
+          authRepository: Provider.of(context), driverId: driverId,
+          fromLatLng: LatLng(
+            snapshot.docs[index]['Addresses']['from']['lat'],
+            snapshot.docs[index]['Addresses']['from']['lng'],),
+          toLatLng: LatLng(
+            snapshot.docs[index]['Addresses']['to']['lat'],
+            snapshot.docs[index]['Addresses']['to']['lng'],),
+          fromTitle: snapshot.docs[index]['Addresses']['from']['place_name'],
+          toTitle: snapshot.docs[index]['Addresses']['to']['place_name']
+        ),
         builder: (context, model, child) => SafeArea(
         child: model.busy
         ? Center(
@@ -65,27 +75,7 @@ class RideSummary extends StatelessWidget {
                   scrollGesturesEnabled: false,
                   zoomControlsEnabled: false,
                   zoomGesturesEnabled : false,
-                  markers: Set.of([
-                    Marker(
-                        markerId: MarkerId('0'),
-                      position: LatLng(
-                        snapshot.docs[index]['Addresses']['from']['lat'],
-                        snapshot.docs[index]['Addresses']['from']['lng'],),
-                        infoWindow: InfoWindow(
-                            title: "${snapshot.docs[index]['Addresses']['from']['place_name']} ${snapshot.docs[index]['Addresses']['from']['lng']}",
-                        )
-                    ),
-                    Marker(
-                        markerId: MarkerId('1'
-                            '${snapshot.docs[index]['Addresses']['to']['lng']}'),
-                        position: LatLng(
-                          snapshot.docs[index]['Addresses']['to']['lat'],
-                          snapshot.docs[index]['Addresses']['to']['lng'],),
-                      infoWindow: InfoWindow(
-                        title: "${snapshot.docs[index]['Addresses']['to']['place_name']} ${snapshot.docs[index]['Addresses']['to']['lng']}",
-                      )
-                    )
-                  ]),
+                  markers: Set.of(model.markers),
                   initialCameraPosition: CameraPosition(
                       target: LatLng(
                         snapshot.docs[index]['Addresses']['from']['lat'],
@@ -118,7 +108,7 @@ class RideSummary extends StatelessWidget {
                                     Container(
                                       height: 80,
                                       child: Text(
-                                        "11:24",
+                                        "",
                                         style: heading2.copyWith(
                                             fontWeight: FontWeight.w400,
                                             color: onPrimaryColor2),
@@ -128,7 +118,7 @@ class RideSummary extends StatelessWidget {
                                     UIHelper.verticalSpaceSmall,
                                     Container(
                                       child: Text(
-                                        "11:38",
+                                        "",
                                         style: heading2.copyWith(
                                             fontWeight: FontWeight.w400,
                                             color: onPrimaryColor2),

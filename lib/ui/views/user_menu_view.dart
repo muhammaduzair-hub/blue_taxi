@@ -16,7 +16,6 @@ class UserMenuView extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      key: scaffoldKey,
       backgroundColor: onSecondaryColor,
       body: Column(
         children: [
@@ -86,7 +85,6 @@ class UserMenuView extends StatelessWidget {
           ),
           UIHelper.verticalSpaceLarge,
           SizedBox(
-            height: 390,
             child: GridView.count(
               padding: const EdgeInsets.all(21),
               crossAxisSpacing: 16,
@@ -119,6 +117,7 @@ class UserMenuView extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       //padding: const EdgeInsets.all(28.0),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Image.asset(
                             'asset/images/ic_history.png',
@@ -126,7 +125,6 @@ class UserMenuView extends StatelessWidget {
                             width: 36,
                             fit: BoxFit.cover,
                           ),
-                          UIHelper.verticalSpaceSmall,
                           Text(
                             MenuRideHistory,
                             style: boldHeading2.copyWith(
@@ -159,6 +157,7 @@ class UserMenuView extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Image.asset(
                             'asset/images/ic_payment.png',
@@ -166,7 +165,6 @@ class UserMenuView extends StatelessWidget {
                             width: 36,
                             fit: BoxFit.cover,
                           ),
-                          UIHelper.verticalSpaceSmall,
                           Text(
                             MenuPayment,
                             style: boldHeading2.copyWith(
@@ -197,6 +195,7 @@ class UserMenuView extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Image.asset(
                             'asset/images/ic_promo.png',
@@ -204,7 +203,6 @@ class UserMenuView extends StatelessWidget {
                             width: 36,
                             fit: BoxFit.cover,
                           ),
-                          UIHelper.verticalSpaceSmall,
                           Text(
                             MenuPromocode,
                             style: boldHeading2.copyWith(
@@ -235,6 +233,7 @@ class UserMenuView extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Image.asset(
                             'asset/images/ic_support.png',
@@ -242,7 +241,6 @@ class UserMenuView extends StatelessWidget {
                             width: 36,
                             fit: BoxFit.cover,
                           ),
-                          UIHelper.verticalSpaceSmall,
                           Text(
                             MenuSupport,
                             style: boldHeading2.copyWith(

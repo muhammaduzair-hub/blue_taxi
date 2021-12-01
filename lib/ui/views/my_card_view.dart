@@ -40,7 +40,7 @@ class MyCardView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(LabelCards, style: boldHeading3,),
+                  Text(model.myCards.length!=0?LabelCards:"", style: boldHeading3,),
                   UIHelper.verticalSpaceSmall,
                   Container(
                     child: ListView.separated(

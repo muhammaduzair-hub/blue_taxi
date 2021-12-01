@@ -84,8 +84,7 @@ class MyProfileView extends StatelessWidget {
                       child: PrimaryButton(
                         text: Text(LabelDeleteAccount,style: boldHeading2,),
                         ontap: (){
-                          Navigator.push(context, new MaterialPageRoute(
-                              builder: (context) => new SignInSignUpView()));
+                          _showMyDialog(context);
                         },
                       ),
                     )
@@ -108,6 +107,42 @@ class MyProfileView extends StatelessWidget {
         backgroundColor: secondaryColor2,
       ),
       title: Text(title,style: heading2,),
+    );
+  }
+
+  Future<void> _showMyDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Would you like to logout?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.push(context, new MaterialPageRoute(
+                    builder: (context) => new SignInSignUpView()));
+              },
+            ),
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+
+          ],
+        );
+      },
     );
   }
 }

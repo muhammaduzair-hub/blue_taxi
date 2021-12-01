@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:bluetaxiapp/data/local/local_api.dart';
+import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
@@ -103,9 +104,17 @@ class AuthRepository{
     required String expectedBill,
     required AdressModel toAdress,
     required AdressModel fromAdress,
+    required CardModel card
   }) async
   {
-    dynamic res = await api.generateRequest(userToken: userToken, carType: carType, expectedBill: expectedBill, toAdress: toAdress, fromAdress: fromAdress,);
+    dynamic res = await api.generateRequest(
+      userToken: userToken,
+      carType: carType,
+      expectedBill: expectedBill,
+      toAdress: toAdress,
+      fromAdress: fromAdress,
+      card: card
+    );
     return res;
   }
 

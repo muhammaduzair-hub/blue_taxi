@@ -39,7 +39,10 @@ class AddCardView extends StatelessWidget {
                   children: [
                     Text(LabelCardNumber, style: boldHeading3,),
                     UIHelper.verticalSpaceSmall,
-                    CustomTextField(controller: model.cardNumberController,),
+                    CustomTextField(
+                      controller: model.cardNumberController,
+                      keyboardType: TextInputType.number,
+                    ),
 
                     UIHelper.verticalSpaceMedium,
 
@@ -52,11 +55,41 @@ class AddCardView extends StatelessWidget {
                     Text(LabelExpDate, style: boldHeading3,),
                     UIHelper.verticalSpaceSmall,
                     Row(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Flexible(child: CustomTextField(controller: model.expMonthController,)),
+                        Expanded(
+                          child: InkWell(
+                            onTap: (){model.monthPicker(context);},
+                            child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: Color(0xffD5DDE0)
+                                  )
+                                ),
+                              child: Center(child: Text(model.selectedDate!=null ? model.selectedDate!.month.toString() : ""),)
+                            ),
+                          ),
+                        ),
                         UIHelper.horizontalSpaceSmall,
-                        Flexible(child: CustomTextField(controller: model.expYearController,)),
+                       Expanded(
+                         child:  InkWell(
+                           onTap: (){model.monthPicker(context);},
+                           child: Container(
+                             height: 40,
+                             decoration: BoxDecoration(
+                                 color: Colors.grey.shade100,
+                                 borderRadius: BorderRadius.circular(15),
+                                 border: Border.all(
+                                     color: Color(0xffD5DDE0)
+                                 )
+                             ),
+                             child: Center(child: Text( model.selectedDate!=null ? model.selectedDate!.year.toString() : "")),
+                           ),
+                         )
+                       )
                       ],
                     ),
                     UIHelper.verticalSpaceLarge,
