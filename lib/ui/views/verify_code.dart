@@ -1,17 +1,14 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
-import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/booking_view.dart';
 import 'package:bluetaxiapp/viewmodels/views/verifyCode_view_Model.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class VerifyCodeView extends StatelessWidget {
