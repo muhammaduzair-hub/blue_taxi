@@ -9,9 +9,10 @@ class CustomTextField extends StatelessWidget {
   final bool showPassword ;
   final int? minLines;
   final int? maxLines;
+  final int? maxLenght;
   final TextInputType keyboardType;
 
-  CustomTextField({this.controller, this.showPassword = false, this.minLines, this.maxLines, this.keyboardType = TextInputType.text});
+  CustomTextField({this.controller, this.showPassword = false, this.minLines, this.maxLines, this.keyboardType = TextInputType.text, this.maxLenght});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,8 @@ class CustomTextField extends StatelessWidget {
             ),
             minLines: minLines??1,//Normal textInputField will be displayed
             maxLines: maxLines??1,// when user presses enter it will adapt to it
-            controller:controller
+            controller:controller,
+          maxLength: maxLenght,
         ),
     );
   }

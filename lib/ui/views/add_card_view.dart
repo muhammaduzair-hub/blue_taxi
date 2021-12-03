@@ -39,16 +39,25 @@ class AddCardView extends StatelessWidget {
                   children: [
                     Text(LabelCardNumber, style: boldHeading3,),
                     UIHelper.verticalSpaceSmall,
-                    CustomTextField(
-                      controller: model.cardNumberController,
-                      keyboardType: TextInputType.number,
+                    Container(
+                      height: 60,
+                      child: CustomTextField(
+                        maxLenght: 16,
+                        controller: model.cardNumberController,
+                        keyboardType: TextInputType.number,
+                      ),
                     ),
+
+                    if(model.cardValidator==false)Text(LabelLenghtMustBeSixteen,style:TextStyle(color: errorMessage),),
 
                     UIHelper.verticalSpaceMedium,
 
                     Text(LabelCardHolderName, style: boldHeading3,),
                     UIHelper.verticalSpaceSmall,
-                    CustomTextField(controller: model.cardHolderController,),
+                    Container(
+                      height: 40,
+                        child: CustomTextField(controller: model.cardHolderController,)),
+                    if(model.holderValidator==false)Text(LabelInvalidName,style:TextStyle(color: errorMessage),),
 
                     UIHelper.verticalSpaceMedium,
 
@@ -98,10 +107,9 @@ class AddCardView extends StatelessWidget {
                       child: PrimaryButton(
                         text: Text(LabelAddCard),
                         ontap: ()async {
-                          await model.addCard();
+                          await model.addCard(context);
                           // Navigator.of(context).pop();
-                          List<CardModel> cards=await model.getcards();
-                          Navigator.pop(context, cards);
+
                         },
                       ),
                     )

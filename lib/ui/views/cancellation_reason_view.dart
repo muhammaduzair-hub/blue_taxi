@@ -21,7 +21,7 @@ class CancellationReasonView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseWidget<ArrivingSelectionViewModel>(
-      model: ArrivingSelectionViewModel(requestId,repo: Provider.of(context),),
+      model: ArrivingSelectionViewModel(requestId!,repo: Provider.of(context),),
       builder: (context, model, child) => SafeArea(
         child: Scaffold(
           appBar: AppBar(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class VerifyCodeViewModel extends BaseModel{
   late final phoneno;
@@ -10,9 +11,12 @@ class VerifyCodeViewModel extends BaseModel{
   int start = 30;
   late Timer _timer;
 
-  final boxControllers = [TextEditingController(text: ''),TextEditingController(text: ''),TextEditingController(text: ''),TextEditingController(text: ''),];
   final boxFocusNodes = [FocusNode(),FocusNode(),FocusNode(),FocusNode()];
 
+  final firstController = TextEditingController();
+  final secondController = TextEditingController();
+  final thirdController = TextEditingController();
+  final fourthController = TextEditingController();
 
   VerifyCodeViewModel({
   required AuthRepository repo,
@@ -51,7 +55,7 @@ class VerifyCodeViewModel extends BaseModel{
 
   void switchToBackTextField(index, BuildContext context) {
     setBusy(true);
-    boxControllers[index-1].text = "";
+    // boxControllers[index-1].text = "";
     FocusScope.of(context).requestFocus(boxFocusNodes[index - 1]);
     setBusy(false);
   }
