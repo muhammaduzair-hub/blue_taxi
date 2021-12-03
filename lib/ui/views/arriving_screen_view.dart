@@ -7,7 +7,6 @@ import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/booking_view.dart';
-import 'package:bluetaxiapp/ui/views/cancellation_reason_view.dart';
 import 'package:bluetaxiapp/ui/views/dialPad_View.dart';
 import 'package:bluetaxiapp/ui/views/message_view.dart';
 import 'package:bluetaxiapp/ui/views/receipt_view.dart';
@@ -38,7 +37,6 @@ class ArrivingScreen extends StatelessWidget {
         model.cancelModel==false ?
             SafeArea(
                 child: Scaffold(
-                  resizeToAvoidBottomInset: false,
                     body: Stack(children: [
               GoogleMap(
                 zoomControlsEnabled: false,
@@ -203,8 +201,8 @@ class ArrivingScreen extends StatelessWidget {
     return DraggableScrollableSheet(
       key: model.arrivingBottomKey,
       initialChildSize: 0.5,
-      minChildSize: 0.5,
-      maxChildSize: 0.8,
+      minChildSize: 0.4,
+      maxChildSize: 0.5,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -222,7 +220,7 @@ class ArrivingScreen extends StatelessWidget {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
@@ -464,9 +462,9 @@ class ArrivingScreen extends StatelessWidget {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
       key: model.disbaledArrivingKey,
-      initialChildSize: 0.5,
-      minChildSize: 0.5,
-      maxChildSize: 0.8,
+      initialChildSize: 0.4,
+      minChildSize: 0.4,
+      maxChildSize: 0.4,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -484,7 +482,7 @@ class ArrivingScreen extends StatelessWidget {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
@@ -510,33 +508,36 @@ class ArrivingScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      model.driverModel!.driverName ?? "Patrick",
-                                      style: buttonTextStyle.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: onPrimaryColor),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        color: secondaryColor2,
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 4.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        model.driverModel!.driverName ?? "Patrick",
+                                        style: buttonTextStyle.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: onPrimaryColor),
                                       ),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(right: 4.0, left: 4.0,bottom: 4.0),
-                                          child: Text(
-                                            model.driverModel!.carNumber ?? 'HS785K',
-                                            style: buttonTextStyle.copyWith(
-                                                fontWeight: FontWeight.w700,
-                                                color: onPrimaryColor),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          color: secondaryColor2,
+                                        ),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(right: 4.0, left: 4.0),
+                                            child: Text(
+                                              model.driverModel!.carNumber ?? 'HS785K',
+                                              style: buttonTextStyle.copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: onPrimaryColor),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                                 Text(
                                   model.driverModel!.carName ?? 'Volkswagen Jetta',
@@ -555,14 +556,13 @@ class ArrivingScreen extends StatelessWidget {
                                   model.switchToCompletedState();
                                   model.switchState(EnumToString.convertToString(
                                       Status.Completed));
-                                  ///Todo
-                                  // await Future.delayed(Duration(seconds: 4));
-                                  // Navigator.push(
-                                  //     context,
-                                  //     new MaterialPageRoute(
-                                  //         builder: (context) => new ReceiptView(
-                                  //               requestId: model.requestId,
-                                  //             )));
+                                  await Future.delayed(Duration(seconds: 10));
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new ReceiptView(
+                                                requestId: model.requestId,
+                                              )));
                                   model.unassignDriver();
                                 },
                                 child: const Text('Enjoy Your Ride'),
@@ -608,9 +608,9 @@ class ArrivingScreen extends StatelessWidget {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
       key:model.tipAndRateKey,
-      initialChildSize: 0.5,
-      minChildSize: 0.5,
-      maxChildSize: 0.8,
+      initialChildSize: 0.4,
+      minChildSize: 0.4,
+      maxChildSize: 0.4,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -628,7 +628,7 @@ class ArrivingScreen extends StatelessWidget {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
@@ -652,35 +652,38 @@ class ArrivingScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      model.driverModel!.driverName ?? "Patrick",
-                                      style: buttonTextStyle.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: onPrimaryColor),
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 5.0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        color: secondaryColor2,
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 4.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        model.driverModel!.driverName ?? "Patrick",
+                                        style: buttonTextStyle.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: onPrimaryColor),
                                       ),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(right: 4.0, left: 4.0,bottom: 4.0),
-                                          child: Text(
-                                            model.driverModel!.carNumber ?? 'HS785K',
-                                            style: buttonTextStyle.copyWith(
-                                                fontWeight: FontWeight.w700,
-                                                color: onPrimaryColor),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 5.0),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          color: secondaryColor2,
+                                        ),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(right: 4.0, left: 4.0,bottom: 4.0),
+                                            child: Text(
+                                              model.driverModel!.carNumber ?? 'HS785K',
+                                              style: buttonTextStyle.copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: onPrimaryColor),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                                 Text(
                                   model.driverModel!.carName ?? 'Volkswagen Jetta',
@@ -691,10 +694,10 @@ class ArrivingScreen extends StatelessWidget {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Container(
-                                  width: 159,
+                                  width: MediaQuery.of(context).size.width * 0.35,
                                   height: 50,
                                   child: PrimaryButton(
                                       text: Text(
@@ -709,7 +712,7 @@ class ArrivingScreen extends StatelessWidget {
                                       }),
                                 ),
                                 Container(
-                                  width: 159,
+                                  width: MediaQuery.of(context).size.width * 0.35,
                                   height: 50,
                                   child: PrimaryButton(
                                       color: onSecondaryColor,
@@ -772,129 +775,130 @@ class ArrivingScreen extends StatelessWidget {
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-        child: Container(
-          color: Colors.transparent,
-          child: Stack(children: <Widget>[
-            Stack(
-              alignment: Alignment.topLeft,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: circleRadius / 2.0,
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: onSecondaryColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8.0,
-                          offset: Offset(0.0, 5.0),
-                        ),
-                      ],
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.transparent,
+            child: Stack(children: <Widget>[
+              Stack(
+                alignment: Alignment.topLeft,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: circleRadius / 2.0,
                     ),
-                    child: IntrinsicHeight(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: IntrinsicWidth(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Center(
-                                  child: Image(
-                                image: AssetImage('asset/icons/ic_gesture.png'),
-                              )),
-                              UIHelper.verticalSpaceSmall,
-                              Text(
-                                model.driverModel!.driverName!,
-                                style: buttonTextStyle.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: onPrimaryColor),
-                              ),
-                              Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    RatingBar.builder(
-                                      initialRating: 0,
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemPadding:
-                                          EdgeInsets.symmetric(horizontal: 4.0),
-                                      itemBuilder: (context, _) => Icon(
-                                        Icons.star,
-                                        color: secondaryColor,
-                                      ),
-                                      onRatingUpdate: (rating) {
-                                        rated = model.switchRateLabel(rating);
-                                      },
-                                    ),
-                                    Text(
-                                      rated,
-                                      style: heading2.copyWith(
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    CustomTextField(
-                                      keyboardType: TextInputType.multiline,
-                                      maxLength: 15,
-                                      maxLines: null,
-                                      minLines: 1,
-                                    ),
-                                  ],
+                    child: Container(
+                      height: MediaQuery.of(context).size.height *0.42,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
+                        color: onSecondaryColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8.0,
+                            offset: Offset(0.0, 5.0),
+                          ),
+                        ],
+                      ),
+                      child: IntrinsicHeight(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: IntrinsicWidth(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Center(
+                                    child: Image(
+                                  image: AssetImage('asset/icons/ic_gesture.png'),
+                                )),
+                                Text(
+                                  model.driverModel!.driverName!,
+                                  style: buttonTextStyle.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: onPrimaryColor),
                                 ),
-                              ),
-                              Container(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: PrimaryButton(
-                                    text: Text(
-                                      rate_btn,
-                                      style: buttonTextStyle.copyWith(
-                                          color: onSecondaryColor),
-                                    ),
-                                    ontap: () {
-                                      model.switchState(
-                                          EnumToString.convertToString(
-                                              Status.Tips));
-                                    },
-                                  )),
-                            ],
+                                Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      RatingBar.builder(
+                                        initialRating: 0,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemPadding:
+                                            EdgeInsets.symmetric(horizontal: 4.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: secondaryColor,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          rated = model.switchRateLabel(rating);
+                                        },
+                                      ),
+                                      Text(
+                                        rated,
+                                        style: heading2.copyWith(
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      CustomTextField(
+                                        keyboardType: TextInputType.multiline,
+                                        maxLength: 15,
+                                        maxLines: null,
+                                        minLines: 1,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                    width: double.infinity,
+                                    height: 50,
+                                    child: PrimaryButton(
+                                      text: Text(
+                                        rate_btn,
+                                        style: buttonTextStyle.copyWith(
+                                            color: onSecondaryColor),
+                                      ),
+                                      ontap: () {
+                                        model.switchState(
+                                            EnumToString.convertToString(
+                                                Status.Tips));
+                                      },
+                                    )),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
 
-                ///Image Avatar
-                Container(
-                  width: circleRadius,
-                  height: circleRadius,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Center(
-                      child: Container(
-                        child:
-                            Image(image: AssetImage('asset/images/Group.png')),
+                  ///Image Avatar
+                  Container(
+                    width: circleRadius,
+                    height: circleRadius,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: Center(
+                        child: Container(
+                          child:
+                              Image(image: AssetImage('asset/images/Group.png')),
 
-                        /// replace your image with the Icon
+                          /// replace your image with the Icon
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ]),
+                ],
+              ),
+            ]),
+          ),
         ),
       ),
     );
@@ -922,7 +926,7 @@ class ArrivingScreen extends StatelessWidget {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
                       color: onSecondaryColor,
                       boxShadow: [
                         BoxShadow(
@@ -1058,13 +1062,15 @@ class ArrivingScreen extends StatelessWidget {
                           Container(
                               width: double.infinity,
                               height: 50,
-                              child: PrimaryButton(
+                              child:
+                              PrimaryButton(
                                 text: Text(
                                   submit,
                                   style: buttonTextStyle.copyWith(
                                       color: onSecondaryColor),
                                 ),
                                 ontap: () {
+                                  model.setBusy(true);
                                   //Unassign Driver
                                   model.unassignDriver();
                                   state = '';

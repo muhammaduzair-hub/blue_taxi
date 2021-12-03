@@ -22,12 +22,11 @@ class LocalApi{
 
   List<RateModel> reasonList= [
     new RateModel(vText: "I was running late"),
-    new RateModel(vText: "I was running late2"),
-    new RateModel(vText: "I was running late3"),
-    new RateModel(vText: "I was running late4"),
-    new RateModel(vText: "I was running late5"),
-    new RateModel(vText: "I was running late6"),
-    new RateModel(vText: "I was running late7"),
+    new RateModel(vText: "Driver was unhygienic"),
+    new RateModel(vText: "Driver was rude"),
+    new RateModel(vText: "Car was not clean"),
+    new RateModel(vText: "Car tire punctured"),
+    new RateModel(vText: "Faulty Car"),
   ];
 
   LocalApi(){

@@ -20,8 +20,8 @@ class ReceiptView extends StatelessWidget {
 
   todayDate() {
     var now = new DateTime.now();
-    String formattedTime = DateFormat('kk:mm').format(now);
-    print(formattedTime);
+    String convertedDateTime = "${now.year.toString()}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')} ${now.hour.toString().padLeft(2,'0')}-${now.minute.toString().padLeft(2,'0')}";
+    print("**********THIS IS DATE******$convertedDateTime");
   }
 
 
