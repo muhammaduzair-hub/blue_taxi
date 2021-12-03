@@ -333,7 +333,6 @@ class AdressSelectionView extends StatelessWidget {
                       if(requestId!='-') {
                         Navigator.push(screenContext, MaterialPageRoute(builder: (
                             screenContext) => ArrivingScreen(requestedId: requestId!,),));
-                        model.switchState(LabelSelectAdress);
                       }
                       else{
                         showToast("You Currently have an OnGoing Ride");

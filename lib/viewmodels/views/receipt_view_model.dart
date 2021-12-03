@@ -8,6 +8,7 @@ class ReceiptViewModel extends BaseModel {
   late String state;
   late String requestId;
   late RequestDataModel requestDataModel;
+  late DateTime endingTime;
 
   ReceiptViewModel({required this.repo, required this.requestId}) : super(false){
     getRide(requestId);
@@ -17,7 +18,14 @@ class ReceiptViewModel extends BaseModel {
       setBusy(true);
       requestDataModel= await repo.getRide(requestId);
       //DateTime date = requestDataModel.createDate!.toLocal();
-      print("*********${requestDataModel.address!.from.toString()}");
+      try{
+        int v= double.parse(requestDataModel.expectedBill!).toInt();
+        endingTime = requestDataModel.createDate!.add(Duration(minutes: v));
+      }
+      catch(e){
+        print("======================Something Wnet Wrong ");
+      }
+     // print("*********${requestDataModel.address!.from.toString()}");
       setBusy(false);
   }
 
