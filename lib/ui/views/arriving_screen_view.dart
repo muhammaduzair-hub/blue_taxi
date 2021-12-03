@@ -201,6 +201,7 @@ class ArrivingScreen extends StatelessWidget {
   Widget selectArrivingBottomSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
+      key: model.arrivingBottomKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -457,10 +458,12 @@ class ArrivingScreen extends StatelessWidget {
     );
   }
 
+
   //OnGoing
   Widget selectDisbaledArrivingBottomSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
+      key: model.disbaledArrivingKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -604,6 +607,7 @@ class ArrivingScreen extends StatelessWidget {
   Widget selectTipAndRateSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
+      key:model.tipAndRateKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -761,6 +765,7 @@ class ArrivingScreen extends StatelessWidget {
     final double circleRadius = 120.0;
     String rated='';
     return DraggableScrollableSheet(
+      key: model.rateSheetKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -898,6 +903,7 @@ class ArrivingScreen extends StatelessWidget {
   Widget selectTipsSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
+      key: model.tipsSheetKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,

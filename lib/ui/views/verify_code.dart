@@ -21,8 +21,10 @@ class VerifyCodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var phone=Provider.of<UserModel>(context).phoneno;
-    //Future<String> phone;
+
+
+    // var phone=Provider.of<UserModel>(context).phoneno;
+    // //Future<String> phone;
     return BaseWidget<VerifyCodeViewModel>(
         model: VerifyCodeViewModel(repo: Provider.of(context), context: context),
         builder: (context, model, child) => Scaffold(
@@ -67,7 +69,7 @@ class VerifyCodeView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                      "${phone}",
+                      "${signedINUser.phoneno}",
                         style: heading2.copyWith(
                             fontWeight: FontWeight.w400, color: onPrimaryColor2),
                       ),
@@ -218,17 +220,14 @@ class VerifyCodeView extends StatelessWidget {
                                 model.assignValue(model.fourthController, event.data.keyLabel);
                                 print("1++++++++++++++++++++++++>${model.firstController.text}\n2=+++++++++++++++++++>${model.secondController.text}\n3========================>${model.thirdController.text}");
                                 print("4=++++++++++++++++++++++++>${model.fourthController.text}");
-                                if(model.firstController.text=="9"
-                                    &&model.secondController.text=="9"
-                                    &&model.thirdController.text=="9"
-                                    && model.fourthController.text=="9"){
+                                if(true){
                                   FocusScope.of(context).unfocus();
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(),));
                                 }
                               }
 
                             },
-                            focusNode: FocusNode() ,
+                            focusNode: FocusNode(),
                             child: TextFormField(
                               focusNode: model.boxFocusNodes[3],
                               controller: model.fourthController,

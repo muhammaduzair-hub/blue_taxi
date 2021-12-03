@@ -4,6 +4,7 @@ import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/cupertino.dart';
 
 
 
@@ -16,7 +17,12 @@ class ArrivingSelectionViewModel extends BaseModel {
   dynamic driverModel;
   bool cancelModel=false;
 
-
+  final Key arrivedBottomKey =Key("arrivedBottom");
+  final Key disbaledArrivingKey  = Key("disbaledArriving");
+  final Key tipAndRateKey=Key("tipAndRate");
+  final Key tipsSheetKey = Key("tipsSheet");
+  final Key rateSheetKey = Key("rateSheet");
+  final Key arrivingBottomKey = Key('arrivingBottom');
 
   ArrivingSelectionViewModel(this.requestId, {required this.repo}) : super(false) {
     driver = getRequest(requestId);

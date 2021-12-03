@@ -50,6 +50,7 @@ class AdressSelectionViewModel extends BaseModel {
    final Key othersSheetKey  = Key("Other");
    final Key cardSheet = Key("Card");
 
+
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
 

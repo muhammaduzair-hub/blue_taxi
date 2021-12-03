@@ -224,7 +224,6 @@ class AdressSelectionView extends StatelessWidget {
   }
 
    rideOptionBottomSheet(AdressSelectionViewModel model, BuildContext screenContext) {
-
    return DraggableScrollableSheet (
      key:model.othersSheetKey ,
       maxChildSize: 0.4,

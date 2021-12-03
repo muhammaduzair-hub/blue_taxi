@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLength;
   final TextInputType keyboardType;
 
-  CustomTextField({this.controller, this.showPassword = false, this.minLines, this.maxLines, this.keyboardType = TextInputType.text, this.maxLenght});
+  CustomTextField({this.controller, this.showPassword = false, this.minLines, this.maxLines, this.keyboardType = TextInputType.text, this.maxLength});
 
   @override
   Widget build(BuildContext context) {

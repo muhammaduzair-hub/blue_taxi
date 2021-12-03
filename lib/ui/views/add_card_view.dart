@@ -42,7 +42,7 @@ class AddCardView extends StatelessWidget {
                     Container(
                       height: 60,
                       child: CustomTextField(
-                        maxLenght: 16,
+                        maxLength: 16,
                         controller: model.cardNumberController,
                         keyboardType: TextInputType.number,
                       ),
