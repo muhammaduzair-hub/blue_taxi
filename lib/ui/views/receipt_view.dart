@@ -31,11 +31,7 @@ class ReceiptView extends StatelessWidget {
     return BaseWidget<ReceiptViewModel>(
         model: ReceiptViewModel(repo: Provider.of(context), requestId: requestId),
         builder: (context, model, child) => SafeArea(
-            child: model.busy
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Scaffold(
+             child: Scaffold(
                     body: Container(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,6 +47,8 @@ class ReceiptView extends StatelessWidget {
                           },
                           icon: AssetImage('asset/icons/nav_btn.png'),
                         ),
+
+                        model.busy ? Center(child: CircularProgressIndicator(),):
                         AlertDialog(
                           content: SingleChildScrollView(
                             child: ListBody(
@@ -112,7 +110,7 @@ class ReceiptView extends StatelessWidget {
                                                         Container(
                                                           width: 40.0,
                                                           child: Text(
-                                                            '11:24',
+                                                            '${model.requestDataModel.createDate!.hour}:${model.requestDataModel.createDate!.minute}',
                                                             style: heading3.copyWith(
                                                                 color: onPrimaryColor2,
                                                                 fontWeight: FontWeight.w400),
@@ -122,7 +120,7 @@ class ReceiptView extends StatelessWidget {
                                                         Container(
                                                           width: 40.0,
                                                           child: Text(
-                                                            '11:38',
+                                                            '${model.endingTime.hour}:${model.endingTime.minute}',
                                                             style: heading3.copyWith(
                                                                 color: onPrimaryColor2,
                                                                 fontWeight: FontWeight.w400),
@@ -199,28 +197,32 @@ class ReceiptView extends StatelessWidget {
                                     ),
                                     color: Colors.grey.shade100,
                                   ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Image(image: model.requestDataModel.payment!.type =="Cash"?AssetImage("asset/icons/ic_cash.png"): AssetImage('asset/icons/shape.png')),
-                                          UIHelper.horizontalSpaceSmall,
-                                          Text(model.requestDataModel.payment!.card_no.toString()),
-                                        ],
-                                      ),
-                                      Text('\$${model.requestDataModel.expectedBill}'),
-                                    ],
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    height: 40,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Image(image: model.requestDataModel.payment!.type =="Cash"?AssetImage("asset/icons/ic_cash.png"): AssetImage('asset/icons/shape.png')),
+                                            UIHelper.horizontalSpaceSmall,
+                                            Text(model.requestDataModel.payment!.card_no.toString()),
+                                          ],
+                                        ),
+                                        Text('\$${model.requestDataModel.expectedBill}'),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        Padding(
+                        if(model.busy==false)Padding(
                           padding: UIHelper.pagePaddingMedium,
                           child: Container(
                             width: double.infinity,
@@ -235,7 +237,6 @@ class ReceiptView extends StatelessWidget {
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
-
                                 }),
                           ),
                         ),

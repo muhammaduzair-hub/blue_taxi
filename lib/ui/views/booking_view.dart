@@ -52,8 +52,8 @@ class BookingView extends StatelessWidget {
               ),
               DraggableScrollableSheet(
                 key: Key("Sheet"),
-                initialChildSize:model.localAdressTitles.length!=0?0.4:0.2,
-                minChildSize: 0.2,
+                initialChildSize:0.25,//model.localAdressTitles.length!=0?0.4:0.2,
+                minChildSize: 0.25,
                 maxChildSize: 0.4,
                 builder: (context, scrollController) => ClipRRect(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),

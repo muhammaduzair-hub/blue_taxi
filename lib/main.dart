@@ -29,12 +29,15 @@ class MyApp extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 return MultiProvider(
                   providers: providers,
-                  child: MaterialApp(
-                    title: 'Flutter Demo',
-                    theme:  ThemeData(
-                            primarySwatch: Colors.blue,
-                          ),
-                    home:MySplashScreenView()
+                  child: RootRestorationScope(
+                    restorationId: 'root',
+                    child: MaterialApp(
+                      title: 'Flutter Demo',
+                      theme:  ThemeData(
+                              primarySwatch: Colors.blue,
+                            ),
+                      home:MySplashScreenView()
+                    ),
                   ),
                 );
               }

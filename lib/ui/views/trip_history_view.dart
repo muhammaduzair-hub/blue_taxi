@@ -93,6 +93,9 @@ class CustomCard extends StatelessWidget {
   Widget MyCard({required QuerySnapshot snapshot, required int index, int elevatin = 9}){
 
     DateTime date = (snapshot.docs[index]['createDate']).toDate();
+    int v = double.parse(snapshot.docs[index]['expectedBill']).toInt();
+    DateTime endTime = date.add(Duration(minutes: v));
+    
     return  Card(
       elevation: elevatin.toDouble(),
       child: Column(
@@ -105,7 +108,7 @@ class CustomCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${date}",
+                      "${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}",
                       style:
                       boldHeading3.copyWith(color: onPrimaryColor),
                     ),
@@ -137,7 +140,7 @@ class CustomCard extends StatelessWidget {
                         UIHelper.verticalSpaceSmall,
                         Container(
                           child: Text(
-                            "",
+                            "${endTime.hour}:${endTime.minute}",
                             style: heading2.copyWith(
                                 fontWeight: FontWeight.w400,
                                 color: onPrimaryColor2),
