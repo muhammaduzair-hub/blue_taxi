@@ -9,6 +9,7 @@ import 'package:bluetaxiapp/viewmodels/views/verifyCode_view_Model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
 class VerifyCodeView extends StatelessWidget {
@@ -19,7 +20,7 @@ class VerifyCodeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var phone=Provider.of<UserModel>(context).phoneno;
+
     //Future<String> phone;
     return BaseWidget<VerifyCodeViewModel>(
         model: VerifyCodeViewModel(repo: Provider.of(context), context: context),
@@ -65,7 +66,7 @@ class VerifyCodeView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                      "${phone}",
+                      "${signInUser.phoneno}",
                         style: heading2.copyWith(
                             fontWeight: FontWeight.w400, color: onPrimaryColor2),
                       ),
@@ -78,179 +79,56 @@ class VerifyCodeView extends StatelessWidget {
                   ),
                   UIHelper.verticalSpaceLarge,
                   Form(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          height: 40.0,
-                          width: 30.0,
-                          color: onSecondaryColor,
-                          child: RawKeyboardListener(
-                            onKey: (event){
-                              if(event.logicalKey!=LogicalKeyboardKey.backspace){
-                                model.assignValue(model.firstController, event.data.keyLabel);
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
-                            focusNode: FocusNode(),
-                            child: TextFormField(
-                              autofocus: true,
-                              focusNode: model.boxFocusNodes[0],
-                              controller: model.firstController,
-                              textInputAction: TextInputAction.next,
-                              style: numberTextStyle.copyWith(color: secondaryColor),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(1),
-                              ],
-                              decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
+                    key: model.formKey,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 50),
+                        child: PinCodeTextField(
+                          appContext: context,
+                          pastedTextStyle: TextStyle(
+                            color: Colors.green.shade600,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ),
-                        UIHelper.horizontalSpaceSmall,
-                        Container(
-                          height: 40.0,
-                          width: 30.0,
-                          color: onSecondaryColor,
-                          child: RawKeyboardListener(
-                            onKey: (event){
-                              if(event.logicalKey == LogicalKeyboardKey.backspace && model.secondController.text.length==0){
-                                // model.firstController.text="";
-                                // model.setBusy(false);
-                                model.switchToBackTextField(1, context);
-                              }
-                              else{
-                                model.assignValue(model.secondController, event.data.keyLabel);
-                                FocusScope.of(context).nextFocus();
-                              }
-                            },
-                            focusNode: FocusNode(),
-                            child: TextFormField(
-                              autofocus: true,
-                              focusNode: model.boxFocusNodes[1],
-                              controller: model.secondController,
-                              textInputAction: TextInputAction.next,
-                              style: numberTextStyle.copyWith(color: secondaryColor),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(1),
-                              ],
-                              decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
+                          length: 4,
+                          animationType: AnimationType.fade,
+                          pinTheme: PinTheme(
+                            shape: PinCodeFieldShape.underline ,
                           ),
-                        ),
-                        UIHelper.horizontalSpaceSmall,
-                        Container(
-                          height: 40.0,
-                          width: 30.0,
-                          color: onSecondaryColor,
-                          child: RawKeyboardListener(
-                            onKey: (event){
-                              if(event.logicalKey == LogicalKeyboardKey.backspace && model.thirdController.text.length==0){
-                                //model.secondController.text="";
-                                //model.setBusy(false);
-                                //FocusScope.of(context).previousFocus();
-                                model.switchToBackTextField(2, context);
-                              }
-                              else{
-                                model.assignValue(model.thirdController, event.data.keyLabel);
-                                FocusScope.of(context).nextFocus();
-                              }
+                          cursorColor: Colors.black,
+                          animationDuration: Duration(milliseconds: 300),
+                          errorAnimationController: model.errorController,
+                          controller: model.textEditingController,
+                          keyboardType: TextInputType.number,
+                          onCompleted: (v) {
+                            if(model.textEditingController.text=="9999"){
+                              model.hasError = false;
 
-                            },
-                            focusNode: FocusNode(),
-                            child: TextFormField(
-                              focusNode: model.boxFocusNodes[2],
-                              controller: model.thirdController,
-                              textInputAction: TextInputAction.next,
-                              style: numberTextStyle.copyWith(color: secondaryColor),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(1),
-                              ],
-                              decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                        ),
-                        UIHelper.horizontalSpaceSmall,
-                        Container(
-                          height: 40.0,
-                          width: 30.0,
-                          color: onSecondaryColor,
-                          child: RawKeyboardListener(
-                            onKey: (event){
-                              if(event.logicalKey == LogicalKeyboardKey.backspace && model.fourthController.text.length==0){
-                               // model.thirdController.text="";
-                               // model.setBusy(false);
-                               // FocusScope.of(context).previousFocus();
-                                model.switchToBackTextField(3, context);
+                              model.setBusy(false);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(),));
+                            }
+                            else
+                              {
+                                model.errorController!.add(ErrorAnimationType
+                                    .shake); // Triggering error shake animation
+                                model.hasError = true;
+                                model.textEditingController.text="";
+                                model.setBusy(false);
                               }
-                              else{
-                                model.assignValue(model.fourthController, event.data.keyLabel);
-                                print("1++++++++++++++++++++++++>${model.firstController.text}\n2=+++++++++++++++++++>${model.secondController.text}\n3========================>${model.thirdController.text}");
-                                print("4=++++++++++++++++++++++++>${model.fourthController.text}");
-                                if(model.firstController.text=="9"
-                                    &&model.secondController.text=="9"
-                                    &&model.thirdController.text=="9"
-                                    && model.fourthController.text=="9"){
-                                  FocusScope.of(context).unfocus();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(),));
-                                }
-                              }
-
-                            },
-                            focusNode: FocusNode() ,
-                            child: TextFormField(
-                              focusNode: model.boxFocusNodes[3],
-                              controller: model.fourthController,
-                              textInputAction: TextInputAction.done,
-                              style: numberTextStyle.copyWith(color: secondaryColor),
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(1),
-                              ],
-                              decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: secondaryColor, width: 1.0),
-                                ),
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                          },
+                          onChanged: (value) {
+                            print(value);
+                            model.currentText = value;
+                            model.setBusy(false);
+                          },
+                          beforeTextPaste: (text) {
+                            print("Allowing to paste $text");
+                            //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                            //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                            return true;
+                          },
+                        )),
                   ),
                   UIHelper.verticalSpaceMedium,
                   InkWell(

@@ -3,6 +3,7 @@ import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class VerifyCodeViewModel extends BaseModel{
   late final phoneno;
@@ -11,17 +12,22 @@ class VerifyCodeViewModel extends BaseModel{
   int start = 30;
   late Timer _timer;
 
-  final boxFocusNodes = [FocusNode(),FocusNode(),FocusNode(),FocusNode()];
+  TextEditingController textEditingController = TextEditingController();
+  // ..text = "123456";
 
-  final firstController = TextEditingController();
-  final secondController = TextEditingController();
-  final thirdController = TextEditingController();
-  final fourthController = TextEditingController();
+  // ignore: close_sinks
+  StreamController<ErrorAnimationType>? errorController;
+
+  bool hasError = false;
+  String currentText = "";
+  final formKey = GlobalKey<FormState>();
 
   VerifyCodeViewModel({
   required AuthRepository repo,
     required BuildContext context
-}): _repo = repo,_context= context,super(false);
+}): _repo = repo,_context= context,super(false){
+    errorController = StreamController<ErrorAnimationType>();
+  }
 
 
 
@@ -48,31 +54,12 @@ class VerifyCodeViewModel extends BaseModel{
 
   @override
   void dispose() {
-
+    errorController!.close();
     _timer.cancel();
     super.dispose();
   }
 
-  void switchToBackTextField(index, BuildContext context) {
-    setBusy(true);
-    // boxControllers[index-1].text = "";
-    FocusScope.of(context).requestFocus(boxFocusNodes[index - 1]);
-    setBusy(false);
-  }
 
-  void switchToNextField(index, String val, BuildContext context){
-    setBusy(true);
-    // boxControllers[index].text = val;
-    // boxControllers[index+1].text = "";
-
-    setBusy(false);
-  }
-
-  void assignValue(TextEditingController controller, String val){
-    setBusy(true);
-    controller.text = val;
-    setBusy(false);
-  }
 
 
 }
