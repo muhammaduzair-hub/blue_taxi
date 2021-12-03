@@ -17,8 +17,7 @@ import 'package:provider/provider.dart';
 
 class AdressSelectionView extends StatelessWidget {
 
-  const AdressSelectionView({Key? key}) : super(key: key);
-
+   AdressSelectionView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BaseWidget<AdressSelectionViewModel>(
@@ -96,15 +95,17 @@ class AdressSelectionView extends StatelessWidget {
 
   Widget selectAdressBottomSheet(AdressSelectionViewModel model){
     return DraggableScrollableSheet (
+      key: model.adressSelectionKey,
       initialChildSize: 0.8,
-      minChildSize: 0.4,
+      minChildSize: 0.5,
       maxChildSize: 0.8,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
             color: onSecondaryColor,
             padding: UIHelper.pagePaddingSmall.copyWith(top: 0),
-            child: ListView(
+            child:
+            ListView(
               controller: scrollController,
               children: [
                 UIHelper.verticalSpaceSmall,
@@ -132,18 +133,24 @@ class AdressSelectionView extends StatelessWidget {
                             width: 250,
                             child:
                             TextField(
+                              onTap: (){
+                                model.selectedfromTextField = true;
+                                model.setBusy(false);
+                              },
                               controller: model.fromController,
                               decoration: InputDecoration.collapsed(hintText: 'From'),
                               onChanged: (val){
                                 model.debouncer.run(() {
                                   print(model.fromController.text);
                                   if(model.fromController.text.length>3)model.searchAdressOnTextField(model.fromController.text);
+                                  else showToast("Enter Minimum 3 Characters");
                                 });
                               },
                               textInputAction: TextInputAction.next,
                               onSubmitted: (v){model.switchTextField();},
                             )
                           ),
+                          UIHelper.verticalSpaceSmall,
                           Image(image:AssetImage('asset/icons/line.png')),
                           UIHelper.verticalSpaceSmall,
                           SizedBox(
@@ -160,12 +167,11 @@ class AdressSelectionView extends StatelessWidget {
                                   model.debouncer.run(() {
                                     print(model.toController.text);
                                     if(model.toController.text.length>3)model.searchAdressOnTextField(model.toController.text);
+                                    else showToast("Enter Minimum 3 Characters");
                                   });
                                 },
                                 textInputAction: TextInputAction.done,
-                                onSubmitted: (v){
-                                  model.switchState(LabelRideOption);
-                                },
+                                onSubmitted: (v){},
                               )
                           ),
                         ],
@@ -173,6 +179,7 @@ class AdressSelectionView extends StatelessWidget {
                     ],
                   ),
                 ),
+                Divider(),
                 UIHelper.verticalSpaceMedium,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -186,7 +193,7 @@ class AdressSelectionView extends StatelessWidget {
                 UIHelper.verticalSpaceSmall,
 
                 UIHelper.verticalSpaceSmall,
-                Container(
+                model.busy?Center(child: CircularProgressIndicator()):Container(
                   height: 500,
                   //group list view
                   child:
@@ -208,16 +215,6 @@ class AdressSelectionView extends StatelessWidget {
                       separatorBuilder: (context, index) => Image(image:AssetImage('asset/icons/line.png')),
                       sectionSeparatorBuilder: (context, section) => UIHelper.verticalSpaceMedium,
                     )
-                  // ListView.separated(
-                  //   controller: scrollController,
-                  //   itemCount: model.adressList.length,
-                  //   separatorBuilder:  (context, index) => Image(image:AssetImage('asset/icons/line.png')),
-                  //   itemBuilder: (context, index) =>
-                  //       leadingListTile(
-                  //         title: model.adressList[index].adressTitle,
-                  //         model: model
-                  //       ),
-                  // ),
                 ),
               ],
             )
@@ -226,11 +223,13 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget rideOptionBottomSheet(AdressSelectionViewModel model, BuildContext screenContext) {
-    return DraggableScrollableSheet (
-      initialChildSize: 0.5,
-      minChildSize: 0.5,
-      maxChildSize: 0.5,
+   rideOptionBottomSheet(AdressSelectionViewModel model, BuildContext screenContext) {
+
+   return DraggableScrollableSheet (
+     key:model.othersSheetKey ,
+      maxChildSize: 0.4,
+      minChildSize: 0.4,
+      initialChildSize: 0.4,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
@@ -295,9 +294,12 @@ class AdressSelectionView extends StatelessWidget {
               ListTile(
                 onTap:(){},
                 title: Text(LabelEstimateTripTime,style:heading3.copyWith(color: onPrimaryColor2) ,),
-                subtitle: Text("${model.distance.toInt()*3} min",style: heading3.copyWith(color: secondaryColor),),
+                subtitle: Text("${model.distance.toInt()*3} min and \$${model.bill.toInt()}",style: heading3.copyWith(color: secondaryColor),),
                 trailing: InkWell(
-                  onTap: (){ model.switchState(LabelPaymentOption);},
+                  onTap: (){
+                    if( model.myCards.length==1) showToast("You Don't Have Any Card");
+                    else model.switchState(LabelPaymentOption);
+                    },
                   child: Wrap(
                     spacing: 3,
                     children: [
@@ -351,6 +353,7 @@ class AdressSelectionView extends StatelessWidget {
 
   Widget paymentOptionBottomSheet(AdressSelectionViewModel model) {
     return DraggableScrollableSheet (
+      key: model.cardSheet,
       initialChildSize: 0.4,
       minChildSize: 0.4,
       maxChildSize: 0.4,
@@ -359,7 +362,8 @@ class AdressSelectionView extends StatelessWidget {
         child: Container(
             color: onSecondaryColor,
             padding: UIHelper.pagePaddingSmall.copyWith(top: 20),
-            child:
+
+          child: model.busy?Center(child: CircularProgressIndicator()):
             model.myCards.length==0? Center(child: Text("You Don't have any Card",style: heading1,),):
             ListView.separated(
               controller: scrollController,
@@ -420,13 +424,56 @@ class AdressSelectionView extends StatelessWidget {
       title: Text(title,style: heading2,),
       //subtitle: Text("New york",style: heading3,),
       onTap: (){
-        if(model.selectedfromTextField) model.selectSearchItem(model.fromController, title);
+        //Working on From Text Field
+        if(model.selectedfromTextField){
+          model.selectSearchItem(model.fromController, title);
+          model.selectedAddresses.add(model.fromController.text);
+          model.setBusy(false);
+          if(!model.checkToTextFieldval && model.toController.text.length>0) {
+            model.checkToTextField();
+            if(model.checkToTextFieldval){
+              if(model.toController.text!=model.fromController.text){
+                model.showonMap();
+                model.switchState(LabelRideOption);
+                model.remoteAdressTitle.clear();
+                model.initializegroupList(model.localAdressTitles);
+                model.setBusy(false);
+                controller.animateTo(controller.position.minScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.ease);
+              }
+              else
+                showToast("Initial And Destination Address Must Not Be Same");
+            }
+            else{
+              model.selectedAddresses.add(model.fromController.text);
+              model.setBusy(false);
+              showToast("Invalid Destination Address");
+            }
+          }
+        }
         else{
           model.selectSearchItem(model.toController, title);
-          model.showonMap();
-          model.switchState(LabelRideOption);
+          model.checkFromTextField();
+          if(model.selectedfromTextField) {
+            if(model.toController.text!=model.fromController.text){
+              model.showonMap();
+              model.switchState(LabelRideOption);
+              model.remoteAdressTitle.clear();
+              model.initializegroupList(model.localAdressTitles);
+              model.setBusy(false);
+              controller.animateTo(controller.position.minScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.ease);
+            }
+            else
+              showToast("Initial And Destination Address Must Not Be Same");
+            }
+          else
+          {
+            showToast("Invalid Initial Address");
+            model.selectedfromTextField=true;
+            model.checkToTextFieldval =false;
+            model.selectedAddresses.add(model.toController.text);
+            model.setBusy(false);
+          }
         }
-        controller.animateTo(controller.position.minScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.ease);
       },
     );
   }
