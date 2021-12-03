@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/vehicles_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -48,6 +50,7 @@ class AdressSelectionViewModel extends BaseModel {
    final Key othersSheetKey  = Key("Other");
    final Key cardSheet = Key("Card");
 
+
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
 
@@ -87,13 +90,6 @@ class AdressSelectionViewModel extends BaseModel {
    }
 
   switchTextField(){
-     // try{
-     //   localAdressTitles.firstWhere((element) => element==fromController.text);
-     //
-     // }catch(e){
-     //   remoteAdressTitle.firstWhere((element) => element==fromController.text);
-     //   selectedfromTextField = false;
-     // }
     selectedfromTextField = false;
     setBusy(false);
   }
@@ -244,7 +240,7 @@ class AdressSelectionViewModel extends BaseModel {
   }
 
    Future generateRequest() async{
-     dynamic ans = await authRepository.generateRequest(
+     requestId = await authRepository.generateRequest(
          userToken: signedINUser.id,
          carType: vehiclesList[vehicleSelectedIndex].vName,
          expectedBill: "1000",
@@ -253,14 +249,19 @@ class AdressSelectionViewModel extends BaseModel {
          card: myCards[selectedCardIndex],
           bill : (bill.toInt()).toDouble()
      );
-     requestId=ans;
+
      print("here it is answer: $requestId");
-     if(ans!=null){
-       generatedRide = ans;}
-     print(generatedRide);
-     setBusy(false);
+
    }
 
+
+   getDriverDetails()async {
+     setBusy(true);
+     print("Checking Driver ");
+     dynamic driverModel  =await authRepository.getDriverDetails();
+     setBusy(false);
+     return driverModel;
+   }
 
    searchAdressOnTextField(String val) async {
     setBusy(true);

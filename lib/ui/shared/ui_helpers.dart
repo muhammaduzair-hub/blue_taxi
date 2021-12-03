@@ -5,8 +5,10 @@ class UIHelper {
   //Padding of full pages
   static const EdgeInsets pagePaddingMedium =  EdgeInsets.only(right:36, left: 36, bottom: 20 );
   static const EdgeInsets pagePaddingSmall = EdgeInsets.only(top: 30,left: 18,right: 18,bottom: 30);
+  static const EdgeInsets paddingSmallest = EdgeInsets.only(top: 7.0, bottom : 7.0);
 
   // Vertical spacing constants. Adjust to your liking.
+  static const double _VerticalSpaceLeast = 10.0;
   static const double _VerticalSpaceSmall = 10.0;
   static const double _VerticalSpaceMedium = 20.0;
   static const double _VerticalSpaceLarge = 60.0;
@@ -18,6 +20,7 @@ class UIHelper {
   static const double _HorizontalSpaceMedium = 20.0;
   static const double _HorizontalSpaceLarge = 60.0;
 
+  static const Widget verticalSpaceLeast = SizedBox(height: _VerticalSpaceLeast);
   static const Widget verticalSpaceSmall = SizedBox(height: _VerticalSpaceSmall);
   static const Widget verticalSpaceMedium = SizedBox(height: _VerticalSpaceMedium);
   static const Widget verticalSpaceLarge = SizedBox(height: _VerticalSpaceLarge);

@@ -6,6 +6,8 @@ import 'package:bluetaxiapp/data/local/local_api.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
+import 'package:bluetaxiapp/data/model/requestData_model.dart';
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
 import 'package:http/http.dart' as http;
@@ -36,9 +38,8 @@ class AuthRepository {
     return result;
   }
 
-  Future<DriverModel?> getRequestData(String uid) async {
-    Future<DriverModel?> result= api.getRequestData(uid);
-    return result;
+   getRequestData(String uid) async {
+    await api.getRequestData(uid);
   }
 
   // Signup Without Firebase Auth
@@ -97,6 +98,9 @@ class AuthRepository {
 
   Future getVehiclesLocally() async{
     return await localApi.vehicalList;
+  }
+  Future getReasonListLocally() async{
+    return await localApi.reasonList;
   }
 
   Future generateRequest({
@@ -168,7 +172,12 @@ class AuthRepository {
   }
 
   getDriverDetails() async {
-    DriverModel driverDocument =await api.getDriverDetails();
+    dynamic driverDocument =await api.getDriverDetails();
     return driverDocument;
+  }
+
+  Future<RequestDataModel> getRide(String requestId) async {
+    RequestDataModel reqDoc = await api.getRide(requestId);
+    return reqDoc;
   }
 }

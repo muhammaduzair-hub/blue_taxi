@@ -21,6 +21,8 @@ class MySplashScreenView extends StatelessWidget {
             navigateRoute: model.nextRoute,
             duration: 4000,
             backgroundColor: Colors.blue,
+            imageSrc: "asset/icons/icons.png",
+            imageSize: 100,
             text: "Blue\nTaxi",
             textStyle: boldHeading1.copyWith(color: Colors.white, fontSize: 48),
           ),

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 late UserModel signedINUser;
-late String? requestId;
-late String state=EnumToString.convertToString(Status.Booked);
-
-
+late String? requestId=null;
+late String state='';
+bool activeState=false;
+bool driverState=true;
 
 enum Status {
   Booked, //Searching

@@ -17,7 +17,6 @@ class CancellationReasonView extends StatelessWidget {
 
   ArrivingSelectionViewModel? arrivingModel;
 
-
   @override
   Widget build(BuildContext context) {
     return BaseWidget<ArrivingSelectionViewModel>(

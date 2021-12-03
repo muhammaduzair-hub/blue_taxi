@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:bluetaxiapp/constants/strings.dart';
-import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
+import 'package:bluetaxiapp/ui/views/booking_view.dart';
 import 'package:bluetaxiapp/ui/views/cancellation_reason_view.dart';
+import 'package:bluetaxiapp/ui/views/dialPad_View.dart';
 import 'package:bluetaxiapp/ui/views/message_view.dart';
 import 'package:bluetaxiapp/ui/views/receipt_view.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
@@ -15,17 +16,15 @@ import 'package:bluetaxiapp/ui/widgets/custom_text_field.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
 import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
 import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
-import 'package:bluetaxiapp/ui/views/dialPad_View.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ArrivingScreen extends StatelessWidget {
-
   String requestedId;
 
   ArrivingScreen({Key? key, required this.requestedId}) : super(key: key);
@@ -33,102 +32,105 @@ class ArrivingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseWidget<ArrivingSelectionViewModel>(
-        model: ArrivingSelectionViewModel(requestedId, repo: Provider.of(context)),
-        builder: (context, model, child) => SafeArea(
-            child: Scaffold(
+        model:
+            ArrivingSelectionViewModel(requestedId, repo: Provider.of(context)),
+        builder: (context, model, child) =>
+        model.cancelModel==false ?
+            SafeArea(
+                child: Scaffold(
+                  resizeToAvoidBottomInset: false,
                     body: Stack(children: [
-                    GoogleMap(
-                      zoomControlsEnabled: false,
-                      initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                            33.738045,
-                            73.084488,
-                          ),
-                          zoom: 15),
-                      mapType: MapType.terrain,
-                      onTap: (latlng) {
-                        print("${latlng.latitude}     ${latlng.longitude}");
-                      },
+              GoogleMap(
+                zoomControlsEnabled: false,
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      33.738045,
+                      73.084488,
                     ),
-                    // Change Navigation Button on Model State
-                    // if (model.busy)
-                    //   CircularProgressIndicator()
-                    // else
-                      if (state == EnumToString.convertToString(Status.Active) ||
-                        state == EnumToString.convertToString(Status.Completed) ||
-                        state == EnumToString.convertToString(Status.Rate))
-                      LeadingBackButton(
-                        radius: 30.0,
-                        ontap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => new UserMenuView()));
-                        },
-                        icon: AssetImage('asset/icons/nav_btn.png'),
-                      ),
+                    zoom: 15),
+                mapType: MapType.terrain,
+                onTap: (latlng) {
+                  print("${latlng.latitude}     ${latlng.longitude}");
+                },
+              ),
+              // Change Navigation Button on Model State
+              // if (model.busy)
+              //   CircularProgressIndicator()
+              // else
+              if (state == EnumToString.convertToString(Status.Active) ||
+                  state == EnumToString.convertToString(Status.Completed) ||
+                  state == EnumToString.convertToString(Status.Rate))
+                LeadingBackButton(
+                  radius: 30.0,
+                  ontap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new UserMenuView()));
+                  },
+                  icon: AssetImage('asset/icons/nav_btn.png'),
+                ),
 
+              //Chnage Header Text on Model State
+              if (state == EnumToString.convertToString(Status.Active))
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      LabelArriving,
+                      style: boldHeading1.copyWith(color: onPrimaryColor),
+                    ),
+                  ),
+                )
+              else if (state == EnumToString.convertToString(Status.Completed))
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      LabelOnTrip,
+                      style: boldHeading1.copyWith(color: onPrimaryColor),
+                    ),
+                  ),
+                )
+              else if (state == EnumToString.convertToString(Status.Rate))
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      "sendFeedback",
+                      style: boldHeading1.copyWith(color: onPrimaryColor),
+                    ),
+                  ),
+                ),
 
-                    //Chnage Header Text on Model State
-                      if (state == EnumToString.convertToString(Status.Active))
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            LabelArriving,
-                            style: boldHeading1.copyWith(color: onPrimaryColor),
-                          ),
-                        ),
-                      )
-                    else if (state == EnumToString.convertToString(Status.Completed))
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            LabelOnTrip,
-                            style: boldHeading1.copyWith(color: onPrimaryColor),
-                          ),
-                        ),
-                      )
-                    else if (state == EnumToString.convertToString(Status.Rate))
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            "sendFeedback",
-                            style: boldHeading1.copyWith(color: onPrimaryColor),
-                          ),
-                        ),
-                      ),
-
-                    //Chnage Bottom sheets on Model State
-
-                      if(model.busy)Center(child: CircularProgressIndicator())
-                      else if (state == EnumToString.convertToString(Status.Booked))
-                        selectDriverSearchingSheet(model, context) //Checked
-                      else if (state == EnumToString.convertToString(Status.Active))
-                        selectArrivingBottomSheet(model) //Checked
-                      else if (state == EnumToString.convertToString(Status.Dispatched))
-                        selectArrivedBottomSheet(model, context) //Checked
-                       else if (state == EnumToString.convertToString(Status.OnGoing))
-                         selectDisbaledArrivingBottomSheet(model) //Checked
-                      else if (state == EnumToString.convertToString(Status.Completed))
-                        selectTipAndRateSheet(model) //Checked
-                      else if (state == EnumToString.convertToString(Status.Tips))
-                        selectTipsSheet(model)
-                      else if (state == EnumToString.convertToString(Status.Rate))
-                        selectRateSheet(model),
-                  ]))));
+              //Chnage Bottom sheets on Model State
+              if (state == EnumToString.convertToString(Status.Booked))
+                selectDriverSearchingSheet(model, context) //Checked
+              else if (state == EnumToString.convertToString(Status.Active))
+                selectArrivingBottomSheet(model) //Checked
+              else if (state == EnumToString.convertToString(Status.Dispatched))
+                selectArrivedBottomSheet(model, context) //Checked
+              else if (state == EnumToString.convertToString(Status.OnGoing))
+                selectDisbaledArrivingBottomSheet(model) //Checked
+              else if (state == EnumToString.convertToString(Status.Completed))
+                selectTipAndRateSheet(model) //Checked
+              else if (state == EnumToString.convertToString(Status.Tips))
+                selectTipsSheet(model)
+              else if (state == EnumToString.convertToString(Status.Rate))
+                selectRateSheet(model),
+            ])))
+        : _showCancelPanel(context, model) );
   }
+
   //Booked
   Widget selectDriverSearchingSheet(
       ArrivingSelectionViewModel model, BuildContext context) {
-    Timer(Duration(seconds: 3), () {
-      Future<DriverModel?> driver = model.checkDriver();
-    });
+    Future.delayed(const Duration(seconds: 5), ()  {});
+
+    Future<dynamic> driver= model.checkDriver();
     //selectArrivingBottomSheetEnds
     return Material(
       type: MaterialType.transparency,
@@ -144,11 +146,8 @@ class ArrivingScreen extends StatelessWidget {
               child: LeadingBackButton(
                 radius: 30.0,
                 ontap: () {
-                  //model.switchState(EnumToString.convertToString(Status.Cancelled));
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new CancellationReasonView()));
+                  model.cancelModel=true;
+                  model.setBusy(false);
                 },
                 icon: AssetImage('asset/icons/btn_cancel.png'),
               ),
@@ -172,7 +171,7 @@ class ArrivingScreen extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child:
-                      Image(image: AssetImage('asset/images/carAbove.png')),
+                          Image(image: AssetImage('asset/images/carAbove.png')),
                     ),
                   ),
                 )
@@ -201,12 +200,8 @@ class ArrivingScreen extends StatelessWidget {
   //Active
   Widget selectArrivingBottomSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
-    // String driverId = FirebaseFirestore.instance
-    //     .collection('request')
-    //     .where('userId', isEqualTo: signedINUser.id)
-    //     .snapshots();
-
     return DraggableScrollableSheet(
+      key: model.arrivingBottomKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -268,11 +263,14 @@ class ArrivingScreen extends StatelessWidget {
                                     color: secondaryColor2,
                                   ),
                                   child: Center(
-                                    child: Text(
-                                      'HS785K',
-                                      style: buttonTextStyle.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: onPrimaryColor),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 4.0, left: 4.0,bottom: 4.0),
+                                      child: Text(
+                                        model.driverModel!.carNumber ?? 'HS785K',
+                                        style: buttonTextStyle.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: onPrimaryColor),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -280,7 +278,7 @@ class ArrivingScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Volkswagen Jetta',
+                            model.driverModel!.carName ?? 'Volkswagen Jetta',
                             style: heading2.copyWith(
                                 fontWeight: FontWeight.w400,
                                 color: onPrimaryColor),
@@ -308,7 +306,7 @@ class ArrivingScreen extends StatelessWidget {
                                               context,
                                               new MaterialPageRoute(
                                                   builder: (context) =>
-                                                      new MessageView()));
+                                                      new MessageView(model.driverModel!.driverName)));
                                         },
                                         icon: AssetImage(
                                             'asset/icons/btn_chat.png'),
@@ -333,14 +331,11 @@ class ArrivingScreen extends StatelessWidget {
                                     ]),
                               ),
                               NavButton(
-                                ontap: () {
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => new CancellationReasonView()));
-                                  //model.switchState(EnumToString.convertToString(Status.Cancelled));
-                                },
                                 icon: AssetImage('asset/icons/btn_cancel.png'),
+                                ontap: () {
+                                    model.cancelModel=true;
+                                    model.setBusy(false);
+                                  }
                               ),
                             ],
                           ),
@@ -426,9 +421,9 @@ class ArrivingScreen extends StatelessWidget {
                               children: <Widget>[
                                 Image(
                                     image:
-                                    AssetImage('asset/images/car_top.png')),
+                                        AssetImage('asset/images/car_top.png')),
                                 Text(
-                                  "Your Taxi has Arrived",
+                                  "Your Taxi ${model.driverModel!.carNumber ?? 'HS785K'} has Arrived",
                                   style: buttonTextStyle.copyWith(
                                       fontWeight: FontWeight.w700),
                                 ),
@@ -437,12 +432,14 @@ class ArrivingScreen extends StatelessWidget {
                                     height: 50,
                                     child: PrimaryButton(
                                       text: Text(
-                                        "${model.driverModel!.driverName ?? "Patrick"} is Coming",
+                                        "${model.driverModel!.driverName ?? "Patrick"} is Waiting ",
                                         style: buttonTextStyle.copyWith(
                                             color: onSecondaryColor),
                                       ),
                                       ontap: () {
-                                        model.switchState(EnumToString.convertToString(Status.OnGoing));
+                                        model.switchState(
+                                            EnumToString.convertToString(
+                                                Status.OnGoing));
                                       },
                                     )),
                               ],
@@ -461,10 +458,12 @@ class ArrivingScreen extends StatelessWidget {
     );
   }
 
+
   //OnGoing
   Widget selectDisbaledArrivingBottomSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
+      key: model.disbaledArrivingKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -498,214 +497,79 @@ class ArrivingScreen extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Center(
-                              child: Image(
-                                image: AssetImage('asset/icons/ic_gesture.png'),
-                              )),
-                          Padding(
-                            padding:
-                            const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  model.driverModel!.driverName ?? "Patrick",
-                                  style: buttonTextStyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: onPrimaryColor),
-                                ),
-                                Container(
-                                  padding:
-                                  EdgeInsets.symmetric(horizontal: 5.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: secondaryColor2,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'HS785K',
+                      child: IntrinsicWidth(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Center(
+                                child: Image(
+                              image: AssetImage('asset/icons/ic_gesture.png'),
+                            )),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      model.driverModel!.driverName ?? "Patrick",
                                       style: buttonTextStyle.copyWith(
                                           fontWeight: FontWeight.w700,
                                           color: onPrimaryColor),
                                     ),
-                                  ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        color: secondaryColor2,
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(right: 4.0, left: 4.0,bottom: 4.0),
+                                          child: Text(
+                                            model.driverModel!.carNumber ?? 'HS785K',
+                                            style: buttonTextStyle.copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                color: onPrimaryColor),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  model.driverModel!.carName ?? 'Volkswagen Jetta',
+                                  style: heading2.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: onPrimaryColor),
                                 ),
                               ],
                             ),
-                          ),
-                          Text(
-                            'Volkswagen Jetta',
-                            style: heading2.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: onPrimaryColor),
-                          ),
-                          Center(
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                textStyle: const TextStyle(fontSize: 20),
-                              ),
-                              onPressed: () async {
-                                model.switchToCompletedState();
-                                model.switchState(EnumToString.convertToString(Status.Completed));
-                                await Future.delayed(Duration(seconds: 20));
-                                model.unassignDriver();
+                            Center(
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  textStyle: const TextStyle(fontSize: 20),
+                                ),
+                                onPressed: () async {
+                                  model.switchToCompletedState();
+                                  model.switchState(EnumToString.convertToString(
+                                      Status.Completed));
+                                  ///Todo
+                                  // await Future.delayed(Duration(seconds: 4));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     new MaterialPageRoute(
+                                  //         builder: (context) => new ReceiptView(
+                                  //               requestId: model.requestId,
+                                  //             )));
+                                  model.unassignDriver();
                                 },
-                              child: const Text('Enjoy Your Ride'),
+                                child: const Text('Enjoy Your Ride'),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-
-                ///Image Avatar
-                Container(
-                  width: circleRadius,
-                  height: circleRadius,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Center(
-                      child: Container(
-                        child:
-                        Image(image: AssetImage('asset/images/Group.png')),
-
-                        /// replace your image with the Icon
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ]),
-        ),
-      ),
-    );
-  }
-
-  //Completed
-  Widget selectTipAndRateSheet(ArrivingSelectionViewModel model) {
-    final double circleRadius = 120.0;
-    return DraggableScrollableSheet(
-      initialChildSize: 0.5,
-      minChildSize: 0.5,
-      maxChildSize: 0.8,
-      builder: (context, scrollController) => ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-        child: Container(
-          height: double.infinity,
-          width: double.infinity,
-          color: Colors.transparent,
-          child: Stack(children: <Widget>[
-            Stack(
-              alignment: Alignment.topLeft,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: circleRadius / 2.0,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8.0,
-                          offset: Offset(0.0, 5.0),
+                          ],
                         ),
-                      ],
-                    ),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Center(
-                              child: Image(
-                            image: AssetImage('asset/icons/ic_gesture.png'),
-                          )),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  model.driverModel!.driverName ?? "Patrick",
-                                  style: buttonTextStyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: onPrimaryColor),
-                                ),
-                                Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 5.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: secondaryColor2,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'HS785K',
-                                      style: buttonTextStyle.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: onPrimaryColor),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            'Volkswagen Jetta',
-                            style: heading2.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: onPrimaryColor),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 159,
-                                height: 50,
-                                child: PrimaryButton(
-                                    text: Text(
-                                      rate_btn,
-                                      style: buttonTextStyle,
-                                    ),
-                                    ontap: () {
-                                      //switchState
-                                      model.switchState(EnumToString.convertToString(Status.Rate));
-                                    }),
-                              ),
-                              Container(
-                                width: 159,
-                                height: 50,
-                                child: PrimaryButton(
-                                    color: onSecondaryColor,
-                                    text: Text(
-                                      tips_btn,
-                                      style: buttonTextStyle.copyWith(
-                                          color: onPrimaryColor),
-                                    ),
-                                    ontap: () {
-                                      model.switchState(EnumToString.convertToString(Status.Tips));
-                                    }),
-                              ),
-                            ],
-                          ),
-                        ],
                       ),
                     ),
                   ),
@@ -738,10 +602,12 @@ class ArrivingScreen extends StatelessWidget {
       ),
     );
   }
-  Widget selectRateSheet(ArrivingSelectionViewModel model) {
+
+  //Completed
+  Widget selectTipAndRateSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
-    String rated = "Excellent";
     return DraggableScrollableSheet(
+      key:model.tipAndRateKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -749,6 +615,8 @@ class ArrivingScreen extends StatelessWidget {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         child: Container(
+          height: double.infinity,
+          width: double.infinity,
           color: Colors.transparent,
           child: Stack(children: <Widget>[
             Stack(
@@ -761,7 +629,7 @@ class ArrivingScreen extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      color: onSecondaryColor,
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -770,72 +638,96 @@ class ArrivingScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
+                      child: IntrinsicWidth(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Center(
                                 child: Image(
-                                  image: AssetImage('asset/icons/ic_gesture.png'),
-                                )),
-                          ),
-                          UIHelper.verticalSpaceSmall,
-                          Text(
-                            model.driverModel!.driverName!,
-                            style: buttonTextStyle.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: onPrimaryColor),
-                          ),
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                RatingBar.builder(
-                                  initialRating: 3,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 4.0),
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: secondaryColor,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    rated = model.switchRateLabel(rating);
-                                  },
+                              image: AssetImage('asset/icons/ic_gesture.png'),
+                            )),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      model.driverModel!.driverName ?? "Patrick",
+                                      style: buttonTextStyle.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: onPrimaryColor),
+                                    ),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 5.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        color: secondaryColor2,
+                                      ),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(right: 4.0, left: 4.0,bottom: 4.0),
+                                          child: Text(
+                                            model.driverModel!.carNumber ?? 'HS785K',
+                                            style: buttonTextStyle.copyWith(
+                                                fontWeight: FontWeight.w700,
+                                                color: onPrimaryColor),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 Text(
-                                  rated,
+                                  model.driverModel!.carName ?? 'Volkswagen Jetta',
                                   style: heading2.copyWith(
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                CustomTextField(
-                                  maxLines: 3,
-                                  minLines: 3,
+                                      fontWeight: FontWeight.w400,
+                                      color: onPrimaryColor),
                                 ),
                               ],
                             ),
-                          ),
-                          Container(
-                              width: double.infinity,
-                              height: 50,
-                              child: PrimaryButton(
-                                text: Text(
-                                  rate_btn,
-                                  style: buttonTextStyle.copyWith(
-                                      color: onSecondaryColor),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: 159,
+                                  height: 50,
+                                  child: PrimaryButton(
+                                      text: Text(
+                                        rate_btn,
+                                        style: buttonTextStyle,
+                                      ),
+                                      ontap: () {
+                                        //switchState
+                                        model.switchState(
+                                            EnumToString.convertToString(
+                                                Status.Rate));
+                                      }),
                                 ),
-                                ontap: () {
-                                  model.switchState(EnumToString.convertToString(Status.Tips));
-                                },
-                              )),
-                        ],
+                                Container(
+                                  width: 159,
+                                  height: 50,
+                                  child: PrimaryButton(
+                                      color: onSecondaryColor,
+                                      text: Text(
+                                        tips_btn,
+                                        style: buttonTextStyle.copyWith(
+                                            color: onPrimaryColor),
+                                      ),
+                                      ontap: () {
+                                        model.switchState(
+                                            EnumToString.convertToString(
+                                                Status.Tips));
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -854,7 +746,7 @@ class ArrivingScreen extends StatelessWidget {
                     child: Center(
                       child: Container(
                         child:
-                        Image(image: AssetImage('asset/images/Group.png')),
+                            Image(image: AssetImage('asset/images/Group.png')),
 
                         /// replace your image with the Icon
                       ),
@@ -868,9 +760,150 @@ class ArrivingScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget selectRateSheet(ArrivingSelectionViewModel model) {
+    final double circleRadius = 120.0;
+    String rated='';
+    return DraggableScrollableSheet(
+      key: model.rateSheetKey,
+      initialChildSize: 0.5,
+      minChildSize: 0.5,
+      maxChildSize: 0.8,
+      builder: (context, scrollController) => ClipRRect(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+        child: Container(
+          color: Colors.transparent,
+          child: Stack(children: <Widget>[
+            Stack(
+              alignment: Alignment.topLeft,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: circleRadius / 2.0,
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      color: onSecondaryColor,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 8.0,
+                          offset: Offset(0.0, 5.0),
+                        ),
+                      ],
+                    ),
+                    child: IntrinsicHeight(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: IntrinsicWidth(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Center(
+                                  child: Image(
+                                image: AssetImage('asset/icons/ic_gesture.png'),
+                              )),
+                              UIHelper.verticalSpaceSmall,
+                              Text(
+                                model.driverModel!.driverName!,
+                                style: buttonTextStyle.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: onPrimaryColor),
+                              ),
+                              Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    RatingBar.builder(
+                                      initialRating: 0,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding:
+                                          EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: secondaryColor,
+                                      ),
+                                      onRatingUpdate: (rating) {
+                                        rated = model.switchRateLabel(rating);
+                                      },
+                                    ),
+                                    Text(
+                                      rated,
+                                      style: heading2.copyWith(
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    CustomTextField(
+                                      keyboardType: TextInputType.multiline,
+                                      maxLength: 15,
+                                      maxLines: null,
+                                      minLines: 1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: PrimaryButton(
+                                    text: Text(
+                                      rate_btn,
+                                      style: buttonTextStyle.copyWith(
+                                          color: onSecondaryColor),
+                                    ),
+                                    ontap: () {
+                                      model.switchState(
+                                          EnumToString.convertToString(
+                                              Status.Tips));
+                                    },
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                ///Image Avatar
+                Container(
+                  width: circleRadius,
+                  height: circleRadius,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(3.0),
+                    child: Center(
+                      child: Container(
+                        child:
+                            Image(image: AssetImage('asset/images/Group.png')),
+
+                        /// replace your image with the Icon
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+
   Widget selectTipsSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
+      key: model.tipsSheetKey,
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
@@ -909,13 +942,13 @@ class ArrivingScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
                                 child: Image(
-                                  image: AssetImage('asset/icons/ic_gesture.png'),
-                                )),
+                              image: AssetImage('asset/icons/ic_gesture.png'),
+                            )),
                           ),
                           SizedBox(height: 40.0),
                           Padding(
                             padding:
-                            const EdgeInsets.symmetric(horizontal: 10.0),
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -936,43 +969,55 @@ class ArrivingScreen extends StatelessWidget {
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
-                                  color: 1==model.buttonState? secondaryColor : onSecondaryColor,
+                                    color: 1 == model.buttonState
+                                        ? secondaryColor
+                                        : onSecondaryColor,
                                     text: Text(
                                       "0%",
                                       style: buttonTextStyle.copyWith(
-                                        color: 1==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                        color: 1 == model.buttonState
+                                            ? onSecondaryColor
+                                            : onPrimaryColor,
                                       ),
                                     ),
                                     ontap: () {
-                                    model.switchButtonState(1);
-                                    //  model.switchButtonState("OneBState");
+                                      model.switchButtonState(1);
+                                      //  model.switchButtonState("OneBState");
                                     }),
                               ),
                               Container(
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
-                                    color: 2==model.buttonState?secondaryColor : onSecondaryColor,
+                                    color: 2 == model.buttonState
+                                        ? secondaryColor
+                                        : onSecondaryColor,
                                     text: Text(
                                       "5%",
                                       style: buttonTextStyle.copyWith(
-                                        color: 2==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                        color: 2 == model.buttonState
+                                            ? onSecondaryColor
+                                            : onPrimaryColor,
                                       ),
                                     ),
                                     ontap: () {
                                       model.switchButtonState(2);
-                                    //  model.switchButtonState("TwoBState");
+                                      //  model.switchButtonState("TwoBState");
                                     }),
                               ),
                               Container(
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
-                                    color: 3==model.buttonState? secondaryColor : onSecondaryColor,
+                                    color: 3 == model.buttonState
+                                        ? secondaryColor
+                                        : onSecondaryColor,
                                     text: Text(
                                       "10%",
                                       style: buttonTextStyle.copyWith(
-                                        color: 3==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                        color: 3 == model.buttonState
+                                            ? onSecondaryColor
+                                            : onPrimaryColor,
                                       ),
                                     ),
                                     ontap: () {
@@ -984,11 +1029,15 @@ class ArrivingScreen extends StatelessWidget {
                                 width: 79,
                                 height: 50,
                                 child: PrimaryButton(
-                                    color: 4==model.buttonState? secondaryColor : onSecondaryColor,
+                                    color: 4 == model.buttonState
+                                        ? secondaryColor
+                                        : onSecondaryColor,
                                     text: Text(
                                       "20%",
                                       style: buttonTextStyle.copyWith(
-                                          color: 4==model.buttonState? onSecondaryColor : onPrimaryColor,
+                                        color: 4 == model.buttonState
+                                            ? onSecondaryColor
+                                            : onPrimaryColor,
                                       ),
                                     ),
                                     ontap: () {
@@ -1024,8 +1073,9 @@ class ArrivingScreen extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       new MaterialPageRoute(
-                                          builder: (context) =>
-                                          new ReceiptView()));
+                                          builder: (context) => new ReceiptView(
+                                                requestId: model.requestId,
+                                              )));
                                   // model.switchState("On Trip");
                                 },
                               )),
@@ -1049,7 +1099,7 @@ class ArrivingScreen extends StatelessWidget {
                     child: Center(
                       child: Container(
                         child:
-                        Image(image: AssetImage('asset/images/Group.png')),
+                            Image(image: AssetImage('asset/images/Group.png')),
 
                         /// replace your image with the Icon
                       ),
@@ -1061,6 +1111,128 @@ class ArrivingScreen extends StatelessWidget {
           ]),
         ),
       ),
+    );
+  }
+
+  Widget _showCancelPanel(BuildContext context, ArrivingSelectionViewModel model) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: onSecondaryColor,
+          elevation: 0.0,
+          leading: CircleAvatar(
+            radius: 20.0,
+            backgroundColor: Colors.transparent,
+            child: RawMaterialButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              elevation: 4.0,
+              fillColor: Colors.white,
+              child: Icon(
+                Icons.arrow_back_ios_outlined,
+                color: onPrimaryColor,
+                size: 17.0,
+              ),
+              padding: EdgeInsets.all(15.0),
+              shape: CircleBorder(),
+            ),
+          ),
+        ),
+        backgroundColor: onSecondaryColor,
+        body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              UIHelper.verticalSpaceXLarge,
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0),
+                child: Container(
+                  width: 220.0,
+                  child: Text(
+                    cancel_reason,
+                    style: boldHeading1.copyWith(color: onPrimaryColor),
+                  ),
+                ),
+              ),
+              UIHelper.verticalSpaceLarge,
+              ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildCheckListItems(index, model);
+                  }),
+              UIHelper.verticalSpaceLarge,
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 21.0,
+                ),
+                width: double.infinity,
+                height: 50,
+                child: PrimaryButton(
+                  text: Text(
+                    submit,
+                    style: buttonTextStyle,
+                  ),
+                  ontap: () {
+                    model.switchState(
+                        EnumToString.convertToString(Status.Cancelled));
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => BookingView()));
+                  },
+                ),
+              ),
+            ]),
+      ),
+    );
+}
+
+  Widget _myRadioButton(
+      {required String title,
+      required int value,
+      Function(int?)? onChanged,
+      required ArrivingSelectionViewModel model}) {
+    return RadioListTile(
+      value: value,
+      onChanged: onChanged!,
+      title: Text(title),
+      groupValue: model.groupValue,
+    );
+  }
+
+  Widget _buildCheckListItems(int index, ArrivingSelectionViewModel model) {
+    return Column(
+      //Via List Model
+      children: <Widget>[
+        _myRadioButton(
+            title: cancel_r1,
+            value: 0,
+            onChanged: (newValue) => model.switchGroupValue(newValue!),
+            model: model),
+        _myRadioButton(
+            title: cancel_r2,
+            value: 1,
+            onChanged: (newValue) => model.switchGroupValue(newValue!),
+            model: model),
+        _myRadioButton(
+            title: cancel_r3,
+            value: 2,
+            onChanged: (newValue) => model.switchGroupValue(newValue!),
+            model: model),
+        _myRadioButton(
+            title: cancel_r4,
+            value: 3,
+            onChanged: (newValue) => model.switchGroupValue(newValue!),
+            model: model),
+        _myRadioButton(
+            title: cancel_r5,
+            value: 4,
+            onChanged: (newValue) => model.switchGroupValue(newValue!),
+            model: model),
+      ],
     );
   }
 }

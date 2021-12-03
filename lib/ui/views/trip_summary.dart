@@ -56,10 +56,7 @@ class RideSummary extends StatelessWidget {
         leading: LeadingBackButton(
           radius: 30.0,
           ontap: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new RideHistoryView()));
+            Navigator.pop(context);
           },
           icon: AssetImage('asset/icons/back_btn.png'),
         ),
@@ -172,7 +169,7 @@ class RideSummary extends StatelessWidget {
             ]),
             Padding(
               padding: UIHelper.pagePaddingMedium.copyWith(
-                  right: 16.0, left: 16.0),
+                  right: 21.0, left: 21.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,6 +178,7 @@ class RideSummary extends StatelessWidget {
                     " Driver",
                     style: boldHeading2.copyWith(color: onPrimaryColor),
                   ),
+                  SizedBox(height: 5.0),
                   GestureDetector(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (
@@ -188,59 +186,59 @@ class RideSummary extends StatelessWidget {
 
                     },
                     child: Card(
+                      elevation: 9,
                       child: Padding(
-                        padding: UIHelper.pagePaddingSmall.copyWith(right: 2),
+                        padding: UIHelper.pagePaddingSmall.copyWith(top: 15,bottom:15),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: 72.0,
-                              height: 72.0,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(3.0),
-                                child: Center(
-                                  child: Container(
-                                    child:
-                                    Image(image: AssetImage(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Image(image: AssetImage(
                                         'asset/images/Group.png')),
                                   ),
                                 ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 70),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                  model.driverDocument!.driverName??"test",
-                                    style:
-                                    boldHeading2.copyWith(color: onPrimaryColor),
-                                  ),
-                                  Text(
-                                    'Volkswegan Jetta',
-                                    style: heading2.copyWith(
-                                        color: onPrimaryColor),
-                                  ),
-
-                                  Row(
-                                    children: [
-                                      Icon(Icons.star,
-                                        color: Colors.yellow, size: 15.0,),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
                                       Text(
-                                        model.driverDocument!.rating??"5.0",
-                                        // model.driverDocument!.rating ?? '4.8',
+                                        model.driverDocument!.driverName??"test",
+                                        style:
+                                        boldHeading2.copyWith(color: onPrimaryColor),
+                                      ),
+                                      Text(
+                                        model.driverDocument!.carName?? 'Volkswegan Jetta',
                                         style: heading2.copyWith(
                                             color: onPrimaryColor),
                                       ),
+
+                                      Row(
+                                        children: [
+                                          Icon(Icons.star,
+                                            color: Colors.yellow, size: 15.0,),
+                                          SizedBox(width: 2.0,),
+                                          Text(
+                                            model.driverDocument!.rating??"0.0",
+                                            // model.driverDocument!.rating ?? '4.8',
+                                            style: heading2.copyWith(
+                                                color: onPrimaryColor),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                             Icon(Icons.arrow_forward_ios_outlined,
                               color: onPrimaryColor2, size: 15.0,),
@@ -253,7 +251,8 @@ class RideSummary extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(21.0),
+              padding: UIHelper.pagePaddingMedium.copyWith(
+                  right: 21.0, left: 21.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,36 +261,51 @@ class RideSummary extends StatelessWidget {
                     " Payment",
                     style: boldHeading2.copyWith(color: onPrimaryColor),
                   ),
-                  Card(
-                    color: onPrimaryColor3,
+                  SizedBox(height: 5.0),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: onPrimaryColor3,
+                        border: Border.all(
+                            color: secondaryColor2
+                        )
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                      padding: UIHelper.pagePaddingSmall.copyWith(top: 10,bottom:10),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: 72.0,
-                            height: 72.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: onPrimaryColor3,
-                            ),
-                            child: Image(
-                                image: snapshot.docs[index]['payment']['card_no']=="Cash"?AssetImage("asset/icons/ic_cash.png"): AssetImage('asset/icons/shape.png')),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: onPrimaryColor3,
+                                  ),
+                                  child: Image(
+                                      image: snapshot.docs[index]['payment']['card_no']=="Cash"?AssetImage("asset/icons/ic_cash.png"): AssetImage('asset/icons/shape.png')),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:10.0),
+                                child: Text(
+                                  snapshot
+                                      .docs[index]['payment']['card_no'],
+                                  style:
+                                  boldHeading2.copyWith(color: onPrimaryColor),
+                                ),
+                              ),
+                            ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10, right: 100),
+                            padding: const EdgeInsets.only(right: 20.0),
                             child: Text(
-                              snapshot
-                                  .docs[index]['payment']['card_no'],
+                              '\$${snapshot.docs[index]['expectedBill']}',
                               style:
                               boldHeading2.copyWith(color: onPrimaryColor),
                             ),
-                          ),
-                          Text(
-                            '\$${snapshot.docs[index]['expectedBill']}',
-                            style:
-                            boldHeading2.copyWith(color: onPrimaryColor),
                           ),
                         ],
                       ),
@@ -339,11 +353,11 @@ class RideSummary extends StatelessWidget {
                                             ],
                                           );
                                         },
-                                        itemCount: 7,
+                                        itemCount: model.reasonList.length,
                                         itemBuilder: (
                                             BuildContext context,
                                             int index) {
-                                          return _issueOptions(index);
+                                          return _issueOptions(index, model);
                                         },
                                       ),
                                     ],
@@ -361,11 +375,11 @@ class RideSummary extends StatelessWidget {
     )));
   }
 
-  Widget _issueOptions(int index) {
+  Widget _issueOptions(int index, TripViewModel model) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("I was involved in an accident", style: heading2.copyWith(color: onPrimaryColor),),
+        Text(model.reasonList[index].vText, style: heading2.copyWith(color: onPrimaryColor),),
         Icon(Icons.arrow_forward_ios_outlined, color: onPrimaryColor2,),
       ],
     );

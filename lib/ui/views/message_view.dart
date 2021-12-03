@@ -2,10 +2,12 @@ import 'package:bluetaxiapp/data/model/message_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
+import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
 import 'package:flutter/material.dart';
 
 class MessageView extends StatelessWidget {
-  MessageView({Key? key}) : super(key: key);
+  String driverName;
+  MessageView(this.driverName,  {Key? key}) : super(key: key);
 
   TextEditingController messageController = TextEditingController();
 
@@ -20,11 +22,11 @@ class MessageView extends StatelessWidget {
             title: Column(
               children: [
                 Text(
-                  "Patrick",
+                  driverName,
                   style: boldHeading1.copyWith(color: onPrimaryColor),
                 ),
                 Text(
-                  "Patrick",
+                  "driver",
                   style: textRegular.copyWith(
                       fontWeight: FontWeight.w400, color: secondaryColor2),
                 ),

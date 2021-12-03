@@ -18,6 +18,8 @@ class DriverModel {
   String? like;
   String? rating;
   String? phoneNo;
+  String? carName;
+  String? carNumber;
 
 
   DriverModel({required this.id,
@@ -26,6 +28,8 @@ class DriverModel {
     this.like,
     this.rating,
     this.phoneNo,
+    this.carName,
+    this.carNumber,
     });
 
 
@@ -35,7 +39,9 @@ class DriverModel {
         driverStatus =DriverStatus.Unassigned,
         like ='',
         rating='',
-        phoneNo='';
+        phoneNo='',
+        carName='',
+        carNumber='';
 
 
   DriverModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +52,8 @@ class DriverModel {
     like =json['like'];
     rating=json['rating'];
     phoneNo = json['phoneNo'];
+    carName= json['carName'];
+    carNumber=json['carNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +64,8 @@ class DriverModel {
     data['like'] = this.like;
     data['rating'] = this.rating;
     data['phoneNo']=this.phoneNo;
+    data['carName']=this.carName;
+    data['carNumber']=this.carNumber;
     return data;
   }
 

@@ -1,6 +1,8 @@
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
+import 'package:bluetaxiapp/data/model/requestData_model.dart';
+import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
@@ -131,8 +133,8 @@ class Api {
         required String expectedBill,
         required double bill
       }) async {
-    late String ride;
-    if( await checkRequestStatus(userToken)){
+    String ride="-";
+    if(await checkRequestStatus(userToken)){
       bool check=false;
       check=await firestoreRequests.add({
         "userId":userToken,
@@ -185,20 +187,20 @@ class Api {
     return false;
   }
 
-  Future<DriverModel?> getRequestData(String rid) async {
-    DriverModel? driverDataModel=null;
-    try{
+  Future<String> getRequestData(String rid) async {
+    try {
       driverID = await getActiveDriver();
-
-      var requestData = await _requestCollectionReference.doc(rid).get()
-          .whenComplete(() async {
-        await updateRequestData(rid, driverID);
-      });
-
-    } catch (e) {
-      return driverDataModel;
+      print("************DriverUd in PAi getReq *$driverID*");
+      if (driverID!=null) {
+         var requestData = await _requestCollectionReference.doc(rid).get()
+            .whenComplete(() async {
+          await updateRequestData(rid, driverID);
+        });
     }
-    return driverDataModel;
+      return driverID;
+    } catch (e) {
+      return driverID;
+    }
   }
 
   getActiveDriver() async {
@@ -210,7 +212,6 @@ class Api {
           .get()
           .then((value) =>
           value.docs.forEach((doc)=> {
-            print("*********** AT API DRIVER NAME IS : ${doc['driverName']}"),
             doc.reference.update({'driverStatus' : 'Assigned'}),//CHANGE***********
             driverID= doc.id,
           })
@@ -347,14 +348,28 @@ class Api {
     }
   }
 
-  Future<void> switchToOnGoingState(String requestId) async {
+  switchToOnGoingState(String requestId) async {
     return await _requestCollectionReference.doc(requestId).update({
       'rideStatus': 'OnGoing',//CHANGE***********
     });
   }
 
    getDriverDetails() async {
-     DriverModel driverDocument = await getDriver(driverID);
-    return driverDocument;
+     driverID = await getActiveDriver();
+     dynamic driverDocument;
+     if(driverID == null){
+
+     }
+     else{
+       driverDocument = await getDriver(driverID);
+     }
+     return driverDocument;
+  }
+
+  getRide(String requestId) async {
+    var reqDocument= await _requestCollectionReference.doc(requestId).get();
+    late RequestDataModel reqDoc =  RequestDataModel.fromJson(reqDocument.data()!);
+    print("*****************${reqDoc.createDate}");
+    return reqDoc;
   }
 }
