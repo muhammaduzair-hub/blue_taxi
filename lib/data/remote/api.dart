@@ -129,6 +129,7 @@ class Api {
         required CardModel card,
         required String carType,
         required String expectedBill,
+        required double bill
       }) async {
     late String ride;
     if( await checkRequestStatus(userToken)){
@@ -153,7 +154,7 @@ class Api {
           "card_no":card.cardNumber,
         },
         "carType":carType,
-        "expectedBill":'',
+        "expectedBill":'$bill',
         "rideStatus":EnumToString.convertToString(Status.Booked),
         "createDate":DateTime.now(),
 

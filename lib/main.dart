@@ -1,3 +1,4 @@
+import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/views/splash_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,12 +34,12 @@ class MyApp extends StatelessWidget {
                     theme:  ThemeData(
                             primarySwatch: Colors.blue,
                           ),
-                    home:MySplashScreenView(),
+                    home:DevScreenView()//MySplashScreenView(),
                   ),
                 );
               }
               // Otherwise, show something whilst waiting for initialization to complete
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             },
     );
   }

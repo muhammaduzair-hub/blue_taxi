@@ -1,4 +1,7 @@
+import 'package:bluetaxiapp/constants/strings.dart';
+import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +12,11 @@ class AddCardViewModel extends BaseModel{
 
   final AuthRepository _repo ;
 
-
   //variabels who are going to communicate with UI
   final TextEditingController cardNumberController = TextEditingController();
   final TextEditingController cardHolderController = TextEditingController();
+  late bool cardValidator = true;
+  late bool holderValidator = true;
   DateTime? selectedDate;
 
   AddCardViewModel({
@@ -27,23 +31,54 @@ class AddCardViewModel extends BaseModel{
     return  await _repo.api.getCards();
   }
 
-  addCard() async{
-    setBusy(true);
-    if(
-      cardHolderController.text.length>4&&
-      cardNumberController.text.length==16 &&
-      selectedDate!=null
-    )
+  addCard(BuildContext context) async{
+    cardValidator =  validateCardNumber(cardNumberController.text);
+    holderValidator = cardHolderController.text.length>4?true:false;
+    setBusy(false);
+    print(holderValidator?"=========================true":"============================false");
+    if(cardValidator && holderValidator&& selectedDate!=null)
     {
+      setBusy(true);
       bool ans = await _repo.addCard(
           cardNumber: cardNumberController.text,
           cardHolder: cardHolderController.text,
           expMonth:selectedDate!.month,
           expYear: selectedDate!.year
       );
-      // ans?print("ok"):print("not ok");
+      if(ans){
+        List<CardModel> cards=await getcards();
+        Navigator.pop(context, cards);
+        showToast(LabelCardIsAdded);
+      }
+      else{
+        showToast(LabelTryAgain);
+        cardNumberController.text ='';
+        cardHolderController.text = '';
+      }
+    }
+    else{
+      // showToast(
+      //   !cardValidator ? LabelLenghtMustBeSixteen : !holderValidator ? LabelInvalidName : LabelTryAgain
+      // );
     }
     setBusy(false);
+  }
+
+  bool validateCardNumber(String value) {
+    bool ans;
+    String pattern = r"^(?:(\d{16}))$";
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      ans= false;
+    }
+    else if (!regExp.hasMatch(value)) {
+      ans= false;
+    }
+    else {
+      ans = true;
+
+    }
+    return ans;
   }
 
   monthPicker(BuildContext context){

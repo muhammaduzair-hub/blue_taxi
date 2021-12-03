@@ -105,7 +105,8 @@ class AuthRepository {
     required String expectedBill,
     required AdressModel toAdress,
     required AdressModel fromAdress,
-    required CardModel card
+    required CardModel card,
+    required double bill
   }) async
   {
     dynamic res = await api.generateRequest(
@@ -114,7 +115,8 @@ class AuthRepository {
       expectedBill: expectedBill,
       toAdress: toAdress,
       fromAdress: fromAdress,
-      card: card
+      card: card,
+      bill: bill
     );
     return res;
   }

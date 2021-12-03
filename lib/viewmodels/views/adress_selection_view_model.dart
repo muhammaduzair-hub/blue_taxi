@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
@@ -7,9 +8,11 @@ import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:ui' as ui;
 
 class AdressSelectionViewModel extends BaseModel {
    final AuthRepository authRepository;
@@ -28,19 +31,28 @@ class AdressSelectionViewModel extends BaseModel {
   late AdressModel from ;
   late AdressModel to;
   late double distance;
+  late double bill;
   late String generatedRide;
   late int addressSelection_FromSearchTextFieldInitialSize;
    late int addressSelection_ToSearchTextFieldInitialSize;
    final debouncer = Debouncer(milliseconds: 3000);
    late Map<String, List> groupList ;
    bool selectedfromTextField = true;
+   bool checkToTextFieldval = false;
    late List<CardModel> myCards=[];
    late int selectedCardIndex =0;
+   List<String> selectedAddresses = [];
+   late Uint8List icPick;
+   late Uint8List destinationMarker;
+   final Key adressSelectionKey=Key("AdressSelection");
+   final Key othersSheetKey  = Key("Other");
+   final Key cardSheet = Key("Card");
 
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
 
    AdressSelectionViewModel( {required this.authRepository}):super(false) {
+     loadCustomMarker();
      state = LabelSelectAdress;
      addressSelection_FromSearchTextFieldInitialSize = 25;
      addressSelection_ToSearchTextFieldInitialSize = 25;
@@ -50,15 +62,83 @@ class AdressSelectionViewModel extends BaseModel {
      initializegroupList(localAdressTitles);
    }
 
+   void loadCustomMarker() async{
+     setBusy(true);
+     //carMaker = await getBytesFromAsset('asset/images/car_top.png', 100);
+
+     destinationMarker = await getBytesFromAsset('asset/icons/flag.png', 100);
+     icPick= await getBytesFromAsset('asset/icons/loader.png', 150);
+     //carMaker=await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(48, 48)),"asset/images/car_top.png");
+     setBusy(false);
+
+
+   }
+
+   Future<Uint8List> getBytesFromAsset(String path, int width) async {
+     ByteData data = await rootBundle.load(path);
+     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+     ui.FrameInfo fi = await codec.getNextFrame();
+     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+   }
+
    switchSelectCardIndex(int index){
      selectedCardIndex = index;
      setBusy(false);
    }
 
   switchTextField(){
+     // try{
+     //   localAdressTitles.firstWhere((element) => element==fromController.text);
+     //
+     // }catch(e){
+     //   remoteAdressTitle.firstWhere((element) => element==fromController.text);
+     //   selectedfromTextField = false;
+     // }
     selectedfromTextField = false;
     setBusy(false);
   }
+   checkFromTextField(){
+     try{
+       localAdressTitles.firstWhere((element) => element==fromController.text);
+       selectedfromTextField = true;
+     }catch(e){
+       try{
+         remoteAdressTitle.firstWhere((element) => element==fromController.text);
+         selectedfromTextField = true;
+       }
+       catch(e){
+         try{
+           selectedAddresses.firstWhere((element) => element==fromController.text);
+           selectedfromTextField = true;
+         }
+         catch(e){
+           selectedfromTextField = false;
+         }
+       }
+     }
+     setBusy(false);
+   }
+  checkToTextField(){
+     try{
+       localAdressTitles.firstWhere((element) => element==toController.text);
+       checkToTextFieldval = true;
+     }catch(e){
+       try{
+         remoteAdressTitle.firstWhere((element) => element==toController.text);
+         checkToTextFieldval = true;
+       }
+       catch(e){
+         try{
+           selectedAddresses.firstWhere((element) => element==toController.text);
+           checkToTextFieldval = true;
+         }
+         catch(e){
+           checkToTextFieldval = false;
+         }
+       }
+     }
+     setBusy(false);
+   }
 
   showonMap() async{
 
@@ -74,8 +154,9 @@ class AdressSelectionViewModel extends BaseModel {
     }
     distance = await Geolocator.distanceBetween(to.lat, to.long, from.lat, from.long);
     distance=distance/1000;
-    addMarkers(LatLng(from.lat, from.long), "From", "$distance KM");
-    addMarkers(LatLng(to.lat, to.long), "To", "$distance KM");
+    bill = distance*3;
+    addMarkers(LatLng(from.lat, from.long), "From", "$distance KM", icPick);
+    addMarkers(LatLng(to.lat, to.long), "To", "$distance KM", destinationMarker);
 
     setBusy(false);
   }
@@ -89,9 +170,10 @@ class AdressSelectionViewModel extends BaseModel {
      setBusy(false);
    }
 
-  addMarkers(LatLng latLng, String description, String distance){
+  addMarkers(LatLng latLng, String description, String distance, Uint8List marker){
     markers.add(
       Marker(
+          icon: BitmapDescriptor.fromBytes(marker),
         markerId: MarkerId(markers.length.toString()),
         position: latLng,
         infoWindow: InfoWindow(
@@ -106,6 +188,7 @@ class AdressSelectionViewModel extends BaseModel {
 
 
   initializegroupList(List<String> local){
+
     groupList = {
       if(remoteAdressTitle.isNotEmpty)'Search Result':remoteAdressTitle,
       if(localAdressTitles.isNotEmpty)'Recent':localAdressTitles
@@ -168,13 +251,14 @@ class AdressSelectionViewModel extends BaseModel {
          toAdress: to,
          fromAdress: from,
          card: myCards[selectedCardIndex],
+          bill : (bill.toInt()).toDouble()
      );
-
-     print("here it is answer: $ans");
+     requestId=ans;
+     print("here it is answer: $requestId");
      if(ans!=null){
-       requestId=ans;
        generatedRide = ans;}
      print(generatedRide);
+     setBusy(false);
    }
 
 
@@ -200,6 +284,7 @@ class AdressSelectionViewModel extends BaseModel {
          if(element.contains(element))
            localTemp.add(element);
        });
+      if(remoteAdressTitle.isEmpty&&localAdressTitles.isEmpty) showToast("Enter Correct Address");
        initializegroupList(localTemp);
     }
     setBusy(false);
