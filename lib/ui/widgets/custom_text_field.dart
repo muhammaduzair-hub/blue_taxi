@@ -9,9 +9,10 @@ class CustomTextField extends StatelessWidget {
   final bool showPassword ;
   final int? minLines;
   final int? maxLines;
+  final int? maxLength;
   final TextInputType keyboardType;
 
-  CustomTextField({this.controller, this.showPassword = false, this.minLines, this.maxLines, this.keyboardType = TextInputType.text});
+  CustomTextField({this.controller, this.showPassword = false,this.maxLength, this.minLines, this.maxLines, this.keyboardType = TextInputType.text});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,8 @@ class CustomTextField extends StatelessWidget {
             BaseWidget<CustomTextFieldViewModel>(
               model: CustomTextFieldViewModel(),
               builder: (context, model, child) => TextField(
+                maxLength: maxLength,
+                  textAlignVertical: TextAlignVertical.center,
                   obscureText: model.obscureText,
                   decoration: InputDecoration(
                     focusedBorder:  OutlineInputBorder(

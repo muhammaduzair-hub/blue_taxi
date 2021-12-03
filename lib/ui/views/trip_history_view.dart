@@ -31,7 +31,7 @@ class RideHistoryView extends StatelessWidget {
           ontap: () {
             Navigator.pop(context);
           },
-          icon: AssetImage('asset/icons/nav_btn.png'),
+          icon: AssetImage('asset/icons/back_btn.png'),
         ),
       ),
       body: StreamBuilder(
@@ -66,22 +66,24 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30.0),
+        IntrinsicHeight(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40.0),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 21.0),
+            height: 220,
+            child: snapshot.docs[index]['rideStatus'] !="Cancelled"?GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) =>  RideSummary(snapshot: snapshot, index: index,)));
+              },
+              child:MyCard(snapshot: snapshot, index: index)
+            ):
+            MyCard(snapshot: snapshot, index: index, elevatin: 0)
           ),
-          padding: EdgeInsets.symmetric(horizontal: 21.0),
-          height: 220,
-          child: snapshot.docs[index]['rideStatus'] !="Cancelled"?GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) =>  RideSummary(snapshot: snapshot, index: index,)));
-            },
-            child:MyCard(snapshot: snapshot, index: index)
-          ):
-          MyCard(snapshot: snapshot, index: index, elevatin: 0)
         ),
       ],
     );

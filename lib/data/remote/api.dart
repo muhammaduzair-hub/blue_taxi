@@ -132,8 +132,8 @@ class Api {
         required String carType,
         required String expectedBill,
       }) async {
-    late String ride;
-    if( await checkRequestStatus(userToken)){
+    String ride="-";
+    if(await checkRequestStatus(userToken)){
       bool check=false;
       check=await firestoreRequests.add({
         "userId":userToken,
@@ -186,20 +186,20 @@ class Api {
     return false;
   }
 
-  Future<DriverModel?> getRequestData(String rid) async {
-    DriverModel? driverDataModel=null;
-    try{
+  Future<String> getRequestData(String rid) async {
+    try {
       driverID = await getActiveDriver();
-
-      var requestData = await _requestCollectionReference.doc(rid).get()
-          .whenComplete(() async {
-        await updateRequestData(rid, driverID);
-      });
-
-    } catch (e) {
-      return driverDataModel;
+      print("************DriverUd in PAi getReq *$driverID*");
+      if (driverID!=null) {
+         var requestData = await _requestCollectionReference.doc(rid).get()
+            .whenComplete(() async {
+          await updateRequestData(rid, driverID);
+        });
     }
-    return driverDataModel;
+      return driverID;
+    } catch (e) {
+      return driverID;
+    }
   }
 
   getActiveDriver() async {
@@ -211,7 +211,6 @@ class Api {
           .get()
           .then((value) =>
           value.docs.forEach((doc)=> {
-            print("*********** AT API DRIVER NAME IS : ${doc['driverName']}"),
             doc.reference.update({'driverStatus' : 'Assigned'}),//CHANGE***********
             driverID= doc.id,
           })
@@ -348,15 +347,22 @@ class Api {
     }
   }
 
-  Future<void> switchToOnGoingState(String requestId) async {
+  switchToOnGoingState(String requestId) async {
     return await _requestCollectionReference.doc(requestId).update({
       'rideStatus': 'OnGoing',//CHANGE***********
     });
   }
 
    getDriverDetails() async {
-     DriverModel driverDocument = await getDriver(driverID);
-    return driverDocument;
+     driverID = await getActiveDriver();
+     dynamic driverDocument;
+     if(driverID == null){
+
+     }
+     else{
+       driverDocument = await getDriver(driverID);
+     }
+     return driverDocument;
   }
 
   getRide(String requestId) async {

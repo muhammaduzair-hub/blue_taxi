@@ -80,9 +80,11 @@ class AdressSelectionView extends StatelessWidget {
                   ),
 
                   //bottom sheets
-                  if(model.busy) Align(alignment: Alignment.center,child: CircularProgressIndicator(),)
-                  else if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)
-                  else if(model.state==LabelRideOption) rideOptionBottomSheet(model)
+                  ///Todo
+                  // if(model.busy) Align(alignment: Alignment.center,child: CircularProgressIndicator(),)
+                  // else
+                    if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)
+                  else if(model.state==LabelRideOption) rideOptionBottomSheet(model , context)
                   else if(model.state == LabelPaymentOption)  paymentOptionBottomSheet(model),
                 ],
               )
@@ -224,7 +226,7 @@ class AdressSelectionView extends StatelessWidget {
     );
   }
 
-  Widget rideOptionBottomSheet(AdressSelectionViewModel model) {
+  Widget rideOptionBottomSheet(AdressSelectionViewModel model, BuildContext screenContext) {
     return DraggableScrollableSheet (
       initialChildSize: 0.5,
       minChildSize: 0.5,
@@ -316,14 +318,25 @@ class AdressSelectionView extends StatelessWidget {
                     await model.addAdress(model.toController.text);
                     await model.addAdress(model.fromController.text);
                     model.initializegroupList(model.localAdressTitles);
-                    await model.generateRequest();
 
+                    //await model.checkDriver();
+                    dynamic driver= await model.getDriverDetails();
+                    print("*******We Got this*******$driver***********");
 
-                    if(requestId!='') {
-
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => ArrivingScreen(requestedId: requestId,),));
-                      model.switchState(LabelSelectAdress);
+                    if(driver==null){
+                      showToast("No Driver Available Currently");
+                    }
+                    else {
+                      print("Driver Found");
+                      await  model.generateRequest();
+                      if(requestId!='-') {
+                        Navigator.push(screenContext, MaterialPageRoute(builder: (
+                            screenContext) => ArrivingScreen(requestedId: requestId!,),));
+                        model.switchState(LabelSelectAdress);
+                      }
+                      else{
+                        showToast("You Currently have an OnGoing Ride");
+                      }
                     }
                   },
                   text: Text(LabelBookRide, ),

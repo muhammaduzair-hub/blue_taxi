@@ -2,10 +2,12 @@ import 'dart:async';
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
+import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/vehicles_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -161,7 +163,7 @@ class AdressSelectionViewModel extends BaseModel {
   }
 
    Future generateRequest() async{
-     dynamic ans = await authRepository.generateRequest(
+     requestId = await authRepository.generateRequest(
          userToken: signedINUser.id,
          carType: vehiclesList[vehicleSelectedIndex].vName,
          expectedBill: "1000",
@@ -170,13 +172,21 @@ class AdressSelectionViewModel extends BaseModel {
          card: myCards[selectedCardIndex],
      );
 
-     print("here it is answer: $ans");
-     if(ans!=null){
-       requestId=ans;
-       generatedRide = ans;}
-     print(generatedRide);
+     print("here it is answer: $requestId");
+     // if(ans!=null){
+     //   requestId=ans;
+     //   generatedRide = ans;}
+     // print(generatedRide);
    }
 
+
+   getDriverDetails()async {
+     setBusy(true);
+     print("Checking Driver ");
+     dynamic driverModel  =await authRepository.getDriverDetails();
+     setBusy(false);
+     return driverModel;
+   }
 
    searchAdressOnTextField(String val) async {
     setBusy(true);

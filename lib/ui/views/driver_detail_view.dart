@@ -35,7 +35,7 @@ class DriverDetailView extends StatelessWidget {
                 ListTile(
                   leading: CircleAvatar(backgroundImage: AssetImage('asset/images/jurica-koletic-317414-unsplash.png'),),
                   title: Text(driverDocument!.driverName ?? "Patrick",style: boldHeading2 ,),//Its name and come from model
-                  subtitle: Text("Mercedes Vito"),
+                  subtitle: Text(driverDocument!.carName ?? "Mercedes Vito"),
                 ),
                 UIHelper.verticalSpaceMedium,
                 Row(
@@ -68,16 +68,11 @@ class DriverDetailView extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Divider(height: 2,color: secondaryColor2,),
                         ),
-                        listTile(LabelPlateNumber, "HS785K"),
+                        listTile(LabelPlateNumber, driverDocument!.carNumber?? "HS785K"),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Divider(height: 2,color: secondaryColor2,),
                         ),
-                        listTile(LabelPlateNumber, "HS785K"),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Divider(height: 2,color: secondaryColor2,),
-                        )
                       ],
                     ),
                   ),
@@ -104,7 +99,7 @@ class DriverDetailView extends StatelessWidget {
           UIHelper.verticalSpaceSmall,
           CircleAvatar(backgroundImage: icon,backgroundColor: Colors.transparent,),
           UIHelper.verticalSpaceSmall,
-          Text('4.8',)
+          Text(text,)
         ],
       ),
     );

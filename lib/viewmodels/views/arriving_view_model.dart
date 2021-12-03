@@ -9,32 +9,42 @@ import 'package:enum_to_string/enum_to_string.dart';
 
 class ArrivingSelectionViewModel extends BaseModel {
   final AuthRepository repo;
-  late Future<DriverModel?> driver;
+  late Future<dynamic> driver;
   final String requestId;
   late int buttonState=1;
   late int groupValue= -1;
-  DriverModel? driverModel;
+  dynamic driverModel;
+  bool cancelModel=false;
+
+
 
   ArrivingSelectionViewModel(this.requestId, {required this.repo}) : super(false) {
     driver = getRequest(requestId);
     state= EnumToString.convertToString(Status.Booked);
-    print(driver);
+    print("Driver Id $driver*****************");
+    //To Pop the Cancellation Reason View
     //getDriverDetails();
   }
 
   @override
   dispose(){
   }
-
+  int i=0;
   switchState(String newstate) async {
     setBusy(true);
     state = newstate;
+    print('*******$state $i***START*****');
     if(state == EnumToString.convertToString(Status.Active)) {
+      print("$state == ${EnumToString.convertToString(Status.Active)}");
      // startTimer
-    await Future.delayed(Duration(seconds: 8));
+    await Future.delayed(Duration(seconds: 5));
      if(state !=  EnumToString.convertToString(Status.Cancelled)){
-       print('*******$state********');
+       setBusy(false);
+       print('****BEFORE***$state***$i*****');
+       cancelModel=false;
        switchState(EnumToString.convertToString(Status.Dispatched));
+       print('*****AFTER**$state****$i****');
+       setBusy(false);
        switchToDispatchedState();
      }
     }
@@ -42,9 +52,11 @@ class ArrivingSelectionViewModel extends BaseModel {
       switchToOnGoingState();
     }
     else if(state == EnumToString.convertToString(Status.Cancelled)){
+      print('Cancelled*************');
       unassignDriver();
       switchToCancelledState();
     }
+    print('*******$state***$i***END**');
     setBusy(false);
   }
 
@@ -54,11 +66,13 @@ class ArrivingSelectionViewModel extends BaseModel {
   }
 
 
-  Future<DriverModel?> checkDriver() async {
+   checkDriver() async {
     setBusy(true);
-    print("Method Called GetDriverDetails 1 ");
-    await getDriverDetails();
-    if(driver!=null)switchState(EnumToString.convertToString(Status.Active));
+    if(driver!=null)
+      {
+        await getDriverDetails();
+        switchState(EnumToString.convertToString(Status.Active));
+      }
     setBusy(false);
     return driver;
   }
@@ -81,9 +95,8 @@ class ArrivingSelectionViewModel extends BaseModel {
     return rated;
   }
 
-  Future<DriverModel?> getRequest(String uid) async {
-    dynamic result= repo.getRequestData(uid);
-    return result;
+   getRequest(String uid) async {
+    await repo.getRequestData(uid);
   }
 
   void unassignDriver() {
@@ -112,7 +125,14 @@ class ArrivingSelectionViewModel extends BaseModel {
 
   getDriverDetails()async {
     print("Method Called GetDriverDetails 2");
-     driverModel = await repo.getDriverDetails();
-     print(driverModel!.driverName);
+
+    driverModel  =await repo.getDriverDetails();
+    print("*****************Method Called GetDriverDetails 2******************************$driverModel");
+    if(driverModel == null){
+      driverState=false;
+    }
+    else{
+    }
+    return driverModel;
   }
 }

@@ -1,6 +1,7 @@
 
 import 'package:bluetaxiapp/data/local/local_db/user_database.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
+import 'package:bluetaxiapp/data/model/rate_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/model/vehicles_model.dart';
 
@@ -17,6 +18,16 @@ class LocalApi{
     new VehicleModel(vName: "Electric ", vid: 4, vPic: 'asset/icons/electric.png', vRate: "\$5", vArrivingTime: "3 min"),
     new VehicleModel(vName: "Eco", vid: 5, vPic: 'asset/icons/eco.png', vRate: "\$7", vArrivingTime: "7 min"),
     new VehicleModel(vName: "Access", vid: 6, vPic: 'asset/icons/access.png', vRate: "\$5", vArrivingTime: "3 min"),
+  ];
+
+  List<RateModel> reasonList= [
+    new RateModel(vText: "I was running late"),
+    new RateModel(vText: "I was running late2"),
+    new RateModel(vText: "I was running late3"),
+    new RateModel(vText: "I was running late4"),
+    new RateModel(vText: "I was running late5"),
+    new RateModel(vText: "I was running late6"),
+    new RateModel(vText: "I was running late7"),
   ];
 
   LocalApi(){

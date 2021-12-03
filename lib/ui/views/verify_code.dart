@@ -1,6 +1,7 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
@@ -9,6 +10,7 @@ import 'package:bluetaxiapp/viewmodels/views/verifyCode_view_Model.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class VerifyCodeView extends StatelessWidget {
@@ -71,7 +73,7 @@ class VerifyCodeView extends StatelessWidget {
 
                       //"${model.inputData().toString()}",
 
-                    "${phone}",
+                    "${signedINUser.phoneno}",
                       style: heading2.copyWith(
                           fontWeight: FontWeight.w400, color: onPrimaryColor2),
                     ),
@@ -221,10 +223,11 @@ class VerifyCodeView extends StatelessWidget {
                                   &&model.boxControllers[2].text=="9"
                                   && model.boxControllers[3].text=="9"){
                                 FocusScope.of(context).unfocus();
+                                Navigator.pop(context);
+                                Navigator.pop(context);
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(),));
                               }
                             }
-
                           },
                           focusNode: FocusNode(),
                           child: TextFormField(

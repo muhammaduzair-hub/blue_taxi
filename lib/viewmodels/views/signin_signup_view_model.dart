@@ -45,7 +45,6 @@ class SignInSignUpViewModel extends BaseModel {
   // }
 
   bool validateMobileNumber(String value) {
-    setBusy(true);
     bool ans;
     String pattern = r"^(?:(\+92\d{10})|(\d{11}))$";
     RegExp regExp = new RegExp(pattern);
@@ -66,7 +65,6 @@ class SignInSignUpViewModel extends BaseModel {
   }
 
    validateEmail(String value, String phoneNo) async {
-    setBusy(true);
     //method to check if this email is already existing
     bool ans = EmailValidator.validate(value);
     emailState=ans;
@@ -88,7 +86,6 @@ class SignInSignUpViewModel extends BaseModel {
   }
 
   bool validateName(String value){
-    setBusy(true);
     bool ans;
     String pattern = r'^[a-zA-Z][a-zA-Z\s]+[a-zA-Z]$';
     RegExp regExp = new RegExp(pattern);
@@ -110,7 +107,6 @@ class SignInSignUpViewModel extends BaseModel {
   }
 
   bool validatePassword(String value){
-    setBusy(true);
     bool ans;
     String pattern = r'^(?=.*[A-Za-z])(?=.*\d)\S{8,}$';
     RegExp regExp = new RegExp(pattern);

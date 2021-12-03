@@ -1,4 +1,5 @@
 import 'package:bluetaxiapp/data/model/driver_model.dart';
+import 'package:bluetaxiapp/data/model/rate_model.dart';
 import 'package:bluetaxiapp/data/repository/auth_repository.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'dart:typed_data';
@@ -14,6 +15,8 @@ class TripViewModel extends BaseModel{
   final LatLng toLatLng;
   final String fromTitle;
   final String toTitle;
+  late List<RateModel> reasonList = [];
+
 
   late DriverModel? driverDocument;
   late Uint8List icPick;
@@ -35,8 +38,12 @@ class TripViewModel extends BaseModel{
     getDriverr(driverId);
     driverDocument = DriverModel(id: '');
     loadCustomMarker();
+    getReasonListLocally();
   }
 
+  getReasonListLocally() async{
+    reasonList =await authRepository.getReasonListLocally();
+  }
 
   Future<void> getDriverr(driverId) async {
     setBusy(true);

@@ -1,5 +1,6 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
@@ -18,6 +19,9 @@ class SignInSignUpView extends StatelessWidget {
    TextEditingController emailController = TextEditingController();
    TextEditingController passwordController = TextEditingController();
    TextEditingController numberController = TextEditingController();
+   TextEditingController snumberController = TextEditingController();
+   TextEditingController spasswordController = TextEditingController();
+
    PageController _pageController = PageController(initialPage: 0);
 
   @override
@@ -103,8 +107,30 @@ class SignInSignUpView extends StatelessWidget {
 
                                    //Send Data to a method inside Model Class to access Database
                                    await model.signUp(nameController, emailController,numberController, passwordController);
+
                                    //Route to VerifyCode View
-                                   _pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
+
+
+                                   await model.signin( numberController, passwordController);
+                                   if(model.signedIdnUser.id==''){
+                                     model.error=true;
+                                     // print("cannot Signin with those credentials");
+                                   }
+                                   else {
+                                     Navigator.push(context, new MaterialPageRoute(
+                                         builder: (context) => new VerifyCodeView(
+                                           signInUser: model.signedIdnUser,
+                                         ))
+                                     );
+                                   }
+
+
+                                   nameController.text="";
+                                   emailController.text="";
+                                   numberController.text="";
+                                   passwordController.text="";
+                                   model.setBusy(false);
+                                   //_pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
                                }
                              },
                            ),
@@ -117,6 +143,11 @@ class SignInSignUpView extends StatelessWidget {
                              Text(LabelAlreadyHaveAccount, style: heading3.copyWith(color: onPrimaryColor2 )),
                              InkWell(
                                onTap: (){
+                                 nameController.text="";
+                                 emailController.text="";
+                                 numberController.text="";
+                                 passwordController.text="";
+                                 model.setBusy(false);
                                  _pageController.previousPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
                                },
                                child: Text(
@@ -159,13 +190,13 @@ class SignInSignUpView extends StatelessWidget {
                      Spacer(flex: 2,),
                      Text(LabelMobile,style: boldHeading3),
                      UIHelper.verticalSpaceSmall,
-                     CustomTextField(controller: numberController,keyboardType: TextInputType.number,),
+                     CustomTextField(controller: snumberController,keyboardType: TextInputType.number,),
                      if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
 
                      UIHelper.verticalSpaceMedium,
                      Text(LabelPassword,style: boldHeading3),
                      UIHelper.verticalSpaceSmall,
-                     CustomTextField(controller: passwordController, showPassword: true,),
+                     CustomTextField(controller: spasswordController, showPassword: true,),
                      if(model.passState==false)Text(labelPasswordError, style: TextStyle(color: errorMessage),),
 
                      UIHelper.verticalSpaceLarge,
@@ -178,14 +209,13 @@ class SignInSignUpView extends StatelessWidget {
                        PrimaryButton(
                          text: Text(LabelSignIn,style: buttonTextStyle,),
                          ontap:() async {
-                           bool passAns=model.validatePassword(passwordController.text);
-                           bool mobilAns=model.validateMobileNumber(numberController.text);
+                           bool passAns=model.validatePassword(spasswordController.text);
+                           bool mobilAns=model.validateMobileNumber(snumberController.text);
                            if(passAns && mobilAns){
                              //Send Data to a method inside Model Class to access Database
-                             await model.signin( numberController, passwordController);
+                             await model.signin( snumberController, spasswordController);
                              if(model.signedIdnUser.id==''){
-                               model.error=true;
-                               // print("cannot Signin with those credentials");
+                               showToast("cannot Signin with those credentials");
                              }
                              else {
                                Navigator.push(context, new MaterialPageRoute(
@@ -194,19 +224,10 @@ class SignInSignUpView extends StatelessWidget {
                                    ))
                                );
                              }
-
                            }
                          } ,
                        ),
                      ),
-                     if(model.error)
-                       Center(
-                         child: Text(labelSignInError,
-                         style: TextStyle(
-                             color:errorMessage
-                         ),
-                         ),
-                       ),
                      UIHelper.verticalSpaceMedium,
                      UIHelper.verticalSpaceMedium,
                      Expanded(

@@ -38,9 +38,8 @@ class AuthRepository {
     return result;
   }
 
-  Future<DriverModel?> getRequestData(String uid) async {
-    Future<DriverModel?> result= api.getRequestData(uid);
-    return result;
+   getRequestData(String uid) async {
+    await api.getRequestData(uid);
   }
 
   // Signup Without Firebase Auth
@@ -99,6 +98,9 @@ class AuthRepository {
 
   Future getVehiclesLocally() async{
     return await localApi.vehicalList;
+  }
+  Future getReasonListLocally() async{
+    return await localApi.reasonList;
   }
 
   Future generateRequest({
@@ -168,7 +170,7 @@ class AuthRepository {
   }
 
   getDriverDetails() async {
-    DriverModel driverDocument =await api.getDriverDetails();
+    dynamic driverDocument =await api.getDriverDetails();
     return driverDocument;
   }
 

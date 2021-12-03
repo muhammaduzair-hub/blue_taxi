@@ -77,7 +77,6 @@ class MyProfileView extends StatelessWidget {
                     ),
                     // Spacer(),
                     UIHelper.verticalSpaceLarge,
-                    UIHelper.verticalSpaceMedium,
                     Container(
                       height: 45,
                       width: double.infinity,
@@ -96,8 +95,6 @@ class MyProfileView extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 
   Widget listTile({required IconData icon, required String title}){

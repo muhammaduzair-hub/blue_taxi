@@ -16,6 +16,7 @@ class ReceiptViewModel extends BaseModel {
     Future<void> getRide(String requestId) async {
       setBusy(true);
       requestDataModel= await repo.getRide(requestId);
+      //DateTime date = requestDataModel.createDate!.toLocal();
       print("*********${requestDataModel.address!.from.toString()}");
       setBusy(false);
   }

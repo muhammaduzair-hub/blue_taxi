@@ -60,6 +60,6 @@ const String LabelCardHolderName= "Card Holder Name";
 const String LabelExpDate = "Expiry Date";
  String labelNameError='Please enter a valid Name';
  String labelEmailError="Please enter a valid Email";
- String labelPhoneNoError="Mobile number must be of length 11";
- String labelPasswordError="Password mut contain one of r'^(?=.*[A-Za-z])(?=.*\d)\S{8,}]\$ ";
+ String labelPhoneNoError="Mobile number must be only digits of length 11";
+ String labelPasswordError="Please enter a valid password of length 11 containing least 1 special character, 1 number, 1 capital and small letter";
  String labelSignInError="Cannot sign in with those credentials";
