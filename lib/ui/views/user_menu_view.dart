@@ -29,7 +29,7 @@ class UserMenuView extends StatelessWidget {
                   Icons.keyboard_arrow_down_rounded,
                   color: Color(0xffD5DDE0),
                   size: 28.8,
-                ), onPressed: () {  },
+                ), onPressed: () {Navigator.pop(context);},
               ),
               UIHelper.verticalSpaceSmall,
               Container(
