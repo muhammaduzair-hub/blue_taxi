@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
+import 'package:timer_button/timer_button.dart';
 
 class VerifyCodeView extends StatelessWidget {
   final UserModel signInUser;
@@ -54,113 +55,113 @@ class VerifyCodeView extends StatelessWidget {
                   ),
                 ),
                 backgroundColor: onSecondaryColor,
-                body: SingleChildScrollView(
-                  child: Column(children: <Widget>[
-                    UIHelper.verticalSpaceLarge,
-                    Text(
-                      verifycodeString1,
-                      style: heading2.copyWith(
-                          fontWeight: FontWeight.w400, color: onPrimaryColor2),
-                    ),
-                    Row(
+                body: Column(children: <Widget>[
+                  UIHelper.verticalSpaceLarge,
+                  Text(
+                    verifycodeString1,
+                    style: heading2.copyWith(
+                        fontWeight: FontWeight.w400, color: onPrimaryColor2),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                      "${signInUser.phoneno}",
+                        style: heading2.copyWith(
+                            fontWeight: FontWeight.w400, color: onPrimaryColor2),
+                      ),
+                      Text(
+                        verifycodeString2,
+                        style: heading2.copyWith(
+                            fontWeight: FontWeight.w400, color: onPrimaryColor2),
+                      ),
+                    ],
+                  ),
+                  UIHelper.verticalSpaceLarge,
+                  Form(
+                    key: model.formKey,
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 50),
+                        child: PinCodeTextField(
+                          autoFocus: true,
+                          appContext: context,
+                          pastedTextStyle: TextStyle(
+                            color: Colors.green.shade600,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          length: 4,
+                          animationType: AnimationType.fade,
+                          pinTheme: PinTheme(
+                            shape: PinCodeFieldShape.underline ,
+                          ),
+                          cursorColor: Colors.black,
+                          animationDuration: Duration(milliseconds: 300),
+                          errorAnimationController: model.errorController,
+                          controller: model.textEditingController,
+                          keyboardType: TextInputType.number,
+                          onCompleted: (v) {
+                            if(model.textEditingController.text=="9999"){
+                              model.hasError = false;
+
+                              model.setBusy(false);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(),));
+                            }
+                            else
+                              {
+                                model.errorController!.add(ErrorAnimationType.shake); // Triggering error shake animation
+                                model.hasError = true;
+                                model.textEditingController.text="";
+                                model.setBusy(false);
+                              }
+                          },
+                          onChanged: (value) {
+                            print(value);
+                            model.currentText = value;
+                            model.setBusy(false);
+                          },
+                          beforeTextPaste: (text) {
+                            print("Allowing to paste $text");
+                            //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                            //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                            return true;
+                          },
+                        )),
+                  ),
+                  UIHelper.verticalSpaceMedium,
+                  Center(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                        "${signInUser.phoneno}",
-                          style: heading2.copyWith(
-                              fontWeight: FontWeight.w400, color: onPrimaryColor2),
-                        ),
-                        Text(
-                          verifycodeString2,
-                          style: heading2.copyWith(
-                              fontWeight: FontWeight.w400, color: onPrimaryColor2),
+                        new TimerButton(
+                          label: "Resend Code",
+                          timeOutInSeconds: 30,
+                          onPressed: () {},
+                          buttonType: ButtonType.TextButton,
+                          disabledColor: Colors.white,
+                          color: Colors.white,
+                          activeTextStyle: TextStyle(color: Colors.blue),
+                          disabledTextStyle: TextStyle(color: Colors.grey),
                         ),
                       ],
                     ),
-                    UIHelper.verticalSpaceLarge,
-                    Form(
-                      key: model.formKey,
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 50),
-                          child: PinCodeTextField(
-                            autoFocus: true,
-                            appContext: context,
-                            pastedTextStyle: TextStyle(
-                              color: Colors.green.shade600,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            length: 4,
-                            animationType: AnimationType.fade,
-                            pinTheme: PinTheme(
-                              shape: PinCodeFieldShape.underline ,
-                            ),
-                            cursorColor: Colors.black,
-                            animationDuration: Duration(milliseconds: 300),
-                            errorAnimationController: model.errorController,
-                            controller: model.textEditingController,
-                            keyboardType: TextInputType.number,
-                            onCompleted: (v) {
-                              if(model.textEditingController.text=="9999"){
-                                model.hasError = false;
-
-                                model.setBusy(false);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => BookingView(),));
-                              }
-                              else
-                                {
-                                  model.errorController!.add(ErrorAnimationType
-                                      .shake); // Triggering error shake animation
-                                  model.hasError = true;
-                                  model.textEditingController.text="";
-                                  model.setBusy(false);
-                                }
-                            },
-                            onChanged: (value) {
-                              print(value);
-                              model.currentText = value;
-                              model.setBusy(false);
-                            },
-                            beforeTextPaste: (text) {
-                              print("Allowing to paste $text");
-                              //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                              //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                              return true;
-                            },
-                          )),
+                  ),
+                  Spacer(),
+                  Container(
+                    padding: EdgeInsets.all(20.0),
+                    height: 50.0,
+                    width: double.infinity,
+                    color: secondaryColor,
+                    child: Text(
+                      verify_press_call,
+                      textAlign: TextAlign.center,
+                      style: buttonTextStyle.copyWith(
+                          fontWeight: FontWeight.w800, color: onSecondaryColor),
                     ),
-                    UIHelper.verticalSpaceMedium,
-                    InkWell(
-
-                      child: Text(
-                        "$resend_code ${model.start}",
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12.0,
-                            color: onPrimaryColor2),
-                      ),
-                      onTap: () {
-                        model.changeData(resend_code);
-                      },
-                    ),
-                    UIHelper.verticalSpaceXLarge,
-                    Container(
-                      padding: EdgeInsets.all(20.0),
-                      height: 60.0,
-                      width: double.infinity,
-                      color: secondaryColor,
-                      child: Text(
-                        verify_press_call,
-                        textAlign: TextAlign.center,
-                        style: buttonTextStyle.copyWith(
-                            fontWeight: FontWeight.w800, color: onSecondaryColor),
-                      ),
-                    )
-                  ]),
-                ),
+                  )
+                ]),
               ),
         ));
           }

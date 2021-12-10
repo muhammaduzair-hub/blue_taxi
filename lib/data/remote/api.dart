@@ -2,11 +2,9 @@ import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/requestData_model.dart';
-import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart' as userModel;
 import 'package:bluetaxiapp/data/remote/firebase_directory/database_config.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
-import 'package:bluetaxiapp/viewmodels/views/arriving_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +15,6 @@ class Api {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
- // late var firestoreDb = FirebaseFirestore.instance.collection("users").snapshots();
   late var  firestoreRequests = firestore.collection("request");
   late var firestoreAdresses = firestore.collection("addresses");
 
@@ -190,7 +187,6 @@ class Api {
   Future<String> getRequestData(String rid) async {
     try {
       driverID = await getActiveDriver();
-      print("************DriverUd in PAi getReq *$driverID*");
       if (driverID!=null) {
          var requestData = await _requestCollectionReference.doc(rid).get()
             .whenComplete(() async {
@@ -266,7 +262,6 @@ class Api {
 
   Future getCards() async{
     var stream= await fireStoreCards.where('userId',isEqualTo: signedINUser.id).get();
-    //List<CardModel> mycards = (json.decode(stream.docs.)as List).map((e) => CardModel.fromJson(e)).toList();
     List<CardModel> mycards = stream.docs.map((e) => CardModel.fromJson(e.data())).toList();
     return mycards;
   }

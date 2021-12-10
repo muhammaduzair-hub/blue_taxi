@@ -67,3 +67,5 @@ const String LabelExpDate = "Expiry Date";
  String labelPhoneNoError="Mobile number must be only digits of length 11";
  String labelPasswordError="Please enter a valid password of length atleast 11 containing least 1 special character, 1 number, 1 capital and small letter";
  String labelSignInError="Cannot sign in with those credentials";
+ String labelPasswordE = "Please Enter a valid password";
+String labelPhoneE = "Please Enter a valid Phone Number";

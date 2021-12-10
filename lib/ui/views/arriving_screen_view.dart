@@ -457,9 +457,11 @@ class ArrivingScreen extends StatelessWidget {
                                                   color: onPrimaryColor),
                                             ),
                                             ontap: () {
-                                              model.switchState(
-                                                  EnumToString.convertToString(
-                                                      Status.OnGoing));
+                                              Navigator.push(
+                                                  context,
+                                                  new MaterialPageRoute(
+                                                      builder: (context) =>
+                                                      new DialPadView()));
                                             },
                                           )),
                                     ),
@@ -837,6 +839,7 @@ class ArrivingScreen extends StatelessWidget {
                                     child: Image(
                                   image: AssetImage('asset/icons/ic_gesture.png'),
                                 )),
+                                SizedBox(height: MediaQuery.of(context).size.height *0.092,),
                                 Text(
                                   model.driverModel!.driverName!,
                                   style: buttonTextStyle.copyWith(
@@ -974,7 +977,7 @@ class ArrivingScreen extends StatelessWidget {
                               image: AssetImage('asset/icons/ic_gesture.png'),
                             )),
                           ),
-                          SizedBox(height: 40.0),
+                          SizedBox(height: MediaQuery.of(context).size.height *0.052,),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
@@ -990,7 +993,7 @@ class ArrivingScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          UIHelper.verticalSpaceMedium,
+                          UIHelper.verticalSpaceSmall,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1083,12 +1086,11 @@ class ArrivingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: onPrimaryColor),
                           ),
-                          UIHelper.verticalSpaceMedium,
+                          UIHelper.verticalSpaceSmall,
                           Container(
                               width: double.infinity,
                               height: 50,
-                              child:
-                              PrimaryButton(
+                              child: PrimaryButton(
                                 text: Text(
                                   submit,
                                   style: buttonTextStyle.copyWith(

@@ -71,13 +71,15 @@ class SignInSignUpView extends StatelessWidget {
                          Text(LabelEmail,style: boldHeading3),
                          UIHelper.verticalSpaceSmall,
                          CustomTextField(controller: emailController, keyboardType: TextInputType.emailAddress,),
-                         if(model.emailState==false)Text(labelEmailError, style: TextStyle(color: errorMessage),),
+                         if(model.duplicateEmail)Text("Email already exists!", style: TextStyle(color: errorMessage),)
+                         else if(model.emailState==false)Text(labelEmailError, style: TextStyle(color: errorMessage),),
 
                          UIHelper.verticalSpaceMedium,
                          Text(LabelMobile,style: boldHeading3),
                          UIHelper.verticalSpaceSmall,
                          CustomTextField(controller: numberController, keyboardType: TextInputType.number,),
-                         if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
+                         if(model.duplicatePhone)Text("Phone Number Already exists!", style: TextStyle(color: errorMessage))
+                         else if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
 
                          UIHelper.verticalSpaceMedium,
                          Text(LabelPassword,style: boldHeading3),
@@ -95,6 +97,8 @@ class SignInSignUpView extends StatelessWidget {
                            PrimaryButton(
                              text: Text(LabelSignup,style: buttonTextStyle,),
                              ontap:() async {
+                               model.duplicateEmail = false;
+                               model.duplicatePhone = false;
                                model.validateName(nameController.text);
                                await model.validateEmail(emailController.text,numberController.text);
                                model.validateMobileNumber(numberController.text);
@@ -192,13 +196,13 @@ class SignInSignUpView extends StatelessWidget {
                        Text(LabelMobile,style: boldHeading3),
                        UIHelper.verticalSpaceSmall,
                        CustomTextField(controller: snumberController,keyboardType: TextInputType.number,),
-                       if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
+                       if(model.phoneState==false)Text(labelPhoneE, style: TextStyle(color: errorMessage),),
 
                        UIHelper.verticalSpaceMedium,
                        Text(LabelPassword,style: boldHeading3),
                        UIHelper.verticalSpaceSmall,
                        CustomTextField(controller: spasswordController, showPassword: true,),
-                       if(model.passState==false)Text(labelPasswordError, style: TextStyle(color: errorMessage),),
+                       if(model.passState==false)Text(labelPasswordE, style: TextStyle(color: errorMessage),),
 
                        UIHelper.verticalSpaceLarge,
                        Container(
@@ -216,7 +220,7 @@ class SignInSignUpView extends StatelessWidget {
                                //Send Data to a method inside Model Class to access Database
                                await model.signin( snumberController, spasswordController);
                                if(model.signedIdnUser.id==''){
-                                 showToast("cannot Signin with those credentials");
+                                 showToast("Invalid Username or Password");
                                }
                                else {
                                  Navigator.push(context, new MaterialPageRoute(

@@ -20,6 +20,9 @@ class SignInSignUpViewModel extends BaseModel {
   bool emailState=true;
   bool phoneState=true;
   bool error=false;
+  bool duplicateEmail=false;
+  bool duplicatePhone=false;
+
 
 
 
@@ -34,15 +37,6 @@ class SignInSignUpViewModel extends BaseModel {
   void dispose() {
     // TODO: implement dispose
   }
-
-
-  // Future<bool> login({required String name, String? email, required String pass}) async {
-  //   setBusy(true);
-  //   await Future.delayed(Duration(seconds: 1));
-  //   bool success = true;
-  //   setBusy(false);
-  //   return success;
-  // }
 
   bool validateMobileNumber(String value) {
     bool ans;
@@ -70,18 +64,30 @@ class SignInSignUpViewModel extends BaseModel {
     emailState=ans;
     if(ans) {
       var anss=  await _repo.validateEmail(value);
-      ans=anss;
-      print("Email State at Model: $ans");
-      emailState=ans;
-      if(ans){
-        var ano = await _repo.validatePhone(phoneNo);
-        ans=ano;
-        phoneState=ano;
-        print("Phone State at Model: $ano");
+      if(anss==false) {
+        {
+          ans=anss;
+          duplicateEmail = true;
+        }
+      } else {
+        ans = anss;
+        emailState = ans;
+        if (ans && phoneState) {
+          var ano = await _repo.validatePhone(phoneNo);
+          if(ano){
+            ans=ano;
+            phoneState = ano;
+            duplicatePhone=false;
+          }
+          else{
+            ans = ano; //ano is false
+            phoneState = ano;
+            duplicatePhone = true;
+          }
+        }
       }
     }
     setBusy(false);
-    print('Validate Email Ans in Model: $ans');
     return ans;
   }
 
