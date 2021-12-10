@@ -36,7 +36,7 @@ class CustomTextField extends StatelessWidget {
                       borderSide: BorderSide(color: Color(0xffD5DDE0)),
                     ),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.visibility_off,size: 19,),
+                      icon:  Icon(model.obscureText?Icons.visibility:Icons.visibility_off,size: 19,),
                       onPressed: (){
                         model.switchState();
                       },
@@ -49,6 +49,7 @@ class CustomTextField extends StatelessWidget {
             )
             :
         TextField(
+          maxLength: maxLength,
           keyboardType: keyboardType,
             decoration: InputDecoration(
               focusedBorder:  OutlineInputBorder(
