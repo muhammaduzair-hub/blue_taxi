@@ -14,7 +14,7 @@ description: Blue Taxi user & driver app project.
 version: 1.0.0+1
 
 environment:
-  sdk: 2.14.4
+  sdk: 2.15.0
 
 dependencies:
   cloud_firestore: ^3.0.0
