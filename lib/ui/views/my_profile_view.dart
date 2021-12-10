@@ -84,7 +84,7 @@ class MyProfileView extends StatelessWidget {
                         child: PrimaryButton(
                           text: Text(LabelDeleteAccount,style: boldHeading2,),
                           ontap: (){
-                            _showMyDialog(context);
+                            _showMyDialog(context, model);
                           },
                         ),
                       )
