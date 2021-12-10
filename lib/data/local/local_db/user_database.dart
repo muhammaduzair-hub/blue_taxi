@@ -96,12 +96,14 @@ CREATE TABLE $userTable (
     );
   }
 
-  Future<int> delete() async {
+  Future delete() async {
     final db = await instance.database;
 
-    return await db.delete(
-      userTable
-    );
+    // return await db.delete(
+    //   userTable
+   // );
+
+    await db.execute("delete from $userTable");
   }
 
   Future close() async {

@@ -33,9 +33,8 @@ class AddCardViewModel extends BaseModel{
 
   addCard(BuildContext context) async{
     cardValidator =  validateCardNumber(cardNumberController.text);
-    holderValidator = cardHolderController.text.length>4?true:false;
+    holderValidator = validateName(cardHolderController.text);
     setBusy(false);
-    print(holderValidator?"=========================true":"============================false");
     if(cardValidator && holderValidator&& selectedDate!=null)
     {
       setBusy(true);
@@ -80,6 +79,25 @@ class AddCardViewModel extends BaseModel{
     }
     return ans;
   }
+
+  bool validateName(String value){
+    bool ans;
+    String pattern = r'^[a-zA-Z][[a-zA-Z\s]+[a-zA-Z]]*$';
+    RegExp regExp = new RegExp(pattern);
+    if (value.length == 0) {
+      ans= false;
+    }
+    else if (!regExp.hasMatch(value)) {
+      ans= false;
+    }
+    else {
+      ans = true;
+    }
+
+    setBusy(false);
+    return ans;
+  }
+
 
   monthPicker(BuildContext context){
     showMonthPicker(

@@ -35,91 +35,100 @@ class ArrivingScreen extends StatelessWidget {
             ArrivingSelectionViewModel(requestedId, repo: Provider.of(context)),
         builder: (context, model, child) =>
         model.cancelModel==false ?
-            SafeArea(
-                child: Scaffold(
-                    body: Stack(children: [
-              GoogleMap(
-                zoomControlsEnabled: false,
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                      33.738045,
-                      73.084488,
-                    ),
-                    zoom: 15),
-                mapType: MapType.terrain,
-                onTap: (latlng) {
-                  print("${latlng.latitude}     ${latlng.longitude}");
-                },
-              ),
-              // Change Navigation Button on Model State
-              // if (model.busy)
-              //   CircularProgressIndicator()
-              // else
-              if (state == EnumToString.convertToString(Status.Active) ||
-                  state == EnumToString.convertToString(Status.Completed) ||
-                  state == EnumToString.convertToString(Status.Rate))
-                LeadingBackButton(
-                  radius: 30.0,
-                  ontap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new UserMenuView()));
+            WillPopScope(
+              onWillPop: ()async {
+                if(state==EnumToString.convertToString(Status.Completed)){
+                  model.unassignDriver();
+                  return true;
+                }
+                return false;
+              },
+              child: SafeArea(
+                  child: Scaffold(
+                      body: Stack(children: [
+                GoogleMap(
+                  zoomControlsEnabled: false,
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        33.738045,
+                        73.084488,
+                      ),
+                      zoom: 15),
+                  mapType: MapType.terrain,
+                  onTap: (latlng) {
+                    print("${latlng.latitude}     ${latlng.longitude}");
                   },
-                  icon: AssetImage('asset/icons/nav_btn.png'),
                 ),
+                // Change Navigation Button on Model State
+                // if (model.busy)
+                //   CircularProgressIndicator()
+                // else
+                if (state == EnumToString.convertToString(Status.Active) ||
+                    state == EnumToString.convertToString(Status.Completed) ||
+                    state == EnumToString.convertToString(Status.Rate))
+                  LeadingBackButton(
+                    radius: 30.0,
+                    ontap: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new UserMenuView()));
+                    },
+                    icon: AssetImage('asset/icons/nav_btn.png'),
+                  ),
 
-              //Chnage Header Text on Model State
-              if (state == EnumToString.convertToString(Status.Active))
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      LabelArriving,
-                      style: boldHeading1.copyWith(color: onPrimaryColor),
+                //Chnage Header Text on Model State
+                if (state == EnumToString.convertToString(Status.Active))
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        LabelArriving,
+                        style: boldHeading1.copyWith(color: onPrimaryColor),
+                      ),
+                    ),
+                  )
+                else if (state == EnumToString.convertToString(Status.Completed))
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        LabelOnTrip,
+                        style: boldHeading1.copyWith(color: onPrimaryColor),
+                      ),
+                    ),
+                  )
+                else if (state == EnumToString.convertToString(Status.Rate))
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        "sendFeedback",
+                        style: boldHeading1.copyWith(color: onPrimaryColor),
+                      ),
                     ),
                   ),
-                )
-              else if (state == EnumToString.convertToString(Status.Completed))
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      LabelOnTrip,
-                      style: boldHeading1.copyWith(color: onPrimaryColor),
-                    ),
-                  ),
-                )
-              else if (state == EnumToString.convertToString(Status.Rate))
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      "sendFeedback",
-                      style: boldHeading1.copyWith(color: onPrimaryColor),
-                    ),
-                  ),
-                ),
 
-              //Chnage Bottom sheets on Model State
-              if (state == EnumToString.convertToString(Status.Booked))
-                selectDriverSearchingSheet(model, context) //Checked
-              else if (state == EnumToString.convertToString(Status.Active))
-                selectArrivingBottomSheet(model) //Checked
-              else if (state == EnumToString.convertToString(Status.Dispatched))
-                selectArrivedBottomSheet(model, context) //Checked
-              else if (state == EnumToString.convertToString(Status.OnGoing))
-                selectDisbaledArrivingBottomSheet(model) //Checked
-              else if (state == EnumToString.convertToString(Status.Completed))
-                selectTipAndRateSheet(model) //Checked
-              else if (state == EnumToString.convertToString(Status.Tips))
-                selectTipsSheet(model)
-              else if (state == EnumToString.convertToString(Status.Rate))
-                selectRateSheet(model),
-            ])))
+                //Chnage Bottom sheets on Model State
+                if (state == EnumToString.convertToString(Status.Booked))
+                  selectDriverSearchingSheet(model, context) //Checked
+                else if (state == EnumToString.convertToString(Status.Active))
+                  selectArrivingBottomSheet(model) //Checked
+                else if (state == EnumToString.convertToString(Status.Dispatched))
+                  selectArrivedBottomSheet(model, context) //Checked
+                else if (state == EnumToString.convertToString(Status.OnGoing))
+                  selectDisbaledArrivingBottomSheet(model) //Checked
+                else if (state == EnumToString.convertToString(Status.Completed))
+                  selectTipAndRateSheet(model) //Checked
+                else if (state == EnumToString.convertToString(Status.Tips))
+                  selectTipsSheet(model)
+                else if (state == EnumToString.convertToString(Status.Rate))
+                  selectRateSheet(model),
+              ]))),
+            )
         : _showCancelPanel(context, model) );
   }
 

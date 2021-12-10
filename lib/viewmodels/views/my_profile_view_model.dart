@@ -22,4 +22,9 @@ class MyProfileViewModel extends BaseModel{
     setBusy(false);
   }
 
+  Future userSignOutFromSqflite() async{
+    await _repo.localApi.signOut();
+  }
+
+
 }

@@ -79,7 +79,6 @@ class AdressSelectionView extends StatelessWidget {
                   ),
 
                   //bottom sheets
-                  ///Todo
                   // if(model.busy) Align(alignment: Alignment.center,child: CircularProgressIndicator(),)
                   // else
                     if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)

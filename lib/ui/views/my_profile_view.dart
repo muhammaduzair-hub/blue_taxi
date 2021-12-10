@@ -109,7 +109,7 @@ class MyProfileView extends StatelessWidget {
     );
   }
 
-  Future<void> _showMyDialog(BuildContext context) async {
+  Future<void> _showMyDialog(BuildContext context, MyProfileViewModel model) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -126,10 +126,11 @@ class MyProfileView extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: const Text('Yes'),
-              onPressed: () {
+              onPressed: () async{
                 Navigator.of(context).pop();
-                Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new SignInSignUpView()));
+                await model.userSignOutFromSqflite();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                        builder: (context) => new SignInSignUpView()), (route) => false);
               },
             ),
             TextButton(
