@@ -136,7 +136,6 @@ class ArrivingScreen extends StatelessWidget {
   Widget selectDriverSearchingSheet(
       ArrivingSelectionViewModel model, BuildContext context) {
     Future.delayed(const Duration(seconds: 5), ()  {});
-    //
     Future<dynamic> driver= model.checkDriver();
     //selectArrivingBottomSheetEnds
     return Material(
@@ -414,41 +413,69 @@ class ArrivingScreen extends StatelessWidget {
                   child: Container(
                     height: 380.0,
                     width: 333.0,
-                    decoration: BoxDecoration(
-                        color: onSecondaryColor,
-                        borderRadius: BorderRadius.circular(15.0)),
                     child: Align(
                       alignment: Alignment.center,
                       child: Container(
-                          color: Colors.white,
+                          decoration: BoxDecoration(
+                              color: onSecondaryColor,
+                              borderRadius: BorderRadius.circular(15.0)),
                           child: Padding(
-                            padding: const EdgeInsets.all(28.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 Image(
                                     image:
-                                        AssetImage('asset/images/car_top.png')),
+                                        AssetImage('asset/images/carAbove.png')),
                                 Text(
-                                  "Your Taxi ${model.driverModel!.carNumber ?? 'HS785K'} has Arrived",
+                                  "Your taxi has Arrived",
                                   style: buttonTextStyle.copyWith(
                                       fontWeight: FontWeight.w700),
                                 ),
-                                Container(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: PrimaryButton(
-                                      text: Text(
-                                        "${model.driverModel!.driverName ?? "Patrick"} is Waiting ",
-                                        style: buttonTextStyle.copyWith(
-                                            color: onSecondaryColor),
-                                      ),
-                                      ontap: () {
-                                        model.switchState(
-                                            EnumToString.convertToString(
-                                                Status.OnGoing));
-                                      },
-                                    )),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Container(
+                                        width: 150,
+                                          height: 50,
+                                          color: onSecondaryColor,
+                                          child: PrimaryButton(
+                                            text: Text(
+                                              "I'm Coming",
+                                              style: buttonTextStyle.copyWith(
+                                                  color: onSecondaryColor),
+                                            ),
+                                            ontap: () {
+                                              model.switchState(
+                                                  EnumToString.convertToString(
+                                                      Status.OnGoing));
+                                            },
+                                          )),
+                                    ),
+                                    UIHelper.horizontalSpaceSmall,
+                                    Flexible(
+                                      child: Container(
+                                          width: 150,
+                                          height: 50,
+                                          color: onSecondaryColor,
+                                          child: PrimaryButton(
+                                            color: Colors.white,
+                                            text: Text(
+                                              "Call",
+                                              style: buttonTextStyle.copyWith(
+                                                  color: onPrimaryColor),
+                                            ),
+                                            ontap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  new MaterialPageRoute(
+                                                      builder: (context) =>
+                                                      new DialPadView()));
+                                            },
+                                          )),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           )),
@@ -821,6 +848,7 @@ class ArrivingScreen extends StatelessWidget {
                                     child: Image(
                                   image: AssetImage('asset/icons/ic_gesture.png'),
                                 )),
+                                SizedBox(height: MediaQuery.of(context).size.height *0.092,),
                                 Text(
                                   model.driverModel!.driverName!,
                                   style: buttonTextStyle.copyWith(
@@ -958,7 +986,7 @@ class ArrivingScreen extends StatelessWidget {
                               image: AssetImage('asset/icons/ic_gesture.png'),
                             )),
                           ),
-                          SizedBox(height: 40.0),
+                          SizedBox(height: MediaQuery.of(context).size.height *0.052,),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
@@ -974,7 +1002,7 @@ class ArrivingScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          UIHelper.verticalSpaceMedium,
+                          UIHelper.verticalSpaceSmall,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1067,12 +1095,11 @@ class ArrivingScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: onPrimaryColor),
                           ),
-                          UIHelper.verticalSpaceMedium,
+                          UIHelper.verticalSpaceSmall,
                           Container(
                               width: double.infinity,
                               height: 50,
-                              child:
-                              PrimaryButton(
+                              child: PrimaryButton(
                                 text: Text(
                                   submit,
                                   style: buttonTextStyle.copyWith(

@@ -24,9 +24,7 @@ class LocalApi{
     new RateModel(vText: "I was running late"),
     new RateModel(vText: "Driver was unhygienic"),
     new RateModel(vText: "Driver was rude"),
-    new RateModel(vText: "Car was not clean"),
-    new RateModel(vText: "Car tire punctured"),
-    new RateModel(vText: "Faulty Car"),
+    new RateModel(vText: "Car was not clean")
   ];
 
   LocalApi(){

@@ -1,13 +1,10 @@
 
-
 import 'dart:async';
-
 import 'package:bluetaxiapp/data/local/local_api.dart';
 import 'package:bluetaxiapp/data/model/card_model.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/data/model/adress_model.dart';
 import 'package:bluetaxiapp/data/model/requestData_model.dart';
-import 'package:bluetaxiapp/data/model/request_model.dart';
 import 'package:bluetaxiapp/data/model/user_model.dart';
 import 'package:bluetaxiapp/data/remote/api.dart';
 import 'package:http/http.dart' as http;
@@ -33,7 +30,6 @@ class AuthRepository {
     dynamic result = await api.signUpWithEmailPassword(
         name, email, phoneNo, password);
     if (result == null) {
-      print("Not SignedUp");
     }
     return result;
   }
@@ -45,9 +41,6 @@ class AuthRepository {
   // Signup Without Firebase Auth
   Future signInWithEmailAndPassword(String phoneNo, String password) async {
     UserModel result = await api.signInWithEmailPassword(phoneNo, password);
-    // if(result.id!=""){
-    //   await localApi.addLoginPerson(result);
-    // }
     return result;
   }
 
@@ -157,7 +150,6 @@ class AuthRepository {
 
   validateEmail(String value,) async {
     dynamic result = await api.validateEmail(email: value);
-    print('Result in Auth $result');
     return result;
   }
 

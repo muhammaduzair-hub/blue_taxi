@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
+import 'package:timer_button/timer_button.dart';
 
 class VerifyCodeView extends StatelessWidget {
   final UserModel signInUser;
@@ -23,38 +24,38 @@ class VerifyCodeView extends StatelessWidget {
     //Future<String> phone;
     return BaseWidget<VerifyCodeViewModel>(
         model: VerifyCodeViewModel(repo: Provider.of(context), context: context),
-        builder: (context, model, child) => Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: onSecondaryColor,
-                elevation: 0.0,
-                centerTitle: true,
-                title: Text(
-                  VerifyCode,
-                  style: boldHeading1.copyWith(color: onPrimaryColor),
-                ),
-                leading: CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.transparent,
-                  child: RawMaterialButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    elevation: 4.0,
-                    fillColor: Colors.white,
-                    child: Icon(
-                      Icons.arrow_back_ios_outlined,
-                      color: onPrimaryColor,
-                      size: 17.0,
+        builder: (context, model, child) => SafeArea(
+          child: Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: onSecondaryColor,
+                  elevation: 0.0,
+                  centerTitle: true,
+                  title: Text(
+                    VerifyCode,
+                    style: boldHeading1.copyWith(color: onPrimaryColor),
+                  ),
+                  leading: CircleAvatar(
+                    radius: 20.0,
+                    backgroundColor: Colors.transparent,
+                    child: RawMaterialButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      elevation: 4.0,
+                      fillColor: Colors.white,
+                      child: Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: onPrimaryColor,
+                        size: 17.0,
+                      ),
+                      padding: EdgeInsets.all(15.0),
+                      shape: CircleBorder(),
                     ),
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
                   ),
                 ),
-              ),
-              backgroundColor: onSecondaryColor,
-              body: SingleChildScrollView(
-                child: Column(children: <Widget>[
+                backgroundColor: onSecondaryColor,
+                body: Column(children: <Widget>[
                   UIHelper.verticalSpaceLarge,
                   Text(
                     verifycodeString1,
@@ -83,6 +84,7 @@ class VerifyCodeView extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 50),
                         child: PinCodeTextField(
+                          autoFocus: true,
                           appContext: context,
                           pastedTextStyle: TextStyle(
                             color: Colors.green.shade600,
@@ -109,8 +111,7 @@ class VerifyCodeView extends StatelessWidget {
                             }
                             else
                               {
-                                model.errorController!.add(ErrorAnimationType
-                                    .shake); // Triggering error shake animation
+                                model.errorController!.add(ErrorAnimationType.shake); // Triggering error shake animation
                                 model.hasError = true;
                                 model.textEditingController.text="";
                                 model.setBusy(false);
@@ -130,24 +131,27 @@ class VerifyCodeView extends StatelessWidget {
                         )),
                   ),
                   UIHelper.verticalSpaceMedium,
-                  InkWell(
-
-                    child: Text(
-                      "$resend_code ${model.start}",
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.0,
-                          color: onPrimaryColor2),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        new TimerButton(
+                          label: "Resend Code",
+                          timeOutInSeconds: 30,
+                          onPressed: () {},
+                          buttonType: ButtonType.TextButton,
+                          disabledColor: Colors.white,
+                          color: Colors.white,
+                          activeTextStyle: TextStyle(color: Colors.blue),
+                          disabledTextStyle: TextStyle(color: Colors.grey),
+                        ),
+                      ],
                     ),
-                    onTap: () {
-                      model.changeData(resend_code);
-                    },
                   ),
-                  UIHelper.verticalSpaceXLarge,
+                  Spacer(),
                   Container(
                     padding: EdgeInsets.all(20.0),
-                    height: 60.0,
+                    height: 50.0,
                     width: double.infinity,
                     color: secondaryColor,
                     child: Text(
@@ -159,6 +163,6 @@ class VerifyCodeView extends StatelessWidget {
                   )
                 ]),
               ),
-            ));
+        ));
           }
         }

@@ -71,13 +71,15 @@ class SignInSignUpView extends StatelessWidget {
                          Text(LabelEmail,style: boldHeading3),
                          UIHelper.verticalSpaceSmall,
                          CustomTextField(controller: emailController, keyboardType: TextInputType.emailAddress,),
-                         if(model.emailState==false)Text(labelEmailError, style: TextStyle(color: errorMessage),),
+                         if(model.duplicateEmail)Text("Email already exists!", style: TextStyle(color: errorMessage),)
+                         else if(model.emailState==false)Text(labelEmailError, style: TextStyle(color: errorMessage),),
 
                          UIHelper.verticalSpaceMedium,
                          Text(LabelMobile,style: boldHeading3),
                          UIHelper.verticalSpaceSmall,
                          CustomTextField(controller: numberController, keyboardType: TextInputType.number,),
-                         if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
+                         if(model.duplicatePhone)Text("Phone Number Already exists!", style: TextStyle(color: errorMessage))
+                         else if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
 
                          UIHelper.verticalSpaceMedium,
                          Text(LabelPassword,style: boldHeading3),
@@ -95,6 +97,8 @@ class SignInSignUpView extends StatelessWidget {
                            PrimaryButton(
                              text: Text(LabelSignup,style: buttonTextStyle,),
                              ontap:() async {
+                               model.duplicateEmail = false;
+                               model.duplicatePhone = false;
                                model.validateName(nameController.text);
                                await model.validateEmail(emailController.text,numberController.text);
                                model.validateMobileNumber(numberController.text);
@@ -170,158 +174,160 @@ class SignInSignUpView extends StatelessWidget {
    Widget signIn(BuildContext context, Size size){
      return BaseWidget<SignInSignUpViewModel>(  //we use signup model for both
        model: SignInSignUpViewModel(repo: Provider.of(context)),
-       builder: (context, model, child) =>Scaffold(
-         appBar: AppBar(
-         elevation: 0.0,
-         backgroundColor: Colors.transparent,
-         shadowColor: Colors.transparent,
-         title: Text(LabelSignIn,style: boldHeading1.copyWith(color: onPrimaryColor)),
-         centerTitle: true,
-       ),
-         body: SingleChildScrollView(
-             child: SizedBox(
-               height: size.height-120,
-               width: double.infinity,
-               child: Padding(
-                 padding: UIHelper.pagePaddingSmall,
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     Spacer(flex: 2,),
-                     Text(LabelMobile,style: boldHeading3),
-                     UIHelper.verticalSpaceSmall,
-                     CustomTextField(controller: snumberController,keyboardType: TextInputType.number,),
-                     if(model.phoneState==false)Text(labelPhoneNoError, style: TextStyle(color: errorMessage),),
+       builder: (context, model, child) =>SafeArea(
+         child: Scaffold(
+           appBar: AppBar(
+           elevation: 0.0,
+           backgroundColor: Colors.transparent,
+           shadowColor: Colors.transparent,
+           title: Text(LabelSignIn,style: boldHeading1.copyWith(color: onPrimaryColor)),
+           centerTitle: true,
+         ),
+           body: SingleChildScrollView(
+               child: SizedBox(
+                 height: size.height-120,
+                 width: double.infinity,
+                 child: Padding(
+                   padding: UIHelper.pagePaddingSmall,
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Spacer(flex: 2,),
+                       Text(LabelMobile,style: boldHeading3),
+                       UIHelper.verticalSpaceSmall,
+                       CustomTextField(controller: snumberController,keyboardType: TextInputType.number,),
+                       if(model.phoneState==false)Text(labelPhoneE, style: TextStyle(color: errorMessage),),
 
-                     UIHelper.verticalSpaceMedium,
-                     Text(LabelPassword,style: boldHeading3),
-                     UIHelper.verticalSpaceSmall,
-                     CustomTextField(controller: spasswordController, showPassword: true,),
-                     if(model.passState==false)Text(labelPasswordError, style: TextStyle(color: errorMessage),),
+                       UIHelper.verticalSpaceMedium,
+                       Text(LabelPassword,style: boldHeading3),
+                       UIHelper.verticalSpaceSmall,
+                       CustomTextField(controller: spasswordController, showPassword: true,),
+                       if(model.passState==false)Text(labelPasswordE, style: TextStyle(color: errorMessage),),
 
-                     UIHelper.verticalSpaceLarge,
-                     Container(
-                       width: double.infinity,
-                       height: 50,
-                       child:
-                       model.busy?
-                       Center(child: CircularProgressIndicator(),) :
-                       PrimaryButton(
-                         text: Text(LabelSignIn,style: buttonTextStyle,),
-                         ontap:() async {
-                           bool passAns=model.validatePassword(spasswordController.text);
-                           bool mobilAns=model.validateMobileNumber(snumberController.text);
-                           if(passAns && mobilAns){
-                             //Send Data to a method inside Model Class to access Database
-                             await model.signin( snumberController, spasswordController);
-                             if(model.signedIdnUser.id==''){
-                               showToast("cannot Signin with those credentials");
+                       UIHelper.verticalSpaceLarge,
+                       Container(
+                         width: double.infinity,
+                         height: 50,
+                         child:
+                         model.busy?
+                         Center(child: CircularProgressIndicator(),) :
+                         PrimaryButton(
+                           text: Text(LabelSignIn,style: buttonTextStyle,),
+                           ontap:() async {
+                             bool passAns=model.validatePassword(spasswordController.text);
+                             bool mobilAns=model.validateMobileNumber(snumberController.text);
+                             if(passAns && mobilAns){
+                               //Send Data to a method inside Model Class to access Database
+                               await model.signin( snumberController, spasswordController);
+                               if(model.signedIdnUser.id==''){
+                                 showToast("Invalid Username or Password");
+                               }
+                               else {
+                                 Navigator.push(context, new MaterialPageRoute(
+                                     builder: (context) => new VerifyCodeView(
+                                       signInUser: model.signedIdnUser,
+                                     ))
+                                 );
+                               }
                              }
-                             else {
-                               Navigator.push(context, new MaterialPageRoute(
-                                   builder: (context) => new VerifyCodeView(
-                                     signInUser: model.signedIdnUser,
-                                   ))
-                               );
-                             }
-                           }
-                         } ,
+                           } ,
+                         ),
                        ),
-                     ),
-                     UIHelper.verticalSpaceMedium,
-                     UIHelper.verticalSpaceMedium,
-                     Expanded(
+                       UIHelper.verticalSpaceMedium,
+                       UIHelper.verticalSpaceMedium,
+                       Expanded(
 
-                       child:  Row(
+                         child:  Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                           children: <Widget>[
+                             Container(
+                               width: 85.0,
+                               height: 1,
+                               color: onPrimaryColor,
+                             ),
+                             Container(
+                               child: Text(
+                                   LabelOrSignInWith,
+                                   style: heading3.copyWith(color: onPrimaryColor,fontWeight: FontWeight.w700)
+                               ),
+                             ),
+                             Container(
+                               width: 85.0,
+                               height: 1,
+                               color: onPrimaryColor,
+                             ),
+                           ],
+                         ),
+                       ),
+                       Row(
+                         crossAxisAlignment: CrossAxisAlignment.center,
                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                          children: <Widget>[
-                           Container(
-                             width: 85.0,
-                             height: 1,
-                             color: onPrimaryColor,
-                           ),
-                           Container(
-                             child: Text(
-                                 LabelOrSignInWith,
-                                 style: heading3.copyWith(color: onPrimaryColor,fontWeight: FontWeight.w700)
+                           CircleAvatar(
+                             radius: 25.0,
+                             backgroundColor: Color(0xffD5DDE0),
+                             child: IconButton(
+                               color: Colors.white,
+                               iconSize: 32.0,
+                               onPressed: (){
+                                 //Send to Facebook Page Login
+                               },
+                               icon:  FaIcon(FontAwesomeIcons.facebookF),
                              ),
                            ),
-                           Container(
-                             width: 85.0,
-                             height: 1,
-                             color: onPrimaryColor,
+                           CircleAvatar(
+                             radius: 25.0,
+                             backgroundColor: Color(0xffD5DDE0),
+                             child: IconButton(
+                               color: Colors.white,
+                               iconSize: 30.0,
+                               onPressed: (){
+                                 //Send to Twitter Page Login
+                               },
+                               icon:  FaIcon(FontAwesomeIcons.twitter),
+                             ),
+                           ),
+                           CircleAvatar(
+                             radius: 25.0,
+                             backgroundColor: Color(0xffD5DDE0),
+                             child: IconButton(
+                               color: Colors.white,
+                               iconSize: 28.0,
+                               onPressed: (){
+                                 //Send to Gmail Page Login
+                               },
+                               icon:  FaIcon(FontAwesomeIcons.google),
+                             ),
+                           )
+                           // CircleAvatar(
+                           //   radius: 25,
+                           //   backgroundImage: AssetImage(
+                           //     'assets/facebook_icon.png',
+                           //   ),
+                           // )
+                         ],
+                       ),
+                       Spacer(flex: 2,),
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: [
+                           Text(LabelDontHaveAccount, style: heading2.copyWith(color: onPrimaryColor2 )),
+                           InkWell(
+                             onTap: (){
+
+                               _pageController.nextPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
+                             },
+                             child: Text(
+                               LabelSignup, style: heading2.copyWith(color: secondaryColor ),
+                             ),
                            ),
                          ],
                        ),
-                     ),
-                     Row(
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                       children: <Widget>[
-                         CircleAvatar(
-                           radius: 25.0,
-                           backgroundColor: Color(0xffD5DDE0),
-                           child: IconButton(
-                             color: Colors.white,
-                             iconSize: 32.0,
-                             onPressed: (){
-                               //Send to Facebook Page Login
-                             },
-                             icon:  FaIcon(FontAwesomeIcons.facebookF),
-                           ),
-                         ),
-                         CircleAvatar(
-                           radius: 25.0,
-                           backgroundColor: Color(0xffD5DDE0),
-                           child: IconButton(
-                             color: Colors.white,
-                             iconSize: 30.0,
-                             onPressed: (){
-                               //Send to Twitter Page Login
-                             },
-                             icon:  FaIcon(FontAwesomeIcons.twitter),
-                           ),
-                         ),
-                         CircleAvatar(
-                           radius: 25.0,
-                           backgroundColor: Color(0xffD5DDE0),
-                           child: IconButton(
-                             color: Colors.white,
-                             iconSize: 28.0,
-                             onPressed: (){
-                               //Send to Gmail Page Login
-                             },
-                             icon:  FaIcon(FontAwesomeIcons.google),
-                           ),
-                         )
-                         // CircleAvatar(
-                         //   radius: 25,
-                         //   backgroundImage: AssetImage(
-                         //     'assets/facebook_icon.png',
-                         //   ),
-                         // )
-                       ],
-                     ),
-                     Spacer(flex: 2,),
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: [
-                         Text(LabelDontHaveAccount, style: heading2.copyWith(color: onPrimaryColor2 )),
-                         InkWell(
-                           onTap: (){
-
-                             _pageController.nextPage(duration: Duration(milliseconds: 700), curve: Curves.ease);
-                           },
-                           child: Text(
-                             LabelSignup, style: heading2.copyWith(color: secondaryColor ),
-                           ),
-                         ),
-                       ],
-                     ),
-                   ],
+                     ],
+                   ),
                  ),
-               ),
-             )
+               )
+           ),
          ),
        ),
      );
