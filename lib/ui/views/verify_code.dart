@@ -77,7 +77,7 @@ class VerifyCodeView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  UIHelper.verticalSpaceLarge,
+                  UIHelper.verticalSpaceMedium,
                   Form(
                     key: model.formKey,
                     child: Padding(
@@ -130,7 +130,6 @@ class VerifyCodeView extends StatelessWidget {
                           },
                         )),
                   ),
-                  UIHelper.verticalSpaceMedium,
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -150,8 +149,7 @@ class VerifyCodeView extends StatelessWidget {
                   ),
                   Spacer(),
                   Container(
-                    padding: EdgeInsets.all(20.0),
-                    height: 50.0,
+                    padding: EdgeInsets.symmetric(vertical: 20.0),
                     width: double.infinity,
                     color: secondaryColor,
                     child: Text(

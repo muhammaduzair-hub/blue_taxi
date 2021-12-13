@@ -209,7 +209,7 @@ class ArrivingScreen extends StatelessWidget {
     return DraggableScrollableSheet(
       key: model.arrivingBottomKey,
       initialChildSize: 0.5,
-      minChildSize: 0.4,
+      minChildSize: 0.5,
       maxChildSize: 0.5,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(
@@ -249,12 +249,14 @@ class ArrivingScreen extends StatelessWidget {
                               child: Image(
                             image: AssetImage('asset/icons/ic_gesture.png'),
                           )),
+                          SizedBox(height:5.0),
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
+
                                 Text(
                                   model.driverModel!.driverName ?? "Patrick",
                                   style: buttonTextStyle.copyWith(
@@ -498,9 +500,9 @@ class ArrivingScreen extends StatelessWidget {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
       key: model.disbaledArrivingKey,
-      initialChildSize: 0.4,
-      minChildSize: 0.4,
-      maxChildSize: 0.4,
+      initialChildSize: 0.5,
+      minChildSize: 0.5,
+      maxChildSize: 0.5,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -644,9 +646,9 @@ class ArrivingScreen extends StatelessWidget {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
       key:model.tipAndRateKey,
-      initialChildSize: 0.4,
-      minChildSize: 0.4,
-      maxChildSize: 0.4,
+      initialChildSize: 0.5,
+      minChildSize: 0.5,
+      maxChildSize: 0.5,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -808,135 +810,139 @@ class ArrivingScreen extends StatelessWidget {
       initialChildSize: 0.5,
       minChildSize: 0.5,
       maxChildSize: 0.8,
-      builder: (context, scrollController) => ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-        child: SingleChildScrollView(
-          child: Container(
-            color: Colors.transparent,
-            child: Stack(children: <Widget>[
-              Stack(
-                alignment: Alignment.topLeft,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: circleRadius / 2.0,
-                    ),
-                    child: Container(
-                      height: MediaQuery.of(context).size.height *0.42,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
-                        color: onSecondaryColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 8.0,
-                            offset: Offset(0.0, 5.0),
+      builder: (context, scrollController) => ListView(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+            child: SingleChildScrollView(
+              child: Container(
+                color: Colors.transparent,
+                child: Stack(children: <Widget>[
+                  Stack(
+                    alignment: Alignment.topLeft,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: circleRadius / 2.0,
+                        ),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height *0.42,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
+                            color: onSecondaryColor,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 8.0,
+                                offset: Offset(0.0, 5.0),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: IntrinsicHeight(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: IntrinsicWidth(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Center(
-                                    child: Image(
-                                  image: AssetImage('asset/icons/ic_gesture.png'),
-                                )),
-                                SizedBox(height: MediaQuery.of(context).size.height *0.092,),
-                                Text(
-                                  model.driverModel!.driverName!,
-                                  style: buttonTextStyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: onPrimaryColor),
-                                ),
-                                Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      RatingBar.builder(
-                                        initialRating: 0,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemPadding:
+                          child: IntrinsicHeight(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: IntrinsicWidth(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Center(
+                                        child: Image(
+                                          image: AssetImage('asset/icons/ic_gesture.png'),
+                                        )),
+                                    SizedBox(height: MediaQuery.of(context).size.height *0.092,),
+                                    Text(
+                                      model.driverModel!.driverName!,
+                                      style: buttonTextStyle.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: onPrimaryColor),
+                                    ),
+                                    Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          RatingBar.builder(
+                                            initialRating: 0,
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemPadding:
                                             EdgeInsets.symmetric(horizontal: 4.0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: secondaryColor,
-                                        ),
-                                        onRatingUpdate: (rating) {
-                                          rated = model.switchRateLabel(rating);
-                                        },
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: secondaryColor,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              rated = model.switchRateLabel(rating);
+                                            },
+                                          ),
+                                          Text(
+                                            rated,
+                                            style: heading2.copyWith(
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          CustomTextField(
+                                            keyboardType: TextInputType.multiline,
+                                            maxLength: 15,
+                                            maxLines: null,
+                                            minLines: 1,
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        rated,
-                                        style: heading2.copyWith(
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      CustomTextField(
-                                        keyboardType: TextInputType.multiline,
-                                        maxLength: 15,
-                                        maxLines: null,
-                                        minLines: 1,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    Container(
+                                        width: double.infinity,
+                                        height: 50,
+                                        child: PrimaryButton(
+                                          text: Text(
+                                            rate_btn,
+                                            style: buttonTextStyle.copyWith(
+                                                color: onSecondaryColor),
+                                          ),
+                                          ontap: () {
+                                            model.switchState(
+                                                EnumToString.convertToString(
+                                                    Status.Tips));
+                                          },
+                                        )),
+                                  ],
                                 ),
-                                Container(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: PrimaryButton(
-                                      text: Text(
-                                        rate_btn,
-                                        style: buttonTextStyle.copyWith(
-                                            color: onSecondaryColor),
-                                      ),
-                                      ontap: () {
-                                        model.switchState(
-                                            EnumToString.convertToString(
-                                                Status.Tips));
-                                      },
-                                    )),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
 
-                  ///Image Avatar
-                  Container(
-                    width: circleRadius,
-                    height: circleRadius,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(3.0),
-                      child: Center(
-                        child: Container(
-                          child:
+                      ///Image Avatar
+                      Container(
+                        width: circleRadius,
+                        height: circleRadius,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Center(
+                            child: Container(
+                              child:
                               Image(image: AssetImage('asset/images/Group.png')),
 
-                          /// replace your image with the Icon
+                              /// replace your image with the Icon
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ]),
               ),
-            ]),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -944,214 +950,218 @@ class ArrivingScreen extends StatelessWidget {
   Widget selectTipsSheet(ArrivingSelectionViewModel model) {
     final double circleRadius = 120.0;
     return DraggableScrollableSheet(
-      key: model.tipsSheetKey,
+      key: model.tipsSheetKey,expand:true,
       initialChildSize: 0.5,
       minChildSize: 0.5,
-      maxChildSize: 0.8,
-      builder: (context, scrollController) => ClipRRect(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-        child: Container(
-          color: Colors.transparent,
-          child: Stack(children: <Widget>[
-            Stack(
-              alignment: Alignment.topLeft,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: circleRadius / 2.0,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
-                      color: onSecondaryColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8.0,
-                          offset: Offset(0.0, 5.0),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                                child: Image(
-                              image: AssetImage('asset/icons/ic_gesture.png'),
-                            )),
-                          ),
-                          SizedBox(height: MediaQuery.of(context).size.height *0.052,),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  model.driverModel!.driverName ?? "Patrick",
-                                  style: buttonTextStyle.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: onPrimaryColor),
-                                ),
-                              ],
+      maxChildSize: 0.5,
+      builder: (context, scrollController) => ListView(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+            child: Container(
+              color: Colors.transparent,
+              child: Stack(children: <Widget>[
+                Stack(
+                  alignment: Alignment.topLeft,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: circleRadius / 2.0,
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0),),
+                          color: onSecondaryColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8.0,
+                              offset: Offset(0.0, 5.0),
                             ),
-                          ),
-                          UIHelper.verticalSpaceSmall,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 79,
-                                height: 50,
-                                child: PrimaryButton(
-                                    color: 1 == model.buttonState
-                                        ? secondaryColor
-                                        : onSecondaryColor,
-                                    text: Text(
-                                      "0%",
-                                      style: buttonTextStyle.copyWith(
-                                        color: 1 == model.buttonState
-                                            ? onSecondaryColor
-                                            : onPrimaryColor,
-                                      ),
-                                    ),
-                                    ontap: () {
-                                      model.switchButtonState(1);
-                                      //  model.switchButtonState("OneBState");
-                                    }),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                    child: Image(
+                                      image: AssetImage('asset/icons/ic_gesture.png'),
+                                    )),
                               ),
-                              Container(
-                                width: 79,
-                                height: 50,
-                                child: PrimaryButton(
-                                    color: 2 == model.buttonState
-                                        ? secondaryColor
-                                        : onSecondaryColor,
-                                    text: Text(
-                                      "5%",
+                              SizedBox(height: MediaQuery.of(context).size.height *0.052,),
+                              Padding(
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      model.driverModel!.driverName ?? "Patrick",
                                       style: buttonTextStyle.copyWith(
-                                        color: 2 == model.buttonState
-                                            ? onSecondaryColor
-                                            : onPrimaryColor,
-                                      ),
+                                          fontWeight: FontWeight.w700,
+                                          color: onPrimaryColor),
                                     ),
-                                    ontap: () {
-                                      model.switchButtonState(2);
-                                      //  model.switchButtonState("TwoBState");
-                                    }),
-                              ),
-                              Container(
-                                width: 79,
-                                height: 50,
-                                child: PrimaryButton(
-                                    color: 3 == model.buttonState
-                                        ? secondaryColor
-                                        : onSecondaryColor,
-                                    text: Text(
-                                      "10%",
-                                      style: buttonTextStyle.copyWith(
-                                        color: 3 == model.buttonState
-                                            ? onSecondaryColor
-                                            : onPrimaryColor,
-                                      ),
-                                    ),
-                                    ontap: () {
-                                      model.switchButtonState(3);
-                                      //  model.switchButtonState("ThreeBState");
-                                    }),
-                              ),
-                              Container(
-                                width: 79,
-                                height: 50,
-                                child: PrimaryButton(
-                                    color: 4 == model.buttonState
-                                        ? secondaryColor
-                                        : onSecondaryColor,
-                                    text: Text(
-                                      "20%",
-                                      style: buttonTextStyle.copyWith(
-                                        color: 4 == model.buttonState
-                                            ? onSecondaryColor
-                                            : onPrimaryColor,
-                                      ),
-                                    ),
-                                    ontap: () {
-                                      model.switchButtonState(4);
-                                      // model.switchButtonState("FourBState");
-                                    }),
-                              ),
-                            ],
-                          ),
-                          UIHelper.verticalSpaceSmall,
-                          Text(
-                            TipText,
-                            style: heading2.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: onPrimaryColor),
-                          ),
-                          UIHelper.verticalSpaceSmall,
-                          Container(
-                              width: double.infinity,
-                              height: 50,
-                              child: PrimaryButton(
-                                text: Text(
-                                  submit,
-                                  style: buttonTextStyle.copyWith(
-                                      color: onSecondaryColor),
+                                  ],
                                 ),
-                                ontap: () {
-                                  model.setBusy(true);
-                                  //Unassign Driver
-                                  model.unassignDriver();
-                                  state = '';
-                                  model.setBusy(false);
-                                  //Throw to next Page
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => new ReceiptView(
+                              ),
+                              UIHelper.verticalSpaceMedium,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: 79,
+                                    height: 50,
+                                    child: PrimaryButton(
+                                        color: 1 == model.buttonState
+                                            ? secondaryColor
+                                            : onSecondaryColor,
+                                        text: Text(
+                                          "0%",
+                                          style: buttonTextStyle.copyWith(
+                                            color: 1 == model.buttonState
+                                                ? onSecondaryColor
+                                                : onPrimaryColor,
+                                          ),
+                                        ),
+                                        ontap: () {
+                                          model.switchButtonState(1);
+                                          //  model.switchButtonState("OneBState");
+                                        }),
+                                  ),
+                                  Container(
+                                    width: 79,
+                                    height: 50,
+                                    child: PrimaryButton(
+                                        color: 2 == model.buttonState
+                                            ? secondaryColor
+                                            : onSecondaryColor,
+                                        text: Text(
+                                          "5%",
+                                          style: buttonTextStyle.copyWith(
+                                            color: 2 == model.buttonState
+                                                ? onSecondaryColor
+                                                : onPrimaryColor,
+                                          ),
+                                        ),
+                                        ontap: () {
+                                          model.switchButtonState(2);
+                                          //  model.switchButtonState("TwoBState");
+                                        }),
+                                  ),
+                                  Container(
+                                    width: 79,
+                                    height: 50,
+                                    child: PrimaryButton(
+                                        color: 3 == model.buttonState
+                                            ? secondaryColor
+                                            : onSecondaryColor,
+                                        text: Text(
+                                          "10%",
+                                          style: buttonTextStyle.copyWith(
+                                            color: 3 == model.buttonState
+                                                ? onSecondaryColor
+                                                : onPrimaryColor,
+                                          ),
+                                        ),
+                                        ontap: () {
+                                          model.switchButtonState(3);
+                                          //  model.switchButtonState("ThreeBState");
+                                        }),
+                                  ),
+                                  Container(
+                                    width: 79,
+                                    height: 50,
+                                    child: PrimaryButton(
+                                        color: 4 == model.buttonState
+                                            ? secondaryColor
+                                            : onSecondaryColor,
+                                        text: Text(
+                                          "20%",
+                                          style: buttonTextStyle.copyWith(
+                                            color: 4 == model.buttonState
+                                                ? onSecondaryColor
+                                                : onPrimaryColor,
+                                          ),
+                                        ),
+                                        ontap: () {
+                                          model.switchButtonState(4);
+                                          // model.switchButtonState("FourBState");
+                                        }),
+                                  ),
+                                ],
+                              ),
+                              UIHelper.verticalSpaceLarge,
+                              Text(
+                                TipText,
+                                style: heading2.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: onPrimaryColor),
+                              ),
+                              UIHelper.verticalSpaceSmall,
+                              Container(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: PrimaryButton(
+                                    text: Text(
+                                      submit,
+                                      style: buttonTextStyle.copyWith(
+                                          color: onSecondaryColor),
+                                    ),
+                                    ontap: () {
+                                      model.setBusy(true);
+                                      //Unassign Driver
+                                      model.unassignDriver();
+                                      state = '';
+                                      model.setBusy(false);
+                                      //Throw to next Page
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (context) => new ReceiptView(
                                                 requestId: model.requestId,
                                               )));
-                                  // model.switchState("On Trip");
-                                },
-                              )),
-                          UIHelper.verticalSpaceSmall,
-                        ],
+                                      // model.switchState("On Trip");
+                                    },
+                                  )),
+                              UIHelper.verticalSpaceSmall,
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
 
-                ///Image Avatar
-                Container(
-                  width: circleRadius,
-                  height: circleRadius,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Center(
-                      child: Container(
-                        child:
+                    ///Image Avatar
+                    Container(
+                      width: circleRadius,
+                      height: circleRadius,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: Center(
+                          child: Container(
+                            child:
                             Image(image: AssetImage('asset/images/Group.png')),
 
-                        /// replace your image with the Icon
+                            /// replace your image with the Icon
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ]),
             ),
-          ]),
-        ),
+          ),
+        ],
       ),
     );
   }
