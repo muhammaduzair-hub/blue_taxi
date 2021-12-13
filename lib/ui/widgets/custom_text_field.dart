@@ -17,6 +17,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.zero,
       height: 44,
       child:
         showPassword?
@@ -24,9 +25,9 @@ class CustomTextField extends StatelessWidget {
               model: CustomTextFieldViewModel(),
               builder: (context, model, child) => TextField(
                 maxLength: maxLength,
-                  textAlignVertical: TextAlignVertical.center,
                   obscureText: model.obscureText,
                   decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
                     focusedBorder:  OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide(color: Color(0xffD5DDE0)),
@@ -52,6 +53,7 @@ class CustomTextField extends StatelessWidget {
           maxLength: maxLength,
           keyboardType: keyboardType,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(left: 10,bottom: 0.5,),
               focusedBorder:  OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: BorderSide(color: Color(0xffD5DDE0)),

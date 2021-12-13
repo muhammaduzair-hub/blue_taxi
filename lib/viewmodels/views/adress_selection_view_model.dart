@@ -54,7 +54,7 @@ class AdressSelectionViewModel extends BaseModel {
   //for disable button from list of vehicles in ride option state bottom sheet
   int vehicleSelectedIndex=0;
 
-   AdressSelectionViewModel( {required this.authRepository}):super(false) {
+   AdressSelectionViewModel({required this.authRepository}):super(false) {
      loadCustomMarker();
      state = LabelSelectAdress;
      addressSelection_FromSearchTextFieldInitialSize = 25;
@@ -187,7 +187,8 @@ class AdressSelectionViewModel extends BaseModel {
 
     groupList = {
       if(remoteAdressTitle.isNotEmpty)'Search Result':remoteAdressTitle,
-      if(localAdressTitles.isNotEmpty)'Recent':localAdressTitles
+      if(localAdressTitles.isNotEmpty)'Recent':localAdressTitles,
+
     };
   }
 
@@ -266,13 +267,13 @@ class AdressSelectionViewModel extends BaseModel {
    searchAdressOnTextField(String val) async {
     setBusy(true);
     try{
-      adressList.firstWhere((element) => element.adressTitle == val);
-
+     adressList.firstWhere((element) => element.adressTitle.toLowerCase()==val.toLowerCase());
       List<String> localTemp=[];
       localAdressTitles.forEach((element) {
-        if(element.contains(val))localTemp.add(element);
+        if(element.toLowerCase().contains(val.toLowerCase()))localTemp.add(element);
       });
       initializegroupList(localTemp);
+      setBusy(false);
     }catch(e){
 
       List<AdressModel> res =await authRepository.getAdressRemote(adress: val);
@@ -282,10 +283,10 @@ class AdressSelectionViewModel extends BaseModel {
          remoteAdressTitle.add(element.adressTitle);});
        List<String> localTemp=[];
        localAdressTitles.forEach((element) {
-         if(element.contains(element))
+         if(element.toLowerCase().contains(element.toLowerCase()))
            localTemp.add(element);
        });
-      if(remoteAdressTitle.isEmpty&&localAdressTitles.isEmpty) showToast("Enter Correct Address");
+      if(remoteAdressTitle.isEmpty&&localTemp.isEmpty) showToast("Enter Correct Address");
        initializegroupList(localTemp);
     }
     setBusy(false);
