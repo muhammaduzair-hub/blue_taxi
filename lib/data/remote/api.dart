@@ -312,9 +312,7 @@ class Api {
   }
 
   Future getAddress(String Adress)async{
-    var stream =await firestoreAdresses.where(
-      "label",isGreaterThanOrEqualTo: Adress
-    ).get();
+    var stream =await firestoreAdresses.get();
     List<AdressModel> model =  stream.docs.map((e) => AdressModel.fromJson(e.data())).toList();
     return model;
   }

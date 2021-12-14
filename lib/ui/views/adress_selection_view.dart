@@ -105,6 +105,7 @@ class AdressSelectionView extends StatelessWidget {
             padding: UIHelper.pagePaddingSmall.copyWith(top: 0),
             child:
             ListView(
+              physics: NeverScrollableScrollPhysics(),
               controller: scrollController,
               children: [
                 UIHelper.verticalSpaceSmall,
@@ -142,7 +143,7 @@ class AdressSelectionView extends StatelessWidget {
                                 model.debouncer.run(() {
                                   print(model.fromController.text);
                                   if(model.fromController.text.length>3)model.searchAdressOnTextField(model.fromController.text);
-                                  else showToast("Enter Minimum 3 Characters");
+                                  else showToast("Enter Minimum 4 Characters");
                                 });
                               },
                               textInputAction: TextInputAction.next,
@@ -166,7 +167,7 @@ class AdressSelectionView extends StatelessWidget {
                                   model.debouncer.run(() {
                                     print(model.toController.text);
                                     if(model.toController.text.length>3)model.searchAdressOnTextField(model.toController.text);
-                                    else showToast("Enter Minimum 3 Characters");
+                                    else showToast("Enter Minimum 4 Characters");
                                   });
                                 },
                                 textInputAction: TextInputAction.done,
@@ -197,6 +198,8 @@ class AdressSelectionView extends StatelessWidget {
                   //group list view
                   child:
                     GroupListView(
+
+                      controller: scrollController,
                       sectionsCount: model.groupList.keys.toList().length,
                       countOfItemInSection: (int section){
                         return model.groupList.values.toList()[section].length;
@@ -204,15 +207,14 @@ class AdressSelectionView extends StatelessWidget {
                       itemBuilder: (context, index) =>
                         leadingListTile(
                           title: model.groupList.values.toList()[index.section][index.index],
-                          model: model,
-                          controller: scrollController
+                          model: model, controller: scrollController,
                         ),
                       groupHeaderBuilder: (context, section) =>
                           Text(model.groupList.keys.toList()[section],
                             style: boldHeading3.copyWith(color: onPrimaryColor2),
                           ),
                       separatorBuilder: (context, index) => Image(image:AssetImage('asset/icons/line.png')),
-                      sectionSeparatorBuilder: (context, section) => UIHelper.verticalSpaceMedium,
+                      //sectionSeparatorBuilder: (context, section) => UIHelper.verticalSpaceMedium,
                     )
                 ),
               ],
@@ -300,9 +302,10 @@ class AdressSelectionView extends StatelessWidget {
                     },
                   child: Wrap(
                     spacing: 3,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Image(image: model.myCards[model.selectedCardIndex].leadingImage),
-                      Text(model.myCards[model.selectedCardIndex].cardNumber,style: heading3,),
+                      Text(model.myCards[model.selectedCardIndex].cardNumber,style: heading3),
                     ],
                   ),
                 ),

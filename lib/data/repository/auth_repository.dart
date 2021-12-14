@@ -58,8 +58,10 @@ class AuthRepository {
 
   Future getAdressRemote({required String adress}) async{
     late List<AdressModel> result;
-    result = await api.getAddress(adress);
-    result = result.where((element) => element.adressTitle.contains(adress)).toList();
+    result = await api.getAddress(adress.toLowerCase());
+    result = result.where(
+            (element) => element.adressTitle.toLowerCase().contains(adress.toLowerCase())
+    ).toList();
     if(result.isNotEmpty)
       {
         return result;
