@@ -25,7 +25,7 @@ class AppRouter {
       case RoutePaths.Signin:
         return MaterialPageRoute(builder: (_) => SignInSignUpView());
       case RoutePaths.UserMenu:
-        return MaterialPageRoute(builder: (_) => UserMenuView());
+        return MaterialPageRoute(builder: (_) => UserMenuPageView());
       case RoutePaths.Post:
         var post = settings.arguments as PostSample;
         return MaterialPageRoute(builder: (_) => PostViewSample(post: post));

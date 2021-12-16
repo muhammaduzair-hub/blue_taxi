@@ -1,15 +1,11 @@
-import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
-import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/signin_signup_view.dart';
-import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
-import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
+import 'package:bluetaxiapp/ui/widgets/responsive_ui_widgets.dart';
 import 'package:bluetaxiapp/viewmodels/views/my_profile_view_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -18,73 +14,131 @@ class MyProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return BaseWidget<MyProfileViewModel>(
-      model: MyProfileViewModel(repo: Provider.of(context)),
-      builder: (context, model, child) => Scaffold(
-        body: Padding(
-          padding: UIHelper.pagePaddingSmall,
-          child: SingleChildScrollView(
+        model: MyProfileViewModel(repo: Provider.of(context)),
+    builder: (context, model, child) => SafeArea(
+      child: Scaffold(
+          body: Container(
+            height: height,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LeadindBackButton(icon: AssetImage("asset/icons/nav btn.png"),ontap: (){Navigator.pop(context);},),
-                UIHelper.verticalSpaceMedium,
-                Center(
+                //BACK BUTTON
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: width * 1 / 20, left: width * 1 / 20),
+                  child: LeadingBackButton(
+                      image: const AssetImage("asset/icons/back_arrow.png"),
+                      ontap: () {
+                        Navigator.pop(context);
+                      }),
+                ),
+
+                //CARD AND NOTIFICATION TOGGLE
+                Padding(
+                  padding: EdgeInsets.all(width * 1 / 20),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: onPrimaryColor2.withOpacity(0.1),
-                        radius: 40,
-                        backgroundImage: AssetImage("asset/icons/photo user.png"),
-                        //child: Icon(Icons.person,size: 50,color: onPrimaryColor,),
+                      //PROFILE PICTURE
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(70),
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.3),
+                            )),
+                        child: CustomImage(
+                          ontap: () {},
+                          image: const AssetImage("asset/images/photo_user.png"),
+                          height: height * 1 / 8,
+                          width: width * 1 / 6,
+                        ),
                       ),
-                      UIHelper.verticalSpaceSmall,
-                      Text(signedINUser.name!,style: boldHeading1,),
-                      UIHelper.verticalSpaceLarge,
+
+                      //NAME TEXT
+                       Text(
+                        signedINUser.name!,
+                        style: TextStyle(
+                            fontSize: 24.0, fontWeight: FontWeight.bold),
+                      ),
+                      Container(height: height * 0.5 / 20,),
+
+                      //INFO CARD
                       Material(
                         elevation: 15,
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 3,vertical: 10),
-                          height: 200,
-                          width: screenSize.width-40,
-                          child: ListView(
-                            padding: EdgeInsets.all(8),
-                            children: [
-                              // i use hard coded values here because we will fetch these texts from models
-                              listTile(icon: Icons.call,title: signedINUser.phoneno!),
-                              Padding(padding: EdgeInsets.only(left: 61.58,right: 20),child: Divider(height: 3,color: secondaryColor2,),),
-                              listTile(icon: Icons.email,title: signedINUser.email!),
-                              Padding(padding: EdgeInsets.only(left: 61.58,right: 20),child: Divider(height: 3,color: secondaryColor2,),),
-                              listTile(icon: FontAwesomeIcons.facebookF,title: "@carsonmobility"),
-                            ],
+                          height: height / 3,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width * 1 / 20,
+                                vertical: height * 1 / 70),
+                            child: Center(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: ListView(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: [
+                                    // i use hard coded values here because we will fetch these texts from models
+                                    listTile(
+                                        icon: Icons.call,
+                                        title: signedINUser.phoneno!),
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 65.0),
+                                      child: Divider(
+                                        height: 10,
+                                        thickness: 1.0,
+                                      ),
+                                    ),
+                                    listTile(
+                                        icon: Icons.email,
+                                        title: signedINUser.email!),
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 65.0),
+                                      child: Divider(
+                                        height: 10,
+                                        thickness: 1.0,
+                                      ),
+                                    ),
+                                    listTile(
+                                        icon: Icons.facebook,
+                                        title: "@carsonmobility"),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      UIHelper.verticalSpaceMedium,
+
+                      //Notification Toggle
                       ListTile(
-                        title: Text(LabelNotiication,style: boldHeading2,),
-                        subtitle: Text(LabelForRecievingDriverMessage),
-                        trailing: Switch(
-                          value: model.switchState,
-                          activeColor: secondaryColor,
-                          inactiveThumbColor: onSecondaryColor,
-                          onChanged: (v){
-                            model.changeSwitchState();
-                          },
-                        )
-                      ),
-                      // Spacer(),
-                      UIHelper.verticalSpaceLarge,
-                      Container(
-                        height: 45,
+                          title: Text(
+                            "Notification",
+                          ),
+                          subtitle: Text("For Recieving Driver Message"),
+                          trailing: Switch(
+                            activeColor: Colors.blue,
+                            inactiveThumbColor: Colors.grey,
+                            onChanged: (v) {
+                             model.changeSwitchState();
+                            },
+                           value: model.switchState,
+                          )),
+
+                      Container(height: height * 0.9 / 20,),
+
+                      //LOGOUT BUTTON
+                      SizedBox(
+                        height: height * 1.5 / 18,
                         width: double.infinity,
                         child: PrimaryButton(
-                          text: Text(LabelDeleteAccount,style: boldHeading2,),
-                          ontap: (){
-                            _showMyDialog(context, model);
+                          text: const Text("Logout"),
+                          ontap: () {
+                            _showMyDialog(context,model);
                           },
                         ),
                       )
@@ -93,23 +147,13 @@ class MyProfileView extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ),
-      ),
+          ))),
     );
   }
 
-  Widget listTile({required IconData icon, required String title}){
-    return ListTile(
-      leading: CircleAvatar(
-        child: Icon(icon,color: onSecondaryColor,size: 30,),
-        backgroundColor: secondaryColor2,
-      ),
-      title: Text(title,style: heading2,),
-    );
-  }
 
-  Future<void> _showMyDialog(BuildContext context, MyProfileViewModel model) async {
+  Future<void> _showMyDialog(BuildContext context,
+      MyProfileViewModel model) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -126,11 +170,12 @@ class MyProfileView extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: const Text('Yes'),
-              onPressed: () async{
+              onPressed: () async {
                 Navigator.of(context).pop();
                 await model.userSignOutFromSqflite();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                        builder: (context) => new SignInSignUpView()), (route) => false);
+                    builder: (context) => new SignInSignUpView()), (
+                    route) => false);
               },
             ),
             TextButton(
@@ -145,8 +190,18 @@ class MyProfileView extends StatelessWidget {
       },
     );
   }
-}
 
+
+  Widget listTile({required IconData icon, required String title}) {
+    return ListTile(
+      leading: CircleAvatar(
+        child: Icon(icon,color: onSecondaryColor,size: 30,),
+        backgroundColor: secondaryColor2,
+      ),
+      title: Text(title,style: heading2,),
+    );
+  }
+}
 
 
 

@@ -8,20 +8,6 @@ class LeadindBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return RawMaterialButton(
-    //   onPressed: ontap,
-    //   elevation: 6.0,
-    //   fillColor: Colors.white,
-    //   child: Icon(
-    //     Icons.arrow_back_ios_outlined,
-    //     color: onPrimaryColor,
-    //     size: 17.0,
-    //
-    //   ),
-    //   padding: EdgeInsets.all(15.0),
-    //   shape: CircleBorder(),
-    // );
-
     return InkWell(
       onTap: ontap,
       child: CircleAvatar(

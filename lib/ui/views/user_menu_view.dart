@@ -1,280 +1,120 @@
-import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
-import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/my_card_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
 import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
+import 'package:bluetaxiapp/ui/widgets/responsive_ui_widgets.dart';
 import 'package:flutter/material.dart';
 
-class UserMenuView extends StatelessWidget {
-  UserMenuView({Key? key}) : super(key: key);
+class UserMenuPageView extends StatelessWidget {
+  const UserMenuPageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
-
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: onSecondaryColor,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: Color(0xffD5DDE0),
-                      size: 28.8,
-                    ), onPressed: () {Navigator.pop(context);},
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
-                  Container(
-                      height: 90.0,
-                      width: 100.0,
-                      child: Stack(children: <Widget>[
-                        Positioned(
-                          left: 5,
-                          height: 80,
-                          width: 80,
-                          child: CircleAvatar(
-                            radius: 40.0,
-                            backgroundColor: Color(0xffD5DDE0),
-                            backgroundImage:
-                                AssetImage('asset/images/photo_user.png'),
+        child: Scaffold(
+          body: Container(
+            height: height,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomButton(
+                        image: AssetImage("asset/icons/arrow.png"),
+                        ontap: () {
+                          Navigator.pop(context);
+                        }),
+                    Container(height: height*0.5/20,),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(70),
+                              border: Border.all(
+                                color: Colors.grey.withOpacity(0.3),
+                              )),
+                          child: CustomImage(
+                            ontap: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => new MyProfileView()));
+                            },
+                            image: AssetImage("asset/images/photo_user.png"),
+                            height: height * 1 / 8,
+                            width: width * 1 / 6,
                           ),
                         ),
-                        Positioned(
-                          bottom:65,
-                          left: 71.0,
-                          height: 35,
-                          width: 25,
-                          child: Container(
-                            height: 30.0,
-                            width: 30.0,
-                            decoration: BoxDecoration(
-                              color: onSecondaryColor,
-                                borderRadius: BorderRadius.circular(15.0)
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.edit_outlined),
-                              color: onPrimaryColor,
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => new MyProfileView()));
-                              },
-                            ),
-                          ),
-                        )
-                      ])),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
-                  Text(
-                    signedINUser.name!,
-                    style: boldHeading2.copyWith(color: userNameText),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
-                  Text(
-                    signedINUser.email!,
-                    style: heading2.copyWith(
-                        color: onPrimaryColor2, fontWeight: FontWeight.w400),
-                  )
-                ],
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
-              SizedBox(
-                child: GridView.count(
-                  padding: const EdgeInsets.all(21),
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 14,
-                  crossAxisCount: 2,
-                  //scrollDirection: Axis.vertical,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () async {
-                        await Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => new RideHistoryView()));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: onSecondaryColor,
-                          borderRadius: BorderRadius.circular(15.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: shadow,
-                              blurRadius: 5.0,
-                              offset: Offset(4, 3.0),
-                            ),
-                          ],
+                         Text(
+                          signedINUser.name!,
+                           style: boldHeading2.copyWith(color: userNameText),
                         ),
-                        width: width/2,
-                        height: height/7,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
-                          //padding: const EdgeInsets.all(28.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Image.asset(
-                                'asset/images/ic_history.png',
-                                height: 36,
-                                width: 36,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                MenuRideHistory,
-                                style: boldHeading2.copyWith(
-                                  color: userNameText,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        Text(
+                          signedINUser.email!,
+                          style: heading2.copyWith(color: onPrimaryColor2, fontWeight: FontWeight.w400),)
+                      ],
+                    ),
+                    Container(height: height*0.5/20,),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: (MediaQuery.of(context).size.height)*0.5/20, vertical: (MediaQuery.of(context).size.width)*0.5/20),
+                      child: GridView.count(
+                        crossAxisSpacing: 14,
+                        mainAxisSpacing: 14,
+                        crossAxisCount: 2,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        children: <Widget>[
+                          MenuButton(menuLabel: 'Ride History', image: 'asset/images/ic_history.png', dy: 3.0, dx: 3.0,
+                              ontap: () async {
+                                await Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => new RideHistoryView()));
+                              },),
+                          MenuButton(menuLabel: 'Payment', image: 'asset/images/ic_payment.png', dy: 3.0, dx: -3.0,
+                            ontap: () async {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
+                            },),
+
+                          MenuButton(menuLabel: 'Support', image: 'asset/images/ic_promo.png', dy: -3.0, dx: 4.0,
+                            ontap: () async {
+                              await Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => new RideHistoryView()));
+                            },),
+                          MenuButton(menuLabel: 'Maintenance', image: 'asset/images/ic_payment.png', dy: -3.0, dx: -4.0,
+                            ontap: () async {
+                              await Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => new RideHistoryView()));
+                            },),
+                        ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: onSecondaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: shadow,
-                              blurRadius: 5.0,
-                              offset: Offset(-4, 3.0),
-                            ),
-                          ],
-                        ),
-                        width: width/2,
-                        height: height/7,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Image.asset(
-                                'asset/images/ic_payment.png',
-                                height: 36,
-                                width: 36,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                MenuPayment,
-                                style: boldHeading2.copyWith(
-                                  color: userNameText,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: onSecondaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: shadow,
-                              blurRadius: 5.0,
-                              offset: Offset(3.0, -4),
-                            ),
-                          ],
-                        ),
-                        width: width/2,
-                        height: height/7,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Image.asset(
-                                'asset/images/ic_promo.png',
-                                height: 36,
-                                width: 36,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                MenuPromocode,
-                                style: boldHeading2.copyWith(
-                                  color: userNameText,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          color: onSecondaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: shadow,
-                              blurRadius: 5.0,
-                              offset: Offset(-4, -3.0),
-                            ),
-                          ],
-                        ),
-                        width: width/2,
-                        height: height/7,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(28, 55, 28, 40),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Image.asset(
-                                'asset/images/ic_support.png',
-                                height: 36,
-                                width: 36,
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                MenuSupport,
-                                style: boldHeading2.copyWith(
-                                  color: userNameText,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                    Container(height: height*0.5/20,),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(width * 1 / 3),
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(0.3),
+                          )),
+                      child: CustomImage(
+                        fit: BoxFit.contain,
+                        ontap: () {
+                          Navigator.pop(context);
+                        },
+                        image: AssetImage("asset/images/cross.png"),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03,),
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.clear,
-                  color: onPrimaryColor,
-                  size: 22,
-                ),
-                backgroundColor: onSecondaryColor,
-                elevation: 5.0,
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

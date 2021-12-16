@@ -4,12 +4,19 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:bluetaxiapp/provider_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'dart:ui' as ui;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(MyApp());
+    runApp(
+        MediaQuery(
+          data: new MediaQueryData.fromWindow(ui.window),
+          child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: MyApp()),
+        ));
   });
 }
 

@@ -72,7 +72,7 @@ class ArrivingScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) => new UserMenuView()));
+                              builder: (context) => new UserMenuPageView()));
                     },
                     icon: AssetImage('asset/icons/nav_btn.png'),
                   ),
@@ -401,7 +401,7 @@ class ArrivingScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
-                          builder: (context) => new UserMenuView()));
+                          builder: (context) => new UserMenuPageView()));
                 },
                 icon: AssetImage('asset/icons/nav_btn.png'),
               ),

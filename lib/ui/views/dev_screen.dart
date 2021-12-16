@@ -106,7 +106,7 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new UserMenuView())
+                    builder: (context) => new UserMenuPageView())
                 );
               },
               child: const Text('Menu'),
