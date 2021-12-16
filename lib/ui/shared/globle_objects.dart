@@ -1,5 +1,5 @@
+
 import 'package:bluetaxiapp/data/model/user_model.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -8,6 +8,17 @@ late String? requestId=null;
 late String state='';
 bool activeState=false;
 bool driverState=true;
+
+//DEVICE HEIGHT WIDTH
+late double width;
+late double heightWithAppBar;
+late double height;
+
+
+//PADDING
+late  EdgeInsets smallPadding;
+late  EdgeInsets mediumPadding;
+late  EdgeInsets largePadding;
 
 enum Status {
   Booked, //Searching

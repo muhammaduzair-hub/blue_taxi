@@ -12,14 +12,14 @@ class UserMenuPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
     return SafeArea(
         child: Scaffold(
           body: Container(
             height: height,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(height*1/60),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,7 +94,7 @@ class UserMenuPageView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(height: height*0.5/20,),
+                    Container(height: height*0.2/20,),
                     Container(
                       decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
