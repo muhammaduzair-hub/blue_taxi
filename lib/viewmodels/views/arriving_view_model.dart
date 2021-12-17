@@ -43,16 +43,17 @@ class ArrivingSelectionViewModel extends BaseModel {
     if(state == EnumToString.convertToString(Status.Active)) {
       print("$state == ${EnumToString.convertToString(Status.Active)}");
      // startTimer
-    await Future.delayed(Duration(seconds: 5));
-     if(state !=  EnumToString.convertToString(Status.Cancelled)){
-       setBusy(false);
-       print('****BEFORE***$state***$i*****');
-       cancelModel=false;
-       switchState(EnumToString.convertToString(Status.Dispatched));
-       print('*****AFTER**$state****$i****');
-       setBusy(false);
-       switchToDispatchedState();
-     }
+      await Future.delayed(Duration(seconds: 5));
+    if(state !=  EnumToString.convertToString(Status.Cancelled)){
+    setBusy(false);
+    print('****BEFORE***$state***$i*****');
+    cancelModel=false;
+    switchState(EnumToString.convertToString(Status.Dispatched));
+    print('*****AFTER**$state****$i****');
+    setBusy(false);
+    switchToDispatchedState();
+
+ }
     }
     else if(state== EnumToString.convertToString(Status.OnGoing)){
       switchToOnGoingState();

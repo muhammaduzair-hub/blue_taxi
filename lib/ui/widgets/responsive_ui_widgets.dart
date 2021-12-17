@@ -100,24 +100,28 @@ class MenuButton extends StatelessWidget{
 
 //For BACK/NAV Buttons (POP SCREEN)
 class LeadingBackButton extends StatelessWidget {
-  LeadingBackButton({Key? key,required this.image,required this.ontap}) : super(key: key);
+  LeadingBackButton({Key? key,required this.image,required this.ontap, this.radius}) : super(key: key);
   final AssetImage image;
   final VoidCallback ontap;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 1/20),
-        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.4),
+        boxShadow: [
+          BoxShadow(
+          color: Colors.grey.withOpacity(0.4),
           blurRadius: 1.0,
           spreadRadius: 1.0,
-          offset: Offset(1,1),)]
+          offset: Offset(1,1),
+        )]
       ),
       child: InkWell(
         onTap: ontap,
         child: CircleAvatar(
-          radius: width* 1/20,
+          radius: radius ?? width* 1/20,
           child: Image(image: image,),
           backgroundColor: Colors.white,
         ),

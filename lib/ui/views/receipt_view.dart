@@ -1,7 +1,6 @@
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
-import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/user_menu_view.dart';
 import 'package:bluetaxiapp/ui/widgets/responsive_ui_widgets.dart';
@@ -23,11 +22,12 @@ class ReceiptView extends StatelessWidget {
              child: Scaffold(
                     body: Container(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //NAV BUTTON
                         Padding(
-                          padding: smallPadding.copyWith(left: 0.0,top: width*0.025),
+                          padding: smallPadding,
                           child: LeadingBackButton(
                             ontap: () {
                               Navigator.push(
@@ -45,7 +45,16 @@ class ReceiptView extends StatelessWidget {
                         Padding(
                           padding: smallPadding,
                           child: Container(
-                            color: onSecondaryColor,
+                            decoration: BoxDecoration(
+                                color: onSecondaryColor,
+
+                                //color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(1,1),
+                                      color: Colors.grey.withOpacity(0.4), spreadRadius: 3, blurRadius: 8)
+                                ]
+                            ),
                             child: ListBody(
                               children: <Widget>[
                                 Padding(
@@ -175,7 +184,10 @@ class ReceiptView extends StatelessWidget {
                                               Text(model.requestDataModel.payment!.card_no.toString()),
                                             ],
                                           ),
-                                          Text('\$${model.requestDataModel.expectedBill}'),
+                                          Padding(
+                                            padding: EdgeInsets.only(right: 6.0),
+                                            child: Text('\$${model.requestDataModel.expectedBill}'),
+                                          ),
                                         ],
                                       ),
                                     ),

@@ -41,9 +41,10 @@ class LeadingBackButton extends StatelessWidget {
 
 
 class NavButton extends StatelessWidget {
-  NavButton({Key? key,required this.icon,required this.ontap}) : super(key: key);
+  NavButton({Key? key,required this.icon,required this.ontap, this.radius}) : super(key: key);
   final AssetImage icon;
   final VoidCallback ontap;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class NavButton extends StatelessWidget {
     return InkWell(
       onTap: ontap,
       child: CircleAvatar(
-        radius: 40,
+        radius: radius ?? 40,
         backgroundImage: icon,
         backgroundColor: Colors.transparent,
       ),
