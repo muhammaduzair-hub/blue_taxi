@@ -114,7 +114,6 @@ class SignInSignUpView extends StatelessWidget {
 
                                    //Route to VerifyCode View
 
-
                                    await model.signin( numberController, passwordController);
                                    if(model.signedIdnUser.id==''){
                                      model.error=true;
