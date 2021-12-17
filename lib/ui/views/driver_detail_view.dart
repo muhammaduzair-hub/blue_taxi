@@ -1,10 +1,10 @@
 import 'package:bluetaxiapp/constants/strings.dart';
 import 'package:bluetaxiapp/data/model/driver_model.dart';
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
-import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
-import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
+import 'package:bluetaxiapp/ui/widgets/responsive_ui_widgets.dart';
 import 'package:bluetaxiapp/viewmodels/views/driver_detail_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,63 +21,119 @@ class DriverDetailView extends StatelessWidget {
       builder: (context, model, child) => SafeArea(
         child: SafeArea(
           child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-              elevation: 0.0,
-              leading: LeadindBackButton(ontap:(){Navigator.pop(context);},icon: AssetImage('asset/icons/nav btn.png') ,),
-              centerTitle: true,
-              title: Text(LabelDriverDetail, style: heading1.copyWith(color:onPrimaryColor),),
-            ),
-            body: Column(
-              children: [
-                UIHelper.verticalSpaceMedium,
-                ListTile(
-                  leading: CircleAvatar(backgroundImage: AssetImage('asset/images/jurica-koletic-317414-unsplash.png'),),
-                  title: Text(driverDocument!.driverName ?? "Patrick",style: boldHeading2 ,),//Its name and come from model
-                  subtitle: Text(driverDocument!.carName ?? "Mercedes Vito"),
-                ),
-                UIHelper.verticalSpaceMedium,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    profileContainer(AssetImage('asset/images/ic_rating.png',),driverDocument!.rating ?? "4.8"),
-                    profileContainer(AssetImage('asset/images/ic_rating.png',),"126"),
-                    profileContainer(AssetImage('asset/images/ic_calendar.png',),"2 years")
-                  ],
-                ),
-                UIHelper.verticalSpaceMedium,
-                Padding(
-                  padding: UIHelper.pagePaddingSmall,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                            color: secondaryColor2
-                        )
-                    ),
-                    child: Column(
+            body: Container(
+              child: Column(
+                children: [
+                  //APP BAR CODE
+                  Padding(
+                    padding: smallPadding.copyWith(right: 0.0,top: width*0.025),
+                    child: Row(
                       children: [
-                        listTile(LabelMemberSince, "16.06.2017"),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Divider(height: 2,color: secondaryColor2,),
+                        LeadingBackButton(
+                          ontap: () {
+                            Navigator.pop(context);
+                          },
+                          image:AssetImage('asset/icons/back_arrow.png'),
                         ),
-                        listTile(LabelCarType, "Van"),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Divider(height: 2,color: secondaryColor2,),
-                        ),
-                        listTile(LabelPlateNumber, driverDocument!.carNumber?? "HS785K"),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Divider(height: 2,color: secondaryColor2,),
+                          padding: EdgeInsets.only(left: width*0.5/3),
+                          child: Text("Ride History",
+                              style: boldHeading1.copyWith(color: onPrimaryColor)),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
+
+                  //USER INFO
+                  Padding(
+                    padding: smallPadding,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(70),
+                              border: Border.all(
+                                color: Colors.grey.withOpacity(0.3),
+                              )),
+                          child: CustomImage(
+                            ontap: () {},
+                            fit: BoxFit.cover,
+                            image: const AssetImage("asset/images/Group.png"),
+                            height: height*1/10,
+                            width: width*1/6,
+                          ),
+                        ),
+                        Padding(
+                          padding: smallPadding.copyWith(right: 0.0, bottom: 0.0, top: 0.0, left: width*0.025),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                driverDocument!.driverName??"test",
+                                style:
+                                boldHeading2.copyWith(color: onPrimaryColor),
+                              ),
+                              Text(
+                                driverDocument!.carName?? 'Volkswegan Jetta',
+                                style: heading2.copyWith(
+                                    color: onPrimaryColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //3 Cards in a ROW
+                  Padding(
+                    padding: smallPadding.copyWith(top:0.0, bottom: height*0.01),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        profileContainer(AssetImage('asset/images/ic_rating.png',),driverDocument!.rating ?? "4.8"),
+                        profileContainer(AssetImage('asset/images/ic_rating.png',),"126"),
+                        profileContainer(AssetImage('asset/images/ic_calendar.png',),"2 years")
+                      ],
+                    ),
+                  ),
+
+                  //Card
+                  Padding(
+                    padding: smallPadding,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                              color: secondaryColor2
+                          )
+                      ),
+                      child: Column(
+                        children: [
+                          listTile(LabelMemberSince, "16.06.2017"),
+                          Padding(
+                            padding:smallPadding.copyWith(top: 0.0, bottom:0.0),
+                            child: Divider(height: 2,color: secondaryColor2,),
+                          ),
+                          listTile(LabelCarType, "Van"),
+                          Padding(
+                            padding:smallPadding.copyWith(top: 0.0, bottom:0.0),
+                            child: Divider(height: 2,color: secondaryColor2,),
+                          ),
+                          listTile(LabelPlateNumber, driverDocument!.carNumber?? "HS785K"),
+                          Padding(
+                            padding:smallPadding.copyWith(top: 0.0, bottom:0.0),
+                            child: Divider(height: 2,color: secondaryColor2,),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -87,7 +143,7 @@ class DriverDetailView extends StatelessWidget {
 
   Widget profileContainer(AssetImage icon, String text){
     return Container(
-      width: 90,
+      width: width* 1.15/4,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
@@ -96,10 +152,17 @@ class DriverDetailView extends StatelessWidget {
       ),
       child: Column(
         children: [
-          UIHelper.verticalSpaceSmall,
-          CircleAvatar(backgroundImage: icon,backgroundColor: Colors.transparent,),
-          UIHelper.verticalSpaceSmall,
-          Text(text,)
+          Padding(
+            padding: smallPadding.copyWith(bottom: height*0.01, top: height*0.01,),
+            child: CircleAvatar(
+              backgroundImage: icon,
+              backgroundColor: Colors.transparent,
+            ),
+          ),
+          Padding(
+            padding: smallPadding.copyWith(bottom: height*0.01, top: 0.0),
+            child: Text(text,),
+          )
         ],
       ),
     );

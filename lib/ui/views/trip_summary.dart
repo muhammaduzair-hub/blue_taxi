@@ -1,11 +1,11 @@
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/driver_detail_view.dart';
 import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
-import 'package:bluetaxiapp/ui/widgets/leading_back_button.dart';
-import 'package:bluetaxiapp/ui/widgets/primary_button.dart';
+import 'package:bluetaxiapp/ui/widgets/responsive_ui_widgets.dart';
 import 'package:bluetaxiapp/viewmodels/views/trip_summary_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +22,9 @@ class RideSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String driverId = snapshot.docs[index]['riderId'];
-    double size = MediaQuery
-        .of(context)
-        .size
-        .height;
+    double size = MediaQuery.of(context).size.height;
     size = size / 4;
-
+    DateTime date = (snapshot.docs[index]['createDate']).toDate();
 
     return BaseWidget<TripViewModel>(
         model: TripViewModel(
@@ -51,14 +48,16 @@ class RideSummary extends StatelessWidget {
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0.0,
-        title: Text("Ride History",
+        title: Text("Ride Details",
             style: boldHeading1.copyWith(color: onPrimaryColor)),
-        leading: LeadingBackButton(
-          radius: 30.0,
-          ontap: () {
-            Navigator.pop(context);
-          },
-          icon: AssetImage('asset/icons/back_btn.png'),
+        leading: Padding(
+          padding: smallPadding.copyWith(top: width * 0.025, bottom: width * 0.025, right: 0.0),
+          child: LeadingBackButton(
+            ontap: () {
+              Navigator.pop(context);
+            },
+            image:AssetImage('asset/icons/back_arrow.png'),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -67,7 +66,7 @@ class RideSummary extends StatelessWidget {
           children: [
             Stack(alignment: Alignment.topCenter, children: [
               Container(
-                height: 250.0,
+                height: height*0.3,
                 child: GoogleMap(
                   scrollGesturesEnabled: false,
                   zoomControlsEnabled: false,
@@ -86,90 +85,80 @@ class RideSummary extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(21.0, size, 21.0, 20.0),
-                child: Card(
-                  elevation: 9,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(21.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                padding: smallPadding.copyWith(top: height*0.25),
+                child: Hero(
+                  tag: "rideCard",
+                  child: Card(
+                    child: Padding(
+                      padding:smallPadding.copyWith(top: height*0.02, bottom: height*0.02),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  "${date.hour}:${date.minute}",
+                                  style: heading2.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: onPrimaryColor2),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              SizedBox(height: width*1/10,),
+                              Container(
+                                child: Text(
+                                  "${date.hour}:${date.minute}",
+                                  style: heading2.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: onPrimaryColor2),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: Image(
+                                image: AssetImage('asset/icons/ic_route.png')),
+                          ),
+                          Expanded(
+                            child: Column(
                               children: <Widget>[
-                                Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 80,
-                                      child: Text(
-                                        "",
-                                        style: heading2.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            color: onPrimaryColor2),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                    UIHelper.verticalSpaceSmall,
-                                    Container(
-                                      child: Text(
-                                        "",
-                                        style: heading2.copyWith(
-                                            fontWeight: FontWeight.w400,
-                                            color: onPrimaryColor2),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  child: Text(
+                                    snapshot.docs[index]['Addresses']['from']
+                                    ['place_name'],
+                                    style: heading2.copyWith(
+                                        fontWeight: FontWeight.w400),
+                                    textAlign: TextAlign.start,
+                                  ),
                                 ),
-                                UIHelper.horizontalSpaceMedium,
-                                Image(
-                                    height: 105.0,
-                                    image: AssetImage(
-                                        'asset/icons/routeIc.png')),
-                                UIHelper.horizontalSpaceMedium,
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 80,
-                                      width: 200,
-                                      child: Text(
-                                        snapshot
-                                            .docs[index]['Addresses']['from']
-                                        ['place_name'],
-                                        style: heading2.copyWith(
-                                            fontWeight: FontWeight.w400),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                    UIHelper.verticalSpaceSmall,
-                                    Container(
-                                      width: 200,
-                                      child: Text(
-                                        snapshot.docs[index]['Addresses']['to']
-                                        ['place_name'],
-                                        style: heading2.copyWith(
-                                            fontWeight: FontWeight.w400),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                SizedBox(height: width*1/20,),
+                                Container(
+                                  child: Text(
+                                    snapshot.docs[index]['Addresses']['to']
+                                    ['place_name'],
+                                    style: heading2.copyWith(
+                                        fontWeight: FontWeight.w400),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                )
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ]),
+
+            //Driver Info Card
             Padding(
-              padding: UIHelper.pagePaddingMedium.copyWith(
-                  right: 21.0, left: 21.0),
+              padding: smallPadding,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,17 +167,15 @@ class RideSummary extends StatelessWidget {
                     " Driver",
                     style: boldHeading2.copyWith(color: onPrimaryColor),
                   ),
-                  SizedBox(height: 5.0),
                   GestureDetector(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (
                           context) => DriverDetailView(driverDocument: model.driverDocument,),));
-
                     },
                     child: Card(
                       elevation: 9,
                       child: Padding(
-                        padding: UIHelper.pagePaddingSmall.copyWith(top: 15,bottom:15),
+                        padding: smallPadding,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -197,19 +184,24 @@ class RideSummary extends StatelessWidget {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                  child: Center(
-                                    child: Image(image: AssetImage(
-                                        'asset/images/Group.png')),
+                                      color: Colors.grey.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(70),
+                                      border: Border.all(
+                                        color: Colors.grey.withOpacity(0.3),
+                                      )),
+                                  child: CustomImage(
+                                    ontap: () {},
+                                    fit: BoxFit.cover,
+                                    image: const AssetImage("asset/images/Group.png"),
+                                    height: height * 0.1,
+                                    width: width * 1 / 6,
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
+                                  padding: smallPadding.copyWith(right: 0.0, bottom: 0.0, top: 0.0, left: width*0.025),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
                                         model.driverDocument!.driverName??"test",
@@ -250,9 +242,10 @@ class RideSummary extends StatelessWidget {
                 ],
               ),
             ),
+
+            //Payment Info Card
             Padding(
-              padding: UIHelper.pagePaddingMedium.copyWith(
-                  right: 21.0, left: 21.0),
+              padding: smallPadding,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,7 +254,6 @@ class RideSummary extends StatelessWidget {
                     " Payment",
                     style: boldHeading2.copyWith(color: onPrimaryColor),
                   ),
-                  SizedBox(height: 5.0),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -271,41 +263,32 @@ class RideSummary extends StatelessWidget {
                         )
                     ),
                     child: Padding(
-                      padding: UIHelper.pagePaddingSmall.copyWith(top: 10,bottom:10),
+                      padding: smallPadding,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: onPrimaryColor3,
-                                  ),
-                                  child: Image(
-                                      image: snapshot.docs[index]['payment']['card_no']=="Cash"?AssetImage("asset/icons/ic_cash.png"): AssetImage('asset/icons/shape.png')),
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: onPrimaryColor3,
                                 ),
+                                child: Image(
+                                    image: snapshot.docs[index]['payment']['card_no']=="Cash"?AssetImage("asset/icons/ic_cash.png"): AssetImage('asset/icons/shape.png')),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:10.0),
-                                child: Text(
-                                  snapshot
-                                      .docs[index]['payment']['card_no'],
-                                  style:
-                                  boldHeading2.copyWith(color: onPrimaryColor),
-                                ),
+                              Text(
+                                snapshot
+                                    .docs[index]['payment']['card_no'],
+                                style:
+                                boldHeading2.copyWith(color: onPrimaryColor),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: Text(
-                              '\$${snapshot.docs[index]['expectedBill']}',
-                              style:
-                              boldHeading2.copyWith(color: onPrimaryColor),
-                            ),
+                          Text(
+                            '\$${snapshot.docs[index]['expectedBill']}',
+                            style:
+                            boldHeading2.copyWith(color: onPrimaryColor),
                           ),
                         ],
                       ),
@@ -314,11 +297,13 @@ class RideSummary extends StatelessWidget {
                 ],
               ),
             ),
+
+            //Raise Issue Button
             Padding(
-              padding: const EdgeInsets.all(21.0),
-              child: Container(
+              padding: smallPadding,
+              child: SizedBox(
+                height: height * 0.06,
                 width: double.infinity,
-                height: 50,
                 child: PrimaryButton(
                     text: Text("Raise Issue"),
                     ontap: () {
@@ -327,7 +312,6 @@ class RideSummary extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            padding: UIHelper.pagePaddingMedium.copyWith(top:21.0),
                             child: DraggableScrollableSheet(
                               initialChildSize: 1.0,
                               builder: (context, scrollController) =>
@@ -338,9 +322,7 @@ class RideSummary extends StatelessWidget {
                                           child: Image(
                                             image: AssetImage('asset/icons/ic_gesture.png'),
                                           )),
-                                      UIHelper.verticalSpaceSmall,
                                       Text("Choose an option" ,style: buttonTextStyle.copyWith(fontWeight: FontWeight.w700),),
-                                      UIHelper.verticalSpaceLarge,
                                       ListView.separated(
                                         scrollDirection: Axis.vertical,
                                         shrinkWrap: true,

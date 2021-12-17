@@ -12,8 +12,6 @@ class RideHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // double width = MediaQuery.of(context).size.width;
-    // double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -22,7 +20,7 @@ class RideHistoryView extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only( top: width * 1 / 20, left: width * 1 / 20),
+                  padding: smallPadding.copyWith(right: 0.0,top: width*0.025),
                   child: Row(
                     children: [
                       LeadingBackButton(
@@ -95,12 +93,12 @@ class CustomCard extends StatelessWidget {
                         builder: (context) =>  RideSummary(snapshot: snapshot, index: index,)));
               },
               child:Padding(
-                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 1 / 20),
+                padding: smallPadding.copyWith(top: height*0.01, bottom: 0.0),
                 child: MyCard(snapshot: snapshot, index: index, width: MediaQuery.of(context).size.width),
               )
             ):
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 1 / 20),
+              padding: smallPadding,
               child: MyCard(snapshot: snapshot, index: index, elevatin: 0, width: MediaQuery.of(context).size.width),
             )
           ),
@@ -116,93 +114,96 @@ class CustomCard extends StatelessWidget {
     int v = double.parse(snapshot.docs[index]['expectedBill']).toInt();
     DateTime endTime = date.add(Duration(minutes: v));
     
-    return  Card(
-      elevation: elevatin.toDouble(),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: width * 1 / 30, left: width * 1 / 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}",
-                  style:
-                  boldHeading3.copyWith(color: onPrimaryColor),
-                ),
-                if (snapshot.docs[index]['rideStatus'] ==
-                    "Cancelled")
+    return  Hero(
+      tag: "rideCard",
+      child: Card(
+        elevation: elevatin.toDouble(),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: width * 1 / 30, left: width * 1 / 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Text(
-                    "CANCELLED",
-                    style: boldHeading3.copyWith(color: Colors.red),
+                    "${date.year}-${date.month}-${date.day} ${date.hour}:${date.minute}",
+                    style:
+                    boldHeading3.copyWith(color: onPrimaryColor),
                   ),
-              ],
+                  if (snapshot.docs[index]['rideStatus'] ==
+                      "Cancelled")
+                    Text(
+                      "CANCELLED",
+                      style: boldHeading3.copyWith(color: Colors.red),
+                    ),
+                ],
+              ),
             ),
-          ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 1 / 30, vertical: width * 1 / 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "${date.hour}:${date.minute}",
-                        style: heading2.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: onPrimaryColor2),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    SizedBox(height: width*1/10,),
-                    Container(
-                      child: Text(
-                        "${endTime.hour}:${endTime.minute}",
-                        style: heading2.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: onPrimaryColor2),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                  child: Image(
-                      image: AssetImage('asset/icons/ic_route.png')),
-                ),
-                Expanded(
-                  child: Column(
+            Divider(),
+            Padding(
+              padding:smallPadding.copyWith(top: height*0.02, bottom: height*0.02),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
                         child: Text(
-                          snapshot.docs[index]['Addresses']['from']
-                          ['place_name'],
+                          "${date.hour}:${date.minute}",
                           style: heading2.copyWith(
-                              fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w400,
+                              color: onPrimaryColor2),
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      SizedBox(height: width*1/20,),
+                      SizedBox(height: width*1/10,),
                       Container(
                         child: Text(
-                          snapshot.docs[index]['Addresses']['to']
-                          ['place_name'],
+                          "${endTime.hour}:${endTime.minute}",
                           style: heading2.copyWith(
-                              fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w400,
+                              color: onPrimaryColor2),
                           textAlign: TextAlign.start,
                         ),
-                      )
+                      ),
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    child: Image(
+                        image: AssetImage('asset/icons/ic_route.png')),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            snapshot.docs[index]['Addresses']['from']
+                            ['place_name'],
+                            style: heading2.copyWith(
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        SizedBox(height: width*1/20,),
+                        Container(
+                          child: Text(
+                            snapshot.docs[index]['Addresses']['to']
+                            ['place_name'],
+                            style: heading2.copyWith(
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.start,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

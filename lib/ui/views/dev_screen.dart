@@ -185,7 +185,7 @@ class DevScreenView extends StatelessWidget {
               ),
               onPressed: (){
                 Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => new ReceiptView(requestId: "3rppV5vaYEqENLaCyJoZ",))
+                    builder: (context) => new ReceiptView(requestId: "F5KY8jdHyq4VfVsjK1gQ",))
                 );
               },
               child: const Text('Reciept View'),

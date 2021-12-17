@@ -19,7 +19,7 @@ class UserMenuPageView extends StatelessWidget {
           body: Container(
             height: height,
             child: Padding(
-              padding: EdgeInsets.all(height*1/60),
+              padding: smallPadding,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,8 +48,9 @@ class UserMenuPageView extends StatelessWidget {
                                       builder: (context) => new MyProfileView()));
                             },
                             image: AssetImage("asset/images/photo_user.png"),
-                            height: height * 1 / 8,
-                            width: width * 1 / 6,
+                            height: height*1/10,
+                            width: width*1/6,
+                            fit: BoxFit.cover,
                           ),
                         ),
                          Text(
@@ -62,37 +63,34 @@ class UserMenuPageView extends StatelessWidget {
                       ],
                     ),
                     Container(height: height*0.5/20,),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: (MediaQuery.of(context).size.height)*0.5/20, vertical: (MediaQuery.of(context).size.width)*0.5/20),
-                      child: GridView.count(
-                        crossAxisSpacing: 14,
-                        mainAxisSpacing: 14,
-                        crossAxisCount: 2,
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        children: <Widget>[
-                          MenuButton(menuLabel: 'Ride History', image: 'asset/images/ic_history.png', dy: 3.0, dx: 3.0,
-                              ontap: () async {
-                                await Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => new RideHistoryView()));
-                              },),
-                          MenuButton(menuLabel: 'Payment', image: 'asset/images/ic_payment.png', dy: 3.0, dx: -3.0,
+                    GridView.count(
+                      crossAxisSpacing: 14,
+                      mainAxisSpacing: 14,
+                      crossAxisCount: 2,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        MenuButton(menuLabel: 'Ride History', image: 'asset/images/ic_history.png', dy: 3.0, dx: 3.0,
                             ontap: () async {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
+                              await Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => new RideHistoryView()));
                             },),
+                        MenuButton(menuLabel: 'Payment', image: 'asset/images/ic_payment.png', dy: 3.0, dx: -3.0,
+                          ontap: () async {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
+                          },),
 
-                          MenuButton(menuLabel: 'Support', image: 'asset/images/ic_promo.png', dy: -3.0, dx: 4.0,
-                            ontap: () async {
-                              await Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => new RideHistoryView()));
-                            },),
-                          MenuButton(menuLabel: 'Maintenance', image: 'asset/images/ic_payment.png', dy: -3.0, dx: -4.0,
-                            ontap: () async {
-                              await Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => new RideHistoryView()));
-                            },),
-                        ],
-                      ),
+                        MenuButton(menuLabel: 'Support', image: 'asset/images/ic_promo.png', dy: -3.0, dx: 4.0,
+                          ontap: () async {
+                            await Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => new RideHistoryView()));
+                          },),
+                        MenuButton(menuLabel: 'Maintenance', image: 'asset/images/ic_payment.png', dy: -3.0, dx: -4.0,
+                          ontap: () async {
+                            await Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => new RideHistoryView()));
+                          },),
+                      ],
                     ),
                     Container(height: height*0.2/20,),
                     Container(

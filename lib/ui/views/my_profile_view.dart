@@ -27,8 +27,7 @@ class MyProfileView extends StatelessWidget {
               children: [
                 //BACK BUTTON
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: width * 1 / 20, left: width * 1 / 20),
+                  padding: smallPadding.copyWith(right: 0.0,),
                   child: LeadingBackButton(
                       image: const AssetImage("asset/icons/back_arrow.png"),
                       ontap: () {
@@ -38,7 +37,7 @@ class MyProfileView extends StatelessWidget {
 
                 //CARD AND NOTIFICATION TOGGLE
                 Padding(
-                  padding: EdgeInsets.all(width * 1 / 20),
+                  padding: smallPadding.copyWith(top: 0.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -53,8 +52,9 @@ class MyProfileView extends StatelessWidget {
                         child: CustomImage(
                           ontap: () {},
                           image: const AssetImage("asset/images/photo_user.png"),
-                          height: height * 1 / 8,
-                          width: width * 1 / 6,
+                          height: height*1/10,
+                          width: width*1/6,
+                          fit: BoxFit.cover,
                         ),
                       ),
 
@@ -71,15 +71,13 @@ class MyProfileView extends StatelessWidget {
                         elevation: 15,
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
-                          height: height / 3,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: width * 1 / 20,
-                                vertical: height * 1 / 70),
+                            padding: smallPadding,
                             child: Center(
                               child: Align(
                                 alignment: Alignment.center,
                                 child: ListView(
+                                  shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   children: [
                                     // i use hard coded values here because we will fetch these texts from models
@@ -133,7 +131,7 @@ class MyProfileView extends StatelessWidget {
 
                       //LOGOUT BUTTON
                       SizedBox(
-                        height: height * 1.5 / 18,
+                        height: height * 0.06,
                         width: double.infinity,
                         child: PrimaryButton(
                           text: const Text("Logout"),

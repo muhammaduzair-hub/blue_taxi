@@ -1,4 +1,5 @@
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
+import 'package:bluetaxiapp/ui/views/dev_screen.dart';
 import 'package:bluetaxiapp/ui/views/splash_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
  print(height);
      heightWithAppBar = mediaQuery.size.height - (mediaQuery.padding.top + kToolbarHeight);
  print(heightWithAppBar);
-      smallPadding= EdgeInsets.only(left: height*1/60);
+      smallPadding= EdgeInsets.only(left: width * 0.05, right: width * 0.05, top: width * 0.05, bottom: width*0.05);
     return FutureBuilder(
       future: Firebase.initializeApp(),
             builder: (context, snapshot) {
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
                       theme:  ThemeData(
                               primarySwatch: Colors.blue,
                             ),
-                      home:MySplashScreenView()
+                      home:DevScreenView()
                     ),
                   ),
                 );

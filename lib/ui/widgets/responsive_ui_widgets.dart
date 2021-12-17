@@ -1,4 +1,5 @@
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
+import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:flutter/material.dart';
 
 //For Gesture Buttons
@@ -75,19 +76,22 @@ class MenuButton extends StatelessWidget{
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: Image(
-                image: AssetImage(image),
-                height: 20.0,
-                width:20.0,
-                fit: BoxFit.contain,
+        child: Padding(
+          padding: smallPadding.copyWith(left:0.0, right:0.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Image(
+                  image: AssetImage(image),
+                  height: height*0.08,
+                  width:width*0.08,
+                  fit: BoxFit.contain,
+                ),
               ),
-            ),
-            Expanded(child: Text(menuLabel)),
-          ],
+              Expanded(child: Text(menuLabel)),
+            ],
+          ),
         ),
       ),
     );
@@ -107,13 +111,13 @@ class LeadingBackButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 1/20),
         boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.4),
           blurRadius: 1.0,
-          spreadRadius: 2.0,
+          spreadRadius: 1.0,
           offset: Offset(1,1),)]
       ),
       child: InkWell(
         onTap: ontap,
         child: CircleAvatar(
-          radius: MediaQuery.of(context).size.width * 1/20,
+          radius: width* 1/20,
           child: Image(image: image,),
           backgroundColor: Colors.white,
         ),
