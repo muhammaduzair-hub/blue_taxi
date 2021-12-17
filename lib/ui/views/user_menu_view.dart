@@ -3,6 +3,7 @@ import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
 import 'package:bluetaxiapp/ui/views/my_card_view.dart';
 import 'package:bluetaxiapp/ui/views/my_profile_view.dart';
+import 'package:bluetaxiapp/ui/views/support_view.dart';
 import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
 import 'package:bluetaxiapp/ui/widgets/responsive_ui_widgets.dart';
 import 'package:flutter/material.dart';
@@ -80,17 +81,18 @@ class UserMenuPageView extends StatelessWidget {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => MyCardView(),));
                           },),
 
-                        MenuButton(menuLabel: 'Support', image: 'asset/images/ic_promo.png', dy: -3.0, dx: 4.0,
-                          ontap: () async {
-                            await Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => new RideHistoryView()));
-                          },),
-                        MenuButton(menuLabel: 'Maintenance', image: 'asset/images/ic_payment.png', dy: -3.0, dx: -4.0,
-                          ontap: () async {
-                            await Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => new RideHistoryView()));
-                          },),
-                      ],
+                          MenuButton(menuLabel: 'Support', image: 'asset/images/ic_promo.png', dy: -3.0, dx: 4.0,
+                            ontap: () async {
+                              await Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => new SupportView()));
+                            },),
+                          MenuButton(menuLabel: 'Maintenance', image: 'asset/images/ic_payment.png', dy: -3.0, dx: -4.0,
+                            ontap: () async {
+                              await Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => new RideHistoryView()));
+                            },),
+                        ],
+                      ),
                     ),
                     Container(height: height*0.2/20,),
                     Container(
