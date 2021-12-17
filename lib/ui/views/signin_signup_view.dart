@@ -61,7 +61,7 @@ class SignInSignUpView extends StatelessWidget {
                      child: Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         Spacer(flex: 2,),
+                        Spacer(),
                          Text(LabelName,style: boldHeading3),
                          UIHelper.verticalSpaceSmall,
                          CustomTextField(controller: nameController, keyboardType: TextInputType.name),
@@ -187,11 +187,11 @@ class SignInSignUpView extends StatelessWidget {
                  height: size.height-120,
                  width: double.infinity,
                  child: Padding(
-                   padding: UIHelper.pagePaddingSmall,
+                   padding: UIHelper.pagePaddingSmall.copyWith(bottom: 0),
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
-                       Spacer(flex: 2,),
+                       Spacer(flex: 1,),
                        Text(LabelMobile,style: boldHeading3),
                        UIHelper.verticalSpaceSmall,
                        CustomTextField(controller: snumberController,keyboardType: TextInputType.number,),
@@ -303,7 +303,7 @@ class SignInSignUpView extends StatelessWidget {
                            // )
                          ],
                        ),
-                       UIHelper.verticalSpaceMedium,
+                       Spacer(flex: 2,),
                        Row(
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: [
