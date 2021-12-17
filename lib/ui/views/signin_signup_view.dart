@@ -57,11 +57,11 @@ class SignInSignUpView extends StatelessWidget {
                    height: size.height-120,
                    width: double.infinity,
                    child: Padding(
-                     padding: UIHelper.pagePaddingSmall,
+                     padding: UIHelper.pagePaddingSmall.copyWith(bottom: 0),
                      child: Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         Spacer(flex: 2,),
+                        Spacer(),
                          Text(LabelName,style: boldHeading3),
                          UIHelper.verticalSpaceSmall,
                          CustomTextField(controller: nameController, keyboardType: TextInputType.name),
@@ -87,7 +87,7 @@ class SignInSignUpView extends StatelessWidget {
                          CustomTextField(controller: passwordController, showPassword: true,),
                          if(model.passState==false)Text(labelPasswordError, style: TextStyle(color: errorMessage),),
 
-                         UIHelper.verticalSpaceLarge,
+                         UIHelper.verticalSpaceMedium,
                          Container(
                            width: double.infinity,
                            height: 50,
@@ -113,7 +113,6 @@ class SignInSignUpView extends StatelessWidget {
                                    await model.signUp(nameController, emailController,numberController, passwordController);
 
                                    //Route to VerifyCode View
-
 
                                    await model.signin( numberController, passwordController);
                                    if(model.signedIdnUser.id==''){
@@ -188,11 +187,11 @@ class SignInSignUpView extends StatelessWidget {
                  height: size.height-120,
                  width: double.infinity,
                  child: Padding(
-                   padding: UIHelper.pagePaddingSmall,
+                   padding: UIHelper.pagePaddingSmall.copyWith(bottom: 0),
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
                      children: [
-                       Spacer(flex: 2,),
+                       Spacer(flex: 1,),
                        Text(LabelMobile,style: boldHeading3),
                        UIHelper.verticalSpaceSmall,
                        CustomTextField(controller: snumberController,keyboardType: TextInputType.number,),
@@ -234,31 +233,28 @@ class SignInSignUpView extends StatelessWidget {
                          ),
                        ),
                        UIHelper.verticalSpaceMedium,
-                       UIHelper.verticalSpaceMedium,
-                       Expanded(
-
-                         child:  Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: <Widget>[
-                             Container(
-                               width: 85.0,
-                               height: 1,
-                               color: onPrimaryColor,
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                         children: <Widget>[
+                           Container(
+                             width: 85.0,
+                             height: 1,
+                             color: onPrimaryColor,
+                           ),
+                           Container(
+                             child: Text(
+                                 LabelOrSignInWith,
+                                 style: heading3.copyWith(color: onPrimaryColor,fontWeight: FontWeight.w700)
                              ),
-                             Container(
-                               child: Text(
-                                   LabelOrSignInWith,
-                                   style: heading3.copyWith(color: onPrimaryColor,fontWeight: FontWeight.w700)
-                               ),
-                             ),
-                             Container(
-                               width: 85.0,
-                               height: 1,
-                               color: onPrimaryColor,
-                             ),
-                           ],
-                         ),
+                           ),
+                           Container(
+                             width: 85.0,
+                             height: 1,
+                             color: onPrimaryColor,
+                           ),
+                         ],
                        ),
+                       UIHelper.verticalSpaceSmall,
                        Row(
                          crossAxisAlignment: CrossAxisAlignment.center,
                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
