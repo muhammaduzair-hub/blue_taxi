@@ -14,81 +14,83 @@ import 'package:flutter/rendering.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:group_list_view/group_list_view.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AdressSelectionView extends StatelessWidget {
 
    AdressSelectionView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return BaseWidget<AdressSelectionViewModel>(
-      model: AdressSelectionViewModel(authRepository: Provider.of(context)),
-      builder: (context, model, child) => WillPopScope(
-        onWillPop: () async{
-          if(model.state==LabelSelectAdress){
-            return true;
-          }
-          else if(model.state==LabelRideOption){
-            model.switchState(LabelSelectAdress);
-            return false;
-          }
-          else{
-            model.switchState(LabelRideOption);
-            return false;
-          }
-        },
-        child: SafeArea(
-            child: Scaffold(
-              body: Stack(
-                children: [
-                  GoogleMap(
-                    markers: Set.of(model.markers),
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: CameraPosition(target: LatLng(	33.738045,73.084488,),zoom: 15),
-                    mapType: MapType.terrain,
-                    onTap: (latlng){
-                      print("${latlng.latitude}     ${latlng.longitude}");
-                    },
-                  ),
+    return ResponsiveSizer(
+       builder: (context, orintation, screenType){
+         return BaseWidget<AdressSelectionViewModel>(
+           model: AdressSelectionViewModel(authRepository: Provider.of(context)),
+           builder: (context, model, child) => WillPopScope(
+             onWillPop: () async{
+               if(model.state==LabelSelectAdress){
+                 return true;
+               }
+               else if(model.state==LabelRideOption){
+                 model.switchState(LabelSelectAdress);
+                 return false;
+               }
+               else{
+                 model.switchState(LabelRideOption);
+                 return false;
+               }
+             },
+             child: SafeArea(
+               child: Scaffold(
+                   body: Stack(
+                     children: [
+                       GoogleMap(
+                         markers: Set.of(model.markers),
+                         zoomControlsEnabled: false,
+                         initialCameraPosition: CameraPosition(target: LatLng(	33.738045,73.084488,),zoom: 15),
+                         mapType: MapType.terrain,
+                         onTap: (latlng){
+                           print("${latlng.latitude}     ${latlng.longitude}");
+                         },
+                       ),
 
-                  //Navigator Button
-                  // if(model.busy)CircularProgressIndicator()
-                  // else
-                    if(model.state==LabelSelectAdress)
-                    LeadindBackButton(
-                      ontap: (){Navigator.pop(context);},
-                      icon: AssetImage('asset/icons/nav btn.png'),
-                    )
-                  else if(model.state == LabelRideOption)
-                      LeadindBackButton(
-                          icon: AssetImage('asset/icons/nav btn.png'),
-                          ontap: (){model.switchState(LabelSelectAdress);}
-                          )
-                  else if(model.state == LabelPaymentOption)
-                    LeadindBackButton(
-                        icon: AssetImage('asset/icons/nav btn.png'),
-                        ontap: (){model.switchState(LabelRideOption);}
-                    ),
+                       //Navigator Button
+                       // if(model.busy)CircularProgressIndicator()
+                       // else
+                       if(model.state==LabelSelectAdress)
+                         LeadindBackButton(
+                           ontap: (){Navigator.pop(context);},
+                           icon: AssetImage('asset/icons/nav btn.png'),
+                         )
+                       else if(model.state == LabelRideOption)
+                         LeadindBackButton(
+                             icon: AssetImage('asset/icons/nav btn.png'),
+                             ontap: (){model.switchState(LabelSelectAdress);}
+                         )
+                       else if(model.state == LabelPaymentOption)
+                           LeadindBackButton(
+                               icon: AssetImage('asset/icons/nav btn.png'),
+                               ontap: (){model.switchState(LabelRideOption);}
+                           ),
 
 
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(model.state,style: boldHeading1.copyWith(color: onPrimaryColor),),
-                    ),
-                  ),
+                       Padding(
+                         padding: EdgeInsets.only(top: 2.h),
+                         child: Align(
+                           alignment: Alignment.topCenter,
+                           child: Text(model.state,style: boldHeading1.copyWith(color: onPrimaryColor),),
+                         ),
+                       ),
 
-                  //bottom sheets
-                  // if(model.busy) Align(alignment: Alignment.center,child: CircularProgressIndicator(),)
-                  // else
-                    if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)
-                  else if(model.state==LabelRideOption) rideOptionBottomSheet(model , context)
-                  else if(model.state == LabelPaymentOption)  paymentOptionBottomSheet(model),
-                ],
-              )
-            ),
-        ),
-      ),
+                       if(model.state==LabelSelectAdress)selectAdressBottomSheet(model)
+                       else if(model.state==LabelRideOption) rideOptionBottomSheet(model , context)
+                       else if(model.state == LabelPaymentOption)  paymentOptionBottomSheet(model),
+                     ],
+                   )
+               ),
+             ),
+           ),
+         );
+       },
     );
   }
 
@@ -100,37 +102,60 @@ class AdressSelectionView extends StatelessWidget {
       maxChildSize: 0.8,
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+        //height:80%
         child: Container(
             color: onSecondaryColor,
-            padding: UIHelper.pagePaddingSmall.copyWith(top: 0),
+            //padding: UIHelper.pagePaddingSmall.copyWith(top: 0),
+            padding: EdgeInsets.only(
+              top: 1.h,
+              left: 3.w,
+              right: 3.w,
+              bottom: 2.h,
+            ),
             child:
+                //Height: 77%
             ListView(
               physics: NeverScrollableScrollPhysics(),
               controller: scrollController,
               children: [
-                UIHelper.verticalSpaceSmall,
                 Center(
                     child: Image(
                       image: AssetImage('asset/icons/ic_gesture.png'),
+                      height: 1.h,
                     )
                 ),
-                UIHelper.verticalSpaceMedium,
-                //TextField(),
+                SizedBox(height: 2.h,),
+                //Height:74%
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: Offset(0,3),
+                      )
+                    ]
                   ),
+                  padding: EdgeInsets.only(
+                    top: 1.h,bottom: 1.h,
+                    right: 2.w,left: 2.w
+                  ),
+                  //Height:72%
                   child:Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Image(image:AssetImage('asset/icons/ic_route.png')),
                       UIHelper.horizontalSpaceSmall,
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 1.h,),
                           SizedBox(
-                            height: model.addressSelection_FromSearchTextFieldInitialSize.toDouble(),
-                            width: 250,
+                            height: 3.h,
+                            width: 80.w,
                             child:
                             TextField(
                               onTap: (){
@@ -150,12 +175,12 @@ class AdressSelectionView extends StatelessWidget {
                               onSubmitted: (v){model.switchTextField();},
                             )
                           ),
-                          UIHelper.verticalSpaceSmall,
-                          Image(image:AssetImage('asset/icons/line.png')),
-                          UIHelper.verticalSpaceSmall,
+                          SizedBox(height: 1.h,),
+                          Image(image:AssetImage('asset/icons/line.png'),),
+                          SizedBox(height: 1.h,),
                           SizedBox(
-                            height: model.addressSelection_ToSearchTextFieldInitialSize.toDouble(),
-                            width: 250,
+                              height: 3.h,
+                              width: 80.w,
                             child:
                               TextField(
                                 onTap: (){
@@ -174,27 +199,27 @@ class AdressSelectionView extends StatelessWidget {
                                 onSubmitted: (v){},
                               )
                           ),
+                          SizedBox(height: 1.h,),
                         ],
                       )
                     ],
                   ),
                 ),
-                Divider(),
-                UIHelper.verticalSpaceMedium,
+
+                SizedBox(height: 4.h),
+                //Height:58%
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Image(image: AssetImage('asset/icons/ic_dest.png'),height: 20,),
+                    Image(image: AssetImage('asset/icons/ic_dest.png'),height: 3.h,),
                     UIHelper.horizontalSpaceSmall,
                     Text("Show on map",style: heading2.copyWith(color: secondaryColor),)
                   ],
                 ),
-                UIHelper.verticalSpaceMedium,
-                UIHelper.verticalSpaceSmall,
-
-                UIHelper.verticalSpaceSmall,
+                SizedBox(height: 4.h,),
+                //Height:52%
                 model.busy?Center(child: CircularProgressIndicator()):Container(
-                  height: 500,
+                  height: 50.h,
                   //group list view
                   child:
                     GroupListView(
@@ -233,20 +258,21 @@ class AdressSelectionView extends StatelessWidget {
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
-          padding: UIHelper.pagePaddingSmall.copyWith(top: 0,bottom: 0),
+          padding: EdgeInsets.only(right: 3.w, left: 3.w,top: 1.h,bottom: 1.h),
           color: onSecondaryColor,
+          //height:40%
           child: ListView(
             controller: scrollController,
             children: [
               //list view
               Container(
-                height: 170,
-                padding: UIHelper.pagePaddingSmall.copyWith(bottom: 10),
+                height: 21.h,
+                padding: EdgeInsets.only(left: 3.w,right: 3.w), //UIHelper.pagePaddingSmall.copyWith(bottom: 10),
                 child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: model.vehiclesList.length,
                     scrollDirection: Axis.horizontal,
-                    separatorBuilder: (context, index) => SizedBox(width: 10,),
+                    separatorBuilder: (context, index) => SizedBox(width: 2.w,),
                     itemBuilder: (context, index) => InkWell(
                       onTap: (){
                         model.switchRideOptionButtonIndex(index);
@@ -269,17 +295,17 @@ class AdressSelectionView extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              Image(image: AssetImage(model.vehiclesList[index].vPic),),
-                              Text(model.vehiclesList[index].vName),
-                              Text(model.vehiclesList[index].vRate),
-                              UIHelper.verticalSpaceSmall,
+                              Image(image: AssetImage(model.vehiclesList[index].vPic),height: 10.h,),
+                              Text(model.vehiclesList[index].vName,style: TextStyle(fontSize: 2.h),),
+                              Text(model.vehiclesList[index].vRate,style: TextStyle(fontSize: 2.h),),
+                              SizedBox(height: 1.h,),
                               ClipRRect(
                                 borderRadius: BorderRadius.all(Radius.circular(20)),
                                 child: Container(
-                                  padding: EdgeInsets.all(3),
+                                  padding: EdgeInsets.all(1.h),
                                   color: onPrimaryColor2,
                                   child: Text(model.vehiclesList[index].vArrivingTime
-                                    ,style:boldHeading3.copyWith(color: onSecondaryColor) ,),
+                                    ,style:boldHeading3.copyWith(color: onSecondaryColor,fontSize: 2.h) ,),
                                 ),
                               )
                             ],
@@ -290,6 +316,7 @@ class AdressSelectionView extends StatelessWidget {
 
                 ),
               ),
+              //Height:22%
               //Payment List tile
               ListTile(
                 onTap:(){},

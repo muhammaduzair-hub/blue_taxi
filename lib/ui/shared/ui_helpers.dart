@@ -20,11 +20,11 @@ class UIHelper {
   static const double _HorizontalSpaceMedium = 20.0;
   static const double _HorizontalSpaceLarge = 60.0;
 
-  static const Widget verticalSpaceLeast = SizedBox(height: _VerticalSpaceLeast);
-  static const Widget verticalSpaceSmall = SizedBox(height: _VerticalSpaceSmall);
-  static const Widget verticalSpaceMedium = SizedBox(height: _VerticalSpaceMedium);
-  static const Widget verticalSpaceLarge = SizedBox(height: _VerticalSpaceLarge);
-  static const Widget verticalSpaceXLarge = SizedBox(height: _VerticalSpaceXLarge);
+  static  Widget verticalSpaceLeast = SizedBox(height: _VerticalSpaceLeast);
+  static  Widget verticalSpaceSmall = SizedBox(height: _VerticalSpaceSmall);
+  static  Widget verticalSpaceMedium = SizedBox(height: _VerticalSpaceMedium);
+  static  Widget verticalSpaceLarge = SizedBox(height: _VerticalSpaceLarge);
+  static  Widget verticalSpaceXLarge = SizedBox(height: _VerticalSpaceXLarge);
 
 
   static const Widget horizontalSpaceSmall = SizedBox(width: _HorizontalSpaceSmall);

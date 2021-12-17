@@ -1,4 +1,5 @@
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
+import 'package:bluetaxiapp/ui/views/booking_view.dart';
 import 'package:bluetaxiapp/ui/views/splash_screen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,8 +16,8 @@ void main() {
         MediaQuery(
           data: new MediaQueryData.fromWindow(ui.window),
           child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: MyApp()),
+          textDirection: TextDirection.rtl, child: MyApp()
+          ),
         ));
   });
 }

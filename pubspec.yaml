@@ -51,6 +51,7 @@ dependencies:
   month_picker_dialog: ^0.4.0
   pin_code_fields: ^7.3.0
   timer_button: ^2.0.0
+  responsive_sizer: ^3.0.4+4
 
 dev_dependencies:
   flutter_test:
