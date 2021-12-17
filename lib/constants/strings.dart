@@ -69,3 +69,4 @@ const String LabelExpDate = "Expiry Date";
  String labelSignInError="Cannot sign in with those credentials";
  String labelPasswordE = "Please Enter a valid password";
 String labelPhoneE = "Please Enter a valid Phone Number";
+const String LabelSupport = "Support";
