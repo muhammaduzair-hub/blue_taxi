@@ -9,6 +9,8 @@ import 'package:bluetaxiapp/provider_setup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'dart:ui' as ui;
 
+import 'package:splash_screen_view/SplashScreenView.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
                       theme:  ThemeData(
                               primarySwatch: Colors.blue,
                             ),
-                      home:DevScreenView()
+                      home:MySplashScreenView()//DevScreenView()
                     ),
                   ),
                 );
