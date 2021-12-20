@@ -110,7 +110,7 @@ class AdressSelectionView extends StatelessWidget {
               top: 1.h,
               left: 3.w,
               right: 3.w,
-              bottom: 2.h,
+             // bottom: 2.h,
             ),
             child:
                 //Height: 77%
@@ -258,7 +258,7 @@ class AdressSelectionView extends StatelessWidget {
       builder: (context, scrollController) => ClipRRect(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
         child: Container(
-          padding: EdgeInsets.only(right: 3.w, left: 3.w,top: 1.h,bottom: 1.h),
+          padding: EdgeInsets.only(right: 3.w, left: 3.w,top: 1.h),//,bottom: 1.h
           color: onSecondaryColor,
           //height:40%
           child: ListView(

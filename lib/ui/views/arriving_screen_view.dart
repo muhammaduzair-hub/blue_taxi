@@ -20,6 +20,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ArrivingScreen extends StatelessWidget {
   String requestedId;
@@ -28,130 +29,132 @@ class ArrivingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseWidget<ArrivingSelectionViewModel>(
-        model:
-            ArrivingSelectionViewModel(requestedId, repo: Provider.of(context)),
-        builder: (context, model, child) => model.cancelModel == false
-            ? WillPopScope(
-                onWillPop: () async {
-                  if (state == EnumToString.convertToString(Status.Completed)) {
-                    model.unassignDriver();
-                    return true;
-                  }
-                  return false;
-                },
-                child: SafeArea(
-                    child: Scaffold(
-                        body: Stack(children: [
-                  GoogleMap(
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: CameraPosition(
-                        target: LatLng(
-                          33.738045,
-                          73.084488,
-                        ),
-                        zoom: 15),
-                    mapType: MapType.terrain,
-                    onTap: (latlng) {
-                      print("${latlng.latitude}     ${latlng.longitude}");
-                    },
-                  ),
-
-                  if (state == EnumToString.convertToString(Status.Active) ||
-                      state == EnumToString.convertToString(Status.Completed) ||
-                      state == EnumToString.convertToString(Status.Rate))
-                    Padding(
-                      padding: smallPadding.copyWith(right: 0.0),
-                      child: LeadingBackButton(
-                        ontap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                      new UserMenuPageView()));
+    return ResponsiveSizer(
+      builder: (p0, p1, p2) => BaseWidget<ArrivingSelectionViewModel>(
+          model:
+          ArrivingSelectionViewModel(requestedId, repo: Provider.of(context)),
+          builder: (context, model, child) => model.cancelModel == false
+              ? WillPopScope(
+            onWillPop: () async {
+              if (state == EnumToString.convertToString(Status.Completed)) {
+                model.unassignDriver();
+                return true;
+              }
+              return false;
+            },
+            child: SafeArea(
+                child: Scaffold(
+                    body: Stack(children: [
+                      GoogleMap(
+                        zoomControlsEnabled: false,
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(
+                              33.738045,
+                              73.084488,
+                            ),
+                            zoom: 15),
+                        mapType: MapType.terrain,
+                        onTap: (latlng) {
+                          print("${latlng.latitude}     ${latlng.longitude}");
                         },
-                        image: AssetImage('asset/icons/navigation_button.png'),
                       ),
-                    ),
 
-                  //Chnage Header Text on Model State
-                  if (state == EnumToString.convertToString(Status.Active))
-                    Padding(
-                      padding: smallPadding.copyWith(left: 0.0, right: 0.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          LabelArriving,
-                          style: boldHeading1.copyWith(color: onPrimaryColor),
+                      if (state == EnumToString.convertToString(Status.Active) ||
+                          state == EnumToString.convertToString(Status.Completed) ||
+                          state == EnumToString.convertToString(Status.Rate))
+                        Padding(
+                          padding: smallPadding.copyWith(right: 0.0),
+                          child: LeadingBackButton(
+                            ontap: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) =>
+                                      new UserMenuPageView()));
+                            },
+                            image: AssetImage('asset/icons/navigation_button.png'),
+                          ),
                         ),
-                      ),
-                    )
-                  else if (state == EnumToString.convertToString(Status.OnGoing))
-                    Padding(
-                      padding: smallPadding.copyWith(left: 0.0, right: 0.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          " On Going",
-                          style: boldHeading1.copyWith(color: onPrimaryColor),
-                        ),
-                      ),
-                    )
-                  else if (state == EnumToString.convertToString(Status.Completed))
-                    Padding(
-                      padding: smallPadding.copyWith(left: 0.0, right: 0.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          LabelOnTrip,
-                          style: boldHeading1.copyWith(color: onPrimaryColor),
-                        ),
-                      ),
-                    )
-                  else if (state == EnumToString.convertToString(Status.Tips))
-                    Padding(
-                      padding: smallPadding.copyWith(left: 0.0, right: 0.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          "Tips Amount",
-                          style: boldHeading1.copyWith(color: onPrimaryColor),
-                        ),
-                      ),
-                    )
-                  else if (state == EnumToString.convertToString(Status.Rate))
-                    Padding(
-                      padding: smallPadding.copyWith(left: 0.0, right: 0.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Text(
-                          "Send Feedback",
-                          style: boldHeading1.copyWith(color: onPrimaryColor),
-                        ),
-                      ),
-                    ),
 
-                  //Chnage Bottom sheets on Model State
-                  if (state == EnumToString.convertToString(Status.Booked))
-                    selectDriverSearchingSheet(model, context) //Checked
-                  else if (state == EnumToString.convertToString(Status.Active))
-                    selectArrivingBottomSheet(model) //Checked
-                  else if (state ==
-                      EnumToString.convertToString(Status.Dispatched))
-                    selectArrivedBottomSheet(model, context) //Checked
-                  else if (state ==
-                      EnumToString.convertToString(Status.OnGoing))
-                    selectDisbaledArrivingBottomSheet(model) //Checked
-                  else if (state ==
-                      EnumToString.convertToString(Status.Completed))
-                    selectTipAndRateSheet(model) //Checked
-                  else if (state == EnumToString.convertToString(Status.Tips))
-                    selectTipsSheet(model)
-                  else if (state == EnumToString.convertToString(Status.Rate))
-                    selectRateSheet(model),
-                ]))),
-              )
-            : _showCancelPanel(context, model));
+                      //Chnage Header Text on Model State
+                      if (state == EnumToString.convertToString(Status.Active))
+                        Padding(
+                          padding: smallPadding.copyWith(left: 0.0, right: 0.0),
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              LabelArriving,
+                              style: boldHeading1.copyWith(color: onPrimaryColor),
+                            ),
+                          ),
+                        )
+                      else if (state == EnumToString.convertToString(Status.OnGoing))
+                        Padding(
+                          padding: smallPadding.copyWith(left: 0.0, right: 0.0),
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              " On Going",
+                              style: boldHeading1.copyWith(color: onPrimaryColor),
+                            ),
+                          ),
+                        )
+                      else if (state == EnumToString.convertToString(Status.Completed))
+                          Padding(
+                            padding: smallPadding.copyWith(left: 0.0, right: 0.0),
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                LabelOnTrip,
+                                style: boldHeading1.copyWith(color: onPrimaryColor),
+                              ),
+                            ),
+                          )
+                        else if (state == EnumToString.convertToString(Status.Tips))
+                            Padding(
+                              padding: smallPadding.copyWith(left: 0.0, right: 0.0),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: Text(
+                                  "Tips Amount",
+                                  style: boldHeading1.copyWith(color: onPrimaryColor),
+                                ),
+                              ),
+                            )
+                          else if (state == EnumToString.convertToString(Status.Rate))
+                              Padding(
+                                padding: smallPadding.copyWith(left: 0.0, right: 0.0),
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    "Send Feedback",
+                                    style: boldHeading1.copyWith(color: onPrimaryColor),
+                                  ),
+                                ),
+                              ),
+
+                      //Chnage Bottom sheets on Model State
+                      if (state == EnumToString.convertToString(Status.Booked))
+                        selectDriverSearchingSheet(model, context) //Checked
+                      else if (state == EnumToString.convertToString(Status.Active))
+                        selectArrivingBottomSheet(model) //Checked
+                      else if (state ==
+                            EnumToString.convertToString(Status.Dispatched))
+                          selectArrivedBottomSheet(model, context) //Checked
+                        else if (state ==
+                              EnumToString.convertToString(Status.OnGoing))
+                            selectDisbaledArrivingBottomSheet(model) //Checked
+                          else if (state ==
+                                EnumToString.convertToString(Status.Completed))
+                              selectTipAndRateSheet(model) //Checked
+                            else if (state == EnumToString.convertToString(Status.Tips))
+                                selectTipsSheet(model)
+                              else if (state == EnumToString.convertToString(Status.Rate))
+                                  selectRateSheet(model),
+                    ]))),
+          )
+              : _showCancelPanel(context, model)),
+    );
   }
 
   //Booked
@@ -826,17 +829,17 @@ class ArrivingScreen extends StatelessWidget {
                   ],
                 ),
                 child: Padding(
-                  padding: smallPadding,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: smallPadding.copyWith(bottom: 0),
+                  child: ListView(
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Center(
                           child: Image(
                             image: AssetImage('asset/icons/ic_gesture.png'),
                           )),
                       Padding(
-                        padding: smallPadding.copyWith(right: 0.0, left:0.0, bottom: 0.0,),
+                        padding: smallPadding.copyWith(right: 0.0, left:0.0, bottom: 0.0,top: 5.h),
                         child: Text(
                           model.driverModel!.driverName ??
                           "Patrick",
@@ -988,7 +991,7 @@ class ArrivingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: width*0.18,
+                            width: width*0.19,
                             height: height * 0.06,
                             child: PrimaryButton(
                                 color: 1 == model.buttonState
@@ -1008,7 +1011,7 @@ class ArrivingScreen extends StatelessWidget {
                                 }),
                           ),
                           Container(
-                            width: width*0.18,
+                            width: width*0.19,
                             height: height * 0.06,
                             child: PrimaryButton(
                                 color: 2 == model.buttonState
@@ -1028,7 +1031,7 @@ class ArrivingScreen extends StatelessWidget {
                                 }),
                           ),
                           Container(
-                            width: width*0.18,
+                            width: width*0.19,
                             height: height * 0.06,
                             child: PrimaryButton(
                                 color: 3 == model.buttonState
@@ -1048,7 +1051,7 @@ class ArrivingScreen extends StatelessWidget {
                                 }),
                           ),
                           Container(
-                            width: width*0.18,
+                            width: width*0.19,
                             height: height * 0.06,
                             child: PrimaryButton(
                                 color: 4 == model.buttonState
