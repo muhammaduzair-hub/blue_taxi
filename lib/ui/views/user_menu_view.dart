@@ -93,7 +93,6 @@ class UserMenuPageView extends StatelessWidget {
                             },),
                         ],
                       ),
-                    ),
                     Container(height: height*0.2/20,),
                     Container(
                       decoration: BoxDecoration(
