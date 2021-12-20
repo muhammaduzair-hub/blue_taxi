@@ -62,6 +62,7 @@ class BookingViewModel extends BaseModel {
 
   void loadCurrentLocationMarler(){
     if(currentLocation!=null){
+      markers.clear();
       addMarker(latLng: LatLng(	currentLocation.latitude,currentLocation.longitude),marker: currentLocationMarker);
       addMarker(latLng: LatLng(currentLocation.latitude,currentLocation.longitude),marker: icPick);
     }

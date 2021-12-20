@@ -59,7 +59,7 @@ class BookingView extends StatelessWidget {
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
                   child: Container(
                       color: onSecondaryColor,
-                      padding: UIHelper.pagePaddingSmall.copyWith(top: 0),
+                      padding: UIHelper.pagePaddingSmall.copyWith(top: 0,bottom: 0),
                       child: ListView(
                         controller: scrollController,
                         children: [
