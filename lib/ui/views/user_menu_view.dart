@@ -13,8 +13,6 @@ class UserMenuPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // double width = MediaQuery.of(context).size.width;
-    // double height = MediaQuery.of(context).size.height;
     return SafeArea(
         child: Scaffold(
           body: Container(
@@ -93,7 +91,6 @@ class UserMenuPageView extends StatelessWidget {
                             },),
                         ],
                       ),
-                    ),
                     Container(height: height*0.2/20,),
                     Container(
                       decoration: BoxDecoration(

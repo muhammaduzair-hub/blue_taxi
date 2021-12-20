@@ -312,38 +312,41 @@ class RideSummary extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            child: DraggableScrollableSheet(
-                              initialChildSize: 1.0,
-                              builder: (context, scrollController) =>
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Center(
-                                          child: Image(
-                                            image: AssetImage('asset/icons/ic_gesture.png'),
-                                          )),
-                                      Text("Choose an option" ,style: buttonTextStyle.copyWith(fontWeight: FontWeight.w700),),
-                                      ListView.separated(
-                                        scrollDirection: Axis.vertical,
-                                        shrinkWrap: true,
-                                        separatorBuilder: (context, index){
-                                          return Column(
-                                            children: [
-                                              SizedBox(height: 10.0,),
-                                              Image(image:AssetImage('asset/icons/line.png')),
-                                              SizedBox(height: 10.0,),
-                                            ],
-                                          );
-                                        },
-                                        itemCount: model.reasonList.length,
-                                        itemBuilder: (
-                                            BuildContext context,
-                                            int index) {
-                                          return _issueOptions(index, model);
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                            child: Padding(
+                              padding: smallPadding,
+                              child: DraggableScrollableSheet(
+                                initialChildSize: 1.0,
+                                builder: (context, scrollController) =>
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Center(
+                                            child: Image(
+                                              image: AssetImage('asset/icons/ic_gesture.png'),
+                                            )),
+                                        Text("Choose an option" ,style: buttonTextStyle.copyWith(fontWeight: FontWeight.w700),),
+                                        ListView.separated(
+                                          scrollDirection: Axis.vertical,
+                                          shrinkWrap: true,
+                                          separatorBuilder: (context, index){
+                                            return Column(
+                                              children: [
+                                                SizedBox(height: 10.0,),
+                                                Image(image:AssetImage('asset/icons/line.png')),
+                                                SizedBox(height: 10.0,),
+                                              ],
+                                            );
+                                          },
+                                          itemCount: model.reasonList.length,
+                                          itemBuilder: (
+                                              BuildContext context,
+                                              int index) {
+                                            return _issueOptions(index, model);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                              ),
                             ),
                           );
                         },
