@@ -26,28 +26,40 @@ class CustomButton extends StatelessWidget {
 
 //For Circular Avatar (PROFILE PICTURE OF USER)
 class CustomImage extends StatelessWidget {
-  CustomImage({Key? key,required this.image,required this.ontap, this.height, this.width, this.fit}) : super(key: key);
-  final AssetImage image;
+  CustomImage({Key? key,required this.ontap, this.image, this.radius,}) : super(key: key);
   final VoidCallback ontap;
-  final double? height;
-  final double? width;
-  final BoxFit? fit;
+  final String? image;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
 
     return InkWell(
       onTap: ontap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0),
-        child: Image(
-          height: height ?? 35,
-          width: width ?? 20,
-          image: image,
-          fit: fit ?? BoxFit.contain,
+      child: CircleAvatar(
+        radius: radius ?? (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width ) /20,
+        backgroundColor: Colors.white, //border color
+        child: Padding(
+          padding: EdgeInsets.all(5.0), //border size
+          child: CircleAvatar(
+            radius:radius ?? (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width ) /20,
+            backgroundImage: AssetImage(image ?? "asset/images/Group.png"),
+          ),
         ),
       ),
     );
+    // return InkWell(
+    //   onTap: ontap,
+    //   child: Padding(
+    //     padding: const EdgeInsets.symmetric(horizontal: 6.0),
+    //     child: Image(
+    //       height: height ?? 35,
+    //       width: width ?? 20,
+    //       image: image,
+    //       fit: fit ?? BoxFit.contain,
+    //     ),
+    //   ),
+    // );
   }
 }
 

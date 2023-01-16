@@ -14,7 +14,7 @@ description: Blue Taxi user & driver app project.
 version: 1.0.0+1
 
 environment:
-  sdk: 2.15.0
+  sdk: 2.18.5
 
 dependencies:
   cloud_firestore: ^3.0.0
@@ -48,9 +48,11 @@ dependencies:
   group_list_view: ^1.1.1
   splash_screen_view: ^3.0.0
   fluttertoast: ^8.0.8
-  month_picker_dialog: ^0.4.0
+#  month_picker_dialog: ^0.4.0
+#  month_picker_dialog_2: ^0.5.8
   pin_code_fields: ^7.3.0
-  timer_button: ^2.0.0
+#  timer_button: ^2.0.0
+#  otp_timer_button: ^1.1.0
   responsive_sizer: ^3.0.4+4
 
 dev_dependencies:

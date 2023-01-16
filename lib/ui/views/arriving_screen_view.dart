@@ -234,7 +234,7 @@ class ArrivingScreen extends StatelessWidget {
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),),
         child: Stack(
-            overflow: Overflow.visible,
+              
             fit: StackFit.passthrough,
             children: <Widget>[
           Container(
@@ -382,11 +382,7 @@ class ArrivingScreen extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 6.0, top: 6.0, left: 6.0, right:6.0,),
-                child: CustomImage(
-                 image: AssetImage('asset/images/Group.png'),
-                  ontap: () { },
-                  height: height*0.15,
-                  width: width*0.22,
+                child: CustomImage(ontap: () {  },
                 ),
               ),
             ),
@@ -520,7 +516,6 @@ class ArrivingScreen extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),),
         child: Stack(
-            overflow: Overflow.visible,
             fit: StackFit.passthrough,
             children: <Widget>[
               Container(
@@ -632,10 +627,7 @@ class ArrivingScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 4.0, top: 4.0, left: 4.0, right:4.0,),
                     child: CustomImage(
-                      image: AssetImage('asset/images/Group.png'),
                       ontap: () { },
-                      height: height*0.15,
-                      width: width*0.22,
                     ),
                   ),
                 ),
@@ -658,7 +650,7 @@ class ArrivingScreen extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),),
         child: Stack(
-            overflow: Overflow.visible,
+              
             fit: StackFit.passthrough,
             children: <Widget>[
               Container(
@@ -784,10 +776,7 @@ class ArrivingScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 4.0, top: 4.0, left: 4.0, right:4.0,),
                     child: CustomImage(
-                      image: AssetImage('asset/images/Group.png'),
                       ontap: () { },
-                      height: height*0.15,
-                      width: width*0.22,
                     ),
                   ),
                 ),
@@ -810,7 +799,7 @@ class ArrivingScreen extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),),
         child: Stack(
-            overflow: Overflow.visible,
+              
             fit: StackFit.passthrough,
             children: <Widget>[
               Container(
@@ -916,10 +905,7 @@ class ArrivingScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 4.0, top: 4.0, left: 4.0, right:4.0,),
                     child: CustomImage(
-                      image: AssetImage('asset/images/Group.png'),
                       ontap: () { },
-                      height: height*0.15,
-                      width: width*0.22,
                     ),
                   ),
                 ),
@@ -942,7 +928,7 @@ class ArrivingScreen extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30), topRight: Radius.circular(30)),),
         child: Stack(
-            overflow: Overflow.visible,
+              
             fit: StackFit.passthrough,
             children: <Widget>[
               Container(
@@ -1119,10 +1105,7 @@ class ArrivingScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 4.0, top: 4.0, left: 4.0, right:4.0,),
                     child: CustomImage(
-                      image: AssetImage('asset/images/Group.png'),
                       ontap: () { },
-                      height: height*0.15,
-                      width: width*0.22,
                     ),
                   ),
                 ),

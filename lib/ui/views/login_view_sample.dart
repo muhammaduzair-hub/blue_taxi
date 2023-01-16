@@ -27,8 +27,7 @@ class _LoginViewSampleState extends State<LoginViewSample> {
             children: <Widget>[
               model.busy
                   ? CircularProgressIndicator()
-                  : FlatButton(
-                      color: Colors.white,
+                  : ElevatedButton(
                       child: Text(
                         'Login',
                         style: TextStyle(color: Colors.black),

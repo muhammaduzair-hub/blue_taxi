@@ -51,10 +51,6 @@ class MyProfileView extends StatelessWidget {
                             )),
                         child: CustomImage(
                           ontap: () {},
-                          image: const AssetImage("asset/images/photo_user.png"),
-                          height: height*1/10,
-                          width: width*1/6,
-                          fit: BoxFit.cover,
                         ),
                       ),
 

@@ -5,7 +5,7 @@ import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/viewmodels/base_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
+// import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 
 class AddCardViewModel extends BaseModel{
@@ -100,17 +100,17 @@ class AddCardViewModel extends BaseModel{
 
 
   monthPicker(BuildContext context){
-    showMonthPicker(
-      context: context,
-      firstDate: DateTime(DateTime.now().year, DateTime.now().month),
-      lastDate: DateTime(DateTime.now().year + 10),
-      initialDate: selectedDate ?? DateTime.now(),
-    ).then((date) {
-      if (date != null) {
-        selectedDate = date;
-        setBusy(false);
-      }
-    });
+    // showMonthPicker(
+    //   context: context,
+    //   firstDate: DateTime(DateTime.now().year, DateTime.now().month),
+    //   lastDate: DateTime(DateTime.now().year + 10),
+    //   initialDate: selectedDate ?? DateTime.now(),
+    // ).then((date) {
+    //   if (date != null) {
+    //     selectedDate = date;
+    //     setBusy(false);
+    //   }
+    // });
   }
 
 

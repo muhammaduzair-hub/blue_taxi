@@ -200,7 +200,10 @@ class Api {
   }
 
   getActiveDriver() async {
+    print("Checked Driver 1");
     try {
+      print("Checked Driver 2");
+
       //Getting any driver in INACTIVE STATE (0),
       // Changing Driver Status to 1 and assigning him to Request
       var dData = await _driverCollectionReference.where('driverStatus' , isEqualTo: "Unassigned")
@@ -210,8 +213,10 @@ class Api {
           value.docs.forEach((doc)=> {
             doc.reference.update({'driverStatus' : 'Assigned'}),//CHANGE***********
             driverID= doc.id,
+          print("Checked Driver 3")
           })
       );
+      print("Checked Driver 4");
       return driverID;
     } catch (e) {
       return e.toString();

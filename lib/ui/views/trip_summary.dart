@@ -1,10 +1,8 @@
 import 'package:bluetaxiapp/ui/shared/app_colors.dart';
 import 'package:bluetaxiapp/ui/shared/globle_objects.dart';
 import 'package:bluetaxiapp/ui/shared/text_styles.dart';
-import 'package:bluetaxiapp/ui/shared/ui_helpers.dart';
 import 'package:bluetaxiapp/ui/views/base_widget.dart';
 import 'package:bluetaxiapp/ui/views/driver_detail_view.dart';
-import 'package:bluetaxiapp/ui/views/trip_history_view.dart';
 import 'package:bluetaxiapp/ui/widgets/responsive_ui_widgets.dart';
 import 'package:bluetaxiapp/viewmodels/views/trip_summary_viewmodel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -191,10 +189,6 @@ class RideSummary extends StatelessWidget {
                                       )),
                                   child: CustomImage(
                                     ontap: () {},
-                                    fit: BoxFit.cover,
-                                    image: const AssetImage("asset/images/Group.png"),
-                                    height: height * 0.1,
-                                    width: width * 1 / 6,
                                   ),
                                 ),
                                 Padding(

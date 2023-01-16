@@ -46,10 +46,6 @@ class UserMenuPageView extends StatelessWidget {
                                   new MaterialPageRoute(
                                       builder: (context) => new MyProfileView()));
                             },
-                            image: AssetImage("asset/images/photo_user.png"),
-                            height: height*1/10,
-                            width: width*1/6,
-                            fit: BoxFit.cover,
                           ),
                         ),
                          Text(
@@ -100,11 +96,11 @@ class UserMenuPageView extends StatelessWidget {
                             color: Colors.grey.withOpacity(0.3),
                           )),
                       child: CustomImage(
-                        fit: BoxFit.contain,
+                        radius: (MediaQuery.of(context).size.height + MediaQuery.of(context).size.width ) /40,
+                        image: "asset/images/cross.png",
                         ontap: () {
                           Navigator.pop(context);
                         },
-                        image: AssetImage("asset/images/cross.png"),
                       ),
                     ),
                   ],

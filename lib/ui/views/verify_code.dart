@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
-import 'package:timer_button/timer_button.dart';
+// import 'package:timer_button/timer_button.dart';
 
 class VerifyCodeView extends StatelessWidget {
   final UserModel signInUser;
@@ -134,16 +134,16 @@ class VerifyCodeView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        new TimerButton(
-                          label: "Resend Code",
-                          timeOutInSeconds: 30,
-                          onPressed: () {},
-                          buttonType: ButtonType.TextButton,
-                          disabledColor: Colors.white,
-                          color: Colors.white,
-                          activeTextStyle: TextStyle(color: Colors.blue),
-                          disabledTextStyle: TextStyle(color: Colors.grey),
-                        ),
+                        // new TimerButton(
+                        //   label: "Resend Code",
+                        //   timeOutInSeconds: 30,
+                        //   onPressed: () {},
+                        //   buttonType: ButtonType.ElevatedButton,
+                        //   disabledColor: Colors.white,
+                        //   color: Colors.white,
+                        //   activeTextStyle: TextStyle(color: Colors.blue),
+                        //   disabledTextStyle: TextStyle(color: Colors.grey),
+                        // ),
                       ],
                     ),
                   ),

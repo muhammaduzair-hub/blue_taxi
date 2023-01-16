@@ -59,10 +59,6 @@ class DriverDetailView extends StatelessWidget {
                               )),
                           child: CustomImage(
                             ontap: () {},
-                            fit: BoxFit.cover,
-                            image: const AssetImage("asset/images/Group.png"),
-                            height: height*1/10,
-                            width: width*1/6,
                           ),
                         ),
                         Padding(

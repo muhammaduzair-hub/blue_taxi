@@ -98,7 +98,7 @@ class CustomCard extends StatelessWidget {
               )
             ):
             Padding(
-              padding: smallPadding,
+              padding: smallPadding.copyWith(top: height*0.01, bottom: 0.0),
               child: MyCard(snapshot: snapshot, index: index, elevatin: 0, width: MediaQuery.of(context).size.width),
             )
           ),
