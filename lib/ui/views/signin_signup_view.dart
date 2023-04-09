@@ -105,35 +105,35 @@ class SignInSignUpView extends StatelessWidget {
                                model.validatePassword(passwordController.text);
 
                                if(model.validateName(nameController.text)
-                                     && await model.validateEmail(emailController.text,numberController.text)
-                                     && model.validateMobileNumber(numberController.text)
-                                     && model.validatePassword(passwordController.text)){
+                                   && await model.validateEmail(emailController.text,numberController.text)
+                                   && model.validateMobileNumber(numberController.text)
+                                   && model.validatePassword(passwordController.text)){
 
-                                   //Send Data to a method inside Model Class to access Database
-                                   await model.signUp(nameController, emailController,numberController, passwordController);
+                                 //Send Data to a method inside Model Class to access Database
+                                 await model.signUp(nameController, emailController,numberController, passwordController);
 
-                                   //Route to VerifyCode View
+                                 //Route to VerifyCode View
 
-                                   await model.signin( numberController, passwordController);
-                                   if(model.signedIdnUser.id==''){
-                                     model.error=true;
-                                     // print("cannot Signin with those credentials");
-                                   }
-                                   else {
-                                     Navigator.push(context, new MaterialPageRoute(
-                                         builder: (context) => new VerifyCodeView(
-                                           signInUser: model.signedIdnUser,
-                                         ))
-                                     );
-                                   }
+                                 await model.signin( numberController, passwordController);
+                                 if(model.signedIdnUser.id==''){
+                                   model.error=true;
+                                   // print("cannot Signin with those credentials");
+                                 }
+                                 else {
+                                   Navigator.push(context, new MaterialPageRoute(
+                                       builder: (context) => new VerifyCodeView(
+                                         signInUser: model.signedIdnUser,
+                                       ))
+                                   );
+                                 }
 
 
-                                   nameController.text="";
-                                   emailController.text="";
-                                   numberController.text="";
-                                   passwordController.text="";
-                                   model.setBusy(false);
-                                   //_pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
+                                 nameController.text="";
+                                 emailController.text="";
+                                 numberController.text="";
+                                 passwordController.text="";
+                                 model.setBusy(false);
+                                 //_pageController.previousPage(duration: Duration(milliseconds: 500), curve: Curves.ease);
                                }
                              },
                            ),
